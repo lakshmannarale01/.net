@@ -1,0 +1,17 @@
+--select all columns
+Select * from Customer
+--select specific column
+Select first_name,last_name from Customer
+--select specific colum and use function
+Select concat(first_name,' ',last_name) from customer
+
+--alias column name
+Select first_name Firstname,last_name LatName from Customer
+Select concat(first_name,' ',last_name) FullName from customer
+
+--Restricting teh number of rows
+select * from film where rating = 'G'
+
+select * from film where rating = 'G' or rating = 'R'
+
+select * from film where rating = 'G' and length>100

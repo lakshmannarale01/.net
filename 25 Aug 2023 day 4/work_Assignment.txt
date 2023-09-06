@@ -1,0 +1,100 @@
+DVDRENTAL DATABASE
+
+1)Select all data from teh payment table  
+  --- select * from payment
+2) Select paymentid, amount and date from payment table  
+--- Select payment_id, amount,payment_date from payment
+3) select the aveare amount paid from teh payment table	
+--- select avg(amount) from payment
+4) select the unique city_id in address	
+--- select distinct(city_id) from address
+5) select the payments which are inbetween 2 and 5
+--- select * from payment where amount between 2 and 5
+6) select the unique dates in which payments have been made
+--- select distinct(payment_date) from payment where amount is not null
+7) select the distritcs that have the char 'a' in them	
+--- select * from address where district like '%a%'
+8) select the first rental_date from the rental table
+--- select (rental_date) from rental where rental_id =1
+--- select min(rental_date) first_rental_date from rental where rental_date between '2005-01-01' and '2005-12-31'
+9) select the highest amount paid from teh paymeny table
+--- select max(rental_rate) maximum_of_Rantal from film;
+10) select the username and password of all the staff 	
+--- select username,password from staff
+
+11) Select the average duration for the movie released in 2006	
+--- select avg(rental_duration) average_duration from film where release_year = 2006;
+12) select the sum of amount paid by customer 341
+--- select sum(amount) sum_of_amount_paid from payment where customer_id = 341;
+13) print the name name of the actors who have acteed in film that are of rating 'G'			
+---  select actor_id, first_name,last_name from actor where actor_id in
+   (select actor_id from film_actor where actor_id in
+	(select film_id from film where rating = 'G' group by film_id order by 1)) group by actor_id order by 1
+
+
+----------------------------------------------------------------------------------------------
+1) Print all the Actor details	
+---- SELECT * from actor
+2) Print all teh staff details
+--- SELECT * from staff
+3) Print the number of films acted by every actor
+----  select actor_id,count(film_id) count_of_film from film_actor group by actor_id order by actor_id
+
+4) Print the city name for cities that have 'a nd e in their address
+----  select * from city where city like '%a%' or city like '%e%'
+----select * from city where city like '%a%e%'
+
+5) Print the customer name of customer who have rented films that have the  length >2   
+--- select first_name, last_name from customer where customer_id in
+(select customer_id from rental where inventory_id in
+(select inventory_id from inventory where film_id in 
+ (select film_id from film where length>2)))
+
+ 
+6) print the fil names of film that have length greater than teh average length of all the films
+--select title from film where length>(select avg(length)from film)
+
+
+7) Prin the fims ordered by the rating
+---1) select * from film order by rating
+---2) select * from film order by rating desc
+
+8) print the average_rental amount of every rating ordered by the rating
+---1) select rating, avg(rental_rate) from film group by rating order by rating
+---2) select rating, avg(rental_rate) from film group by rating order by rating desc
+
+
+
+9) print the actor name of those actor who have acted in film that starts with 'The' in teh title
+--- select first_name,last_name from actor where actor_id in
+(select actor_id from film_actor where film_id in 
+ (select film_id from film where title like 'The%'))
+
+10) Print the city name of those cities from which the customer who have rented movies that are rated 'G'
+--- select city from city where city_id in
+(select city_id from address where address_id in
+ (select address_id from customer where customer_id in
+  (select customer_id from rental where inventory_id in 
+  (select inventory_id from inventory where film_id in 
+  (select film_id from film where rating ='G' )))) )
+
+
+11) Count the  number of films in every category
+--- 
+select category_id , count(film_id) from film_category group by  category_id order by  category_id
+
+
+12)print the name and usernames of staff who have processed the payment of those customer who come from the same dristricts as the customer who have rented the movie acted by the actors who have 'J' in teh begining of their first name
+---select (first_name,' ',last_name),username from staff where staff_id in
+(select staff_id from payment where customer_id in
+ (select customer_id from customer where address_id in 
+ (select address_id from address where district in
+ (select district from address where address_id in 
+ (select address_id from customer where customer_id in 
+ (select customer_id from rental where inventory_id in
+ (select inventory_id from inventory where film_id in 
+ (select film_id from film where film_id in
+ (select film_id from film_actor where actor_id in
+ (select actor_id from actor where first_name like 'J%'))))))))))
+
+			

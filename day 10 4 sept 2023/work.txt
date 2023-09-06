@@ -1,0 +1,961 @@
+using System.ComponentModel.DataAnnotations;
+
+namespace DoctorClinicApplication.Models
+{
+    public class Doctor
+    {
+        public int Id { get; set; }
+        [Required(ErrorMessage ="Doctor name is manditory")]
+        public string Name { get; set; }
+        [Required(ErrorMessage ="Doctor's years of exp has to be provided")]
+        [Range(0,22,ErrorMessage ="Invalid number for exp")]
+        public int Experience { get; set; }
+        public string Speciality { get; set; }
+        [Required(ErrorMessage = "Doctor's phone number is manditory")]
+        [RegularExpression(@"^(\+91[\-\s]?)?[0]?(91)?[789]\d{9}$", ErrorMessage ="Invalid phone number")]
+        public string Phone { get; set; }
+       
+        [RegularExpression(@"^([0-9a-zA-Z]([-\.\w]*[0-9a-zA-Z])*@([0-9a-zA-Z][-\w]*[0-9a-zA-Z]\.)+[a-zA-Z]{2,9})$
+", ErrorMessage = "Invalid email address")]
+        public string Email { get; set; }
+        public string Pic { get; set; }
+    }
+}
+------------------------------------------------------------------------------------------------------------------------
+using System.ComponentModel.DataAnnotations;
+
+namespace DoctorClinicApplication.Models
+{
+    public class Patient
+    {
+        public int Id { get; set; }
+        [Required(ErrorMessage = "Patient name is manditory")]
+        public string Name { get; set; }
+
+        [Required(ErrorMessage = "Patient's phone number is manditory")]
+        [RegularExpression(@"^(\+91[\-\s]?)?[0]?(91)?[789]\d{9}$", ErrorMessage = "Invalid phone number")]
+        public string Phone { get; set; }
+
+        [RegularExpression(@"^([0-9a-zA-Z]([-\.\w]*[0-9a-zA-Z])*@([0-9a-zA-Z][-\w]*[0-9a-zA-Z]\.)+[a-zA-Z]{2,9})$
+", ErrorMessage = "Invalid email address")]
+        public string Email { get; set; }
+        [Required(ErrorMessage = "Patient's age has to be provided")]
+        [Range(0, 100, ErrorMessage = "Invalid number for age")]
+        public int Age { get; set; }
+    }
+}
+-----------------------------------------------------------------------------------------------------------------------------
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace DoctorClinicApplication.Models
+{
+    public class Appointment
+    {
+        [Key]
+        public int AppointmentNumber { get; set; }
+        [Required(ErrorMessage ="Patient details are manditory")]
+        public int PatientId { get; set; }
+        [Required(ErrorMessage = "Doctor details are manditory")]
+        public int DoctorId { get; set; }
+        [Required(ErrorMessage = "Plaease choose a date and time")]
+        public DateTime AppointmentDateTime { get; set; }
+
+        [ForeignKey("PatientId")]
+        public Patient Patient { get; set; }
+
+        [ForeignKey("DoctorId")]
+        public Doctor Doctor { get; set; }
+    }
+}
+-----------------------------------------------------------------------------------------------------------------------------
+using DoctorClinicApplication.Models;
+
+namespace DoctorClinicApplication.Interfaces
+{
+    public interface IRepository<K,T> where T : class
+    {
+        public T Add(T entity);
+        public T Update(T entity);
+        public T Delete(K key);
+        public T GetById(K key);
+        public ICollection<T> GetAll();
+    }
+  
+}
+
+-----------------------------------------------------------------------------------------------------------------------------
+using DoctorClinicApplication.Models;
+using Microsoft.EntityFrameworkCore;
+
+namespace DoctorClinicApplication.Contexts
+{
+    public class ClinicContext :DbContext
+    {
+        public ClinicContext(DbContextOptions options):base(options)
+        {
+            
+        }
+        public DbSet<Doctor> doctors { get; set; }
+        public DbSet<Patient> patients { get; set; }
+        public DbSet<Appointment> appointments { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Doctor>().HasData(
+                new Doctor { Id = 101, Name = "Ramu", Speciality= "Dentists", Experience = 4, Email = "ramu@myclinic.com", Phone = "+919988776655", Pic = "/images/Doc1", },
+                 new Doctor { Id = 102, Name = "Somu",Speciality= "Cardiologist", Experience = 8, Email = "somu@myclinic.com", Phone = "+915544332211", Pic = "/images/Doc2", }
+                );
+        }
+    }
+}
+
+-----------------------------------------------------------------------------------------------------------------------------
+public class NoSuchDoctorException :Exception
+    {
+        string message;
+        public NoSuchDoctorException()
+        {
+            message = "There is no doctor with the spec you have specified";
+        }
+        public override string Message => message;
+    }
+-----------------------------------------------------------------------------------------------------------------------------
+using DoctorClinicApplication.Contexts;
+using DoctorClinicApplication.Interfaces;
+using DoctorClinicApplication.Models;
+using DoctorClinicApplication.Utilities;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using System.ComponentModel;
+
+namespace DoctorClinicApplication.Repositories
+{
+    public class DoctorRepository : IRepository<int, Doctor>
+    {
+        private readonly ClinicContext _context;
+
+        public DoctorRepository(ClinicContext context)
+        {
+            _context = context;
+        }
+        public Doctor Add(Doctor entity)
+        {
+            _context.doctors.Add(entity);
+            _context.SaveChanges();
+            return entity;  
+        }
+
+        public Doctor Delete(int key)
+        {
+           var doctor = GetById(key);
+            if (doctor != null)
+            {
+                _context.doctors.Remove(doctor);
+                _context.SaveChanges();
+                return doctor;
+            }
+            throw new NoSuchDoctorException();
+        }
+
+        public ICollection<Doctor> GetAll()
+        {
+            var doctors = _context.doctors;
+            if (doctors.Count() == 0)
+                throw new NoDoctorsAreAvailable();
+            return doctors.ToList();
+        }
+
+        public Doctor GetById(int key)
+        {
+            var doctor = _context.doctors.SingleOrDefault(d=>d.Id == key);
+            if (doctor != null)
+                return doctor;
+            throw new NoSuchDoctorException();
+        }
+
+        public Doctor Update(Doctor entity)
+        {
+            var doctor = GetById(entity.Id);
+            if (doctor != null)
+            {
+                _context.Entry<Doctor>(entity).State = EntityState.Modified;
+                _context.SaveChanges();
+                return entity;
+            }
+            throw new NoSuchDoctorException();
+        }
+    }
+}
+-----------------------------------------------------------------------------------------------------------------------------
+using Microsoft.EntityFrameworkCore.ChangeTracking;
+
+namespace DoctorClinicApplication.Utilities
+{
+    public class NoSuchEntityException:Exception
+    {
+        string message;
+        public NoSuchEntityException(string name)
+        {
+            message = $"No such {name} is available";
+        }
+        public override string Message => message;
+
+    }
+}
+-----------------------------------------------------------------------------------------------------------------------------
+namespace DoctorClinicApplication.Utilities
+{
+    public class NoEntriesAvailable :Exception
+    {
+        string message;
+        public NoEntriesAvailable(string name)
+        {
+            message = $"No entries of {name} present";
+        }
+        public override string Message => message;
+    }
+}
+
+
+-----------------------------------------------------------------------------------------------------------------------------
+using DoctorClinicApplication.Contexts;
+using DoctorClinicApplication.Interfaces;
+using DoctorClinicApplication.Models;
+using DoctorClinicApplication.Utilities;
+
+namespace DoctorClinicApplication.Repositories
+{
+    public class AppointmnetRepository : IRepository<int, Appointment>
+    {
+        private readonly ClinicContext _context;
+
+        public AppointmnetRepository(ClinicContext context)
+        {
+            _context = context;   
+        }
+        public Appointment Add(Appointment entity)
+        {
+            _context.appointments.Add(entity);
+            _context.SaveChanges();
+            return entity;
+        }
+
+        public Appointment Delete(int key)
+        {
+            var appointment = GetById(key);
+            if (appointment == null)
+                throw new NoSuchEntityException("Appointment");
+            _context.appointments.Remove(appointment);
+            _context.SaveChanges();
+            return appointment;
+        }
+
+        public ICollection<Appointment> GetAll()
+        {
+            var appointments = _context.appointments;
+            if (appointments.Count() == 0)
+                throw new NoEntriesAvailable("Appointments");
+            return appointments.ToList();
+        }
+
+        public Appointment GetById(int key)
+        {
+            var appointmnet = _context.appointments.SingleOrDefault(app => app.AppointmentNumber == key);
+            if (appointmnet != null)
+                return appointmnet;
+            throw new NoSuchEntityException("Appointments");
+        }
+
+        public Appointment Update(Appointment entity)
+        {
+            var appointmnet = GetById(entity.AppointmentNumber);
+            if (appointmnet == null)
+                throw new NoSuchEntityException("Appointmnet");
+            appointmnet.PatientId = entity.PatientId;
+            appointmnet.DoctorId = entity.DoctorId;
+            appointmnet.AppointmentDateTime = entity.AppointmentDateTime;
+            _context.SaveChanges();
+            return entity;
+        }
+    }
+}
+-----------------------------------------------------------------------------------------------------------------------------
+namespace DoctorClinicApplication.Interfaces
+{
+    public interface IAddingEntity<T>
+    {
+        public T Add(T entity);
+    }
+}
+namespace DoctorClinicApplication.Models.DTOs
+{
+    public class DoctorSpecialDTO
+    {
+        public int Id { get; set; }
+        public string Speciality { get; set; }
+    }
+}
+===================================================
+IAddingEntity
+-----------------------------------------------------------------------------------------------------------------------------
+namespace DoctorClinicApplication.Interfaces
+{
+    public interface IAddingEntity<T>
+    {
+        public T Add(T entity);
+    }
+}
+====================================================
+IDoctorServices
+-----------------------------------------------------------------------------------------------------------------------------
+
+using DoctorClinicApplication.Models;
+using DoctorClinicApplication.Models.DTOs;
+
+namespace DoctorClinicApplication.Interfaces
+{
+    public interface IDoctorService :IAddingEntity<Doctor>
+    {
+        public Doctor UpdateSpecialization(DoctorSpecialDTO doctor);
+        public IList<Doctor> GetAllDoctor();
+    }
+}
+
+===========================================
+DoctorService
+-----------------------------------------------------------------------------------------------------------------------------
+using DoctorClinicApplication.Interfaces;
+using DoctorClinicApplication.Models;
+using DoctorClinicApplication.Models.DTOs;
+
+namespace DoctorClinicApplication.Services
+{
+    public class DoctorService : IDoctorService
+    {
+        private IRepository<int, Doctor> _repository;
+
+        public DoctorService(IRepository<int, Doctor> repository)
+        {
+            _repository = repository;
+        }
+        public Doctor Add(Doctor entity)
+        {
+           var doctor = _repository.Add(entity);
+            return doctor;
+        }
+
+        public IList<Doctor> GetAllDoctor()
+        {
+            return _repository.GetAll().ToList();
+        }
+
+        public Doctor UpdateSpecialization(DoctorSpecialDTO doctor)
+        {
+            var myDoctor = _repository.GetById(doctor.Id);
+            myDoctor.Speciality = doctor.Speciality;
+            _repository.Update(myDoctor);
+            return myDoctor;
+        }
+    }
+}
+
+
+
+====================================================================
+doctor Controller
+-----------------------------------------------------------------------------------------------------------------------------
+
+using DoctorClinicApplication.Interfaces;
+using DoctorClinicApplication.Models;
+using DoctorClinicApplication.Models.DTOs;
+using DoctorClinicApplication.Services;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+
+namespace DoctorClinicApplication.Controllers
+{
+    public class DoctorController : Controller
+    {
+        List<SelectListItem> specilities = new List<SelectListItem>()
+        {
+            new SelectListItem{Value="Dentists", Text="Dentists"},
+            new SelectListItem{Value="Cardiologist", Text="Cardiologist"},
+            new SelectListItem{Value="Dermatologits", Text="Dermatologits"},
+            new SelectListItem{Value="Pediatrician", Text="Pediatrician" }
+        };
+        private readonly IDoctorService _doctorService;
+        private readonly ILogger<DoctorController> _logger;
+
+        public DoctorController(IDoctorService doctorService,ILogger<DoctorController> logger)
+        {
+            _doctorService = doctorService;
+            _logger = logger;
+        }
+        public IActionResult Index()
+        {
+            var doctors = new List<Doctor>();
+            try
+            {
+                doctors = _doctorService.GetAllDoctor().ToList();
+            }
+            catch (Exception e)
+            {
+                ViewBag.ErrorMessage = e.Message;
+                _logger.LogError("No doctors are available and call this a hospital..");
+            }
+            return View(doctors);
+        }
+
+        [HttpGet]
+        public IActionResult Create()
+        {
+            ViewBag.Specialities = specilities;
+            return View();
+        }
+        [HttpPost]
+        public IActionResult Create(Doctor doctor)
+        {
+            ViewBag.ErrorMessage = "";
+            ViewBag.Specialities = specilities;
+            try
+            {
+                var myDoctor = _doctorService.Add(doctor);
+                _logger.LogInformation("Created doctor record");
+                return RedirectToAction("Index");
+            }
+            catch (Exception e)
+            {
+                ViewBag.ErrorMessage = e.Message;
+                //Logging for programmer
+                _logger.LogError("Unable to add doctor "+DateTime.Now.ToString());
+            }
+           return View();
+        }
+        [HttpGet]
+        public IActionResult Update(int id)
+        {
+            ViewBag.Specialities = specilities;
+            var doc = _doctorService.GetAllDoctor().SingleOrDefault(x => x.Id == id);
+            var doctor = new DoctorSpecialDTO { Id= id,Speciality=doc.Speciality };
+            return View(doctor);
+        }
+        [HttpPost]
+        public IActionResult Update(int id,DoctorSpecialDTO doctor)
+        {
+            ViewBag.Specialities = specilities;
+            try
+            {
+               var result =  _doctorService.UpdateSpecialization(doctor);
+                return RedirectToAction("Index");
+            }
+            catch (Exception e)
+            {
+                ViewBag.ErrorMessage = e.Message;
+                //Logging for programmer
+                _logger.LogError("Unable to upadte doctor speciality " + DateTime.Now.ToString());
+            }
+            return View(doctor);
+        }
+    }
+}
+====================================================================
+create.cshtml -doctorcontroller
+-----------------------------------------------------------------------------------------------------------------------------
+@model DoctorClinicApplication.Models.Doctor
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>Doctor</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+           
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Experience" class="control-label"></label>
+                <input asp-for="Experience" class="form-control" />
+                <span asp-validation-for="Experience" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Speciality" class="control-label"></label>
+                <select asp-items="@ViewBag.Specialities" asp-for="Speciality" class="form-control"></select>
+                <span asp-validation-for="Speciality" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Phone" class="control-label"></label>
+                <input asp-for="Phone" class="form-control" />
+                <span asp-validation-for="Phone" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Email" class="control-label"></label>
+                <input asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Pic" class="control-label"></label>
+                <input asp-for="Pic" class="form-control" />
+                <span asp-validation-for="Pic" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+@if (ViewBag.ErrorMessage != null)
+{
+    <div class="alert alert-danger">
+        @ViewBag.ErrorMessage
+    </div>
+}
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+====================================================================
+Index.cshtml Doctor comtroller
+-----------------------------------------------------------------------------------------------------------------------------
+@model IEnumerable<DoctorClinicApplication.Models.Doctor>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Experience)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Speciality)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Phone)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Email)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Pic)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Experience)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Speciality)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Phone)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Email)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Pic)
+            </td>
+            <td>
+                @Html.ActionLink("Update Speciality", "Update", new {  id=item.Id })
+                    <a asp-controller="Doctor" asp-action="Update" asp-route-id="@item.Id">Update Speciality</a>|
+                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+<div class="alert alert-danger">
+    @ViewBag.ErrorMessage
+</div>
+====================================================================
+update.cshtml- doctorcontroller 
+-----------------------------------------------------------------------------------------------------------------------------
+
+@model DoctorClinicApplication.Models.DTOs.DoctorSpecialDTO
+
+@{
+    ViewData["Title"] = "Update";
+}
+
+<h1>Update</h1>
+
+<h4>Doctor</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Update">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Id" class="control-label"></label>
+                <input asp-for="Id" class="form-control"  />
+                <span asp-validation-for="Id" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Speciality" class="control-label"></label>
+                <select asp-items="@ViewBag.Specialities" asp-for="Speciality" class="form-control"></select>
+                <span asp-validation-for="Speciality" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+@if (ViewBag.ErrorMessage != null)
+{
+    <div class="alert alert-danger">
+        @ViewBag.ErrorMessage
+    </div>
+}
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+===============================================
+program.cs
+-----------------------------------------------------------------------------------------------------------------------------
+
+
+using DoctorClinicApplication.Contexts;
+using DoctorClinicApplication.Interfaces;
+using DoctorClinicApplication.Models;
+using DoctorClinicApplication.Repositories;
+using DoctorClinicApplication.Services;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Internal;
+
+namespace DoctorClinicApplication
+{
+    public class Program
+    {
+        public static void Main(string[] args)
+        {
+            var builder = WebApplication.CreateBuilder(args);
+
+            // Add services to the container.
+            builder.Services.AddControllersWithViews();
+
+
+            builder.Services.AddDbContext<ClinicContext>(options =>
+            {
+                options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"));
+            });
+
+            builder.Services.AddScoped<IRepository<int, Doctor>, DoctorRepository>();
+            builder.Services.AddScoped<IRepository<int, Patient>, PatientRepository>();
+            builder.Services.AddScoped<IRepository<int, Appointment>, AppointmnetRepository>();
+
+
+            builder.Services.AddScoped<IDoctorService, DoctorService>();
+            builder.Services.AddScoped<IAppointmentService,AppointmentService>();
+
+
+            var app = builder.Build();
+            AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
+
+            // Configure the HTTP request pipeline.
+            if (!app.Environment.IsDevelopment())
+            {
+                app.UseExceptionHandler("/Home/Error");
+            }
+            app.UseStaticFiles();
+
+            app.UseRouting();
+
+            app.UseAuthorization();
+
+            app.MapControllerRoute(
+                name: "default",
+                pattern: "{controller=Appointmnet}/{action=Create}/{id?}");
+
+            app.Run();
+        }
+    }
+}
+=========================================
+IAppointmentService
+-----------------------------------------------------------------------------------------------------------------------------
+
+using DoctorClinicApplication.Models;
+using DoctorClinicApplication.Models.DTOs;
+
+namespace DoctorClinicApplication.Interfaces
+{
+    public interface IAppointmentService :IAddingEntity<Appointment>
+    {
+        public bool CheckAvailability(AppointmentCheckDTO appointment);
+        public IList<Appointment> GetAll();
+    }
+}
+=============================================
+AppointmentCheckDTO
+-----------------------------------------------------------------------------------------------------------------------------
+
+namespace DoctorClinicApplication.Models.DTOs
+{
+    public class AppointmentCheckDTO
+    {
+        public int DoctorId { get; set; }
+        public DateTime AppointmentDateTime { get; set; }
+    }
+}
+================================================
+AppointmentService
+-----------------------------------------------------------------------------------------------------------------------------
+
+using DoctorClinicApplication.Interfaces;
+using DoctorClinicApplication.Models;
+using DoctorClinicApplication.Models.DTOs;
+using DoctorClinicApplication.Utilities;
+
+namespace DoctorClinicApplication.Services
+{
+    public class AppointmentService : IAppointmentService
+    {
+        private readonly IRepository<int, Appointment> _appointmentRepository;
+
+        public AppointmentService(IRepository<int,Appointment> repository) 
+        {
+            _appointmentRepository = repository;
+        }
+        public Appointment Add(Appointment entity)
+        {
+            AppointmentCheckDTO appointmentDto = new AppointmentCheckDTO
+            {
+                AppointmentDateTime = entity.AppointmentDateTime,
+                DoctorId = entity.DoctorId
+            };
+            if (CheckAvailability(appointmentDto) == true)
+            {
+                var appointment = _appointmentRepository.Add(entity);
+                return appointment;
+            }
+            throw new DoctorNotFreeException();
+        }
+
+        public bool CheckAvailability(AppointmentCheckDTO appointment)
+        {
+            try
+            {
+                var appointmnets = _appointmentRepository.GetAll();
+
+                var checkAppointment = appointmnets
+                    .FirstOrDefault(a => a.DoctorId == appointment.DoctorId && a.AppointmentDateTime == appointment.AppointmentDateTime);
+                return checkAppointment == null;
+            }
+            catch (DoctorNotFreeException e)
+            {
+                return true;
+            }
+            catch (NoEntriesAvailable e)
+            {
+                return true;
+            }
+
+        }
+
+        public IList<Appointment> GetAll()
+        {
+            return _appointmentRepository.GetAll().ToList();
+        }
+    }
+}
+
+=================================================================
+AppointmnetController
+-----------------------------------------------------------------------------------------------------------------------------
+using DoctorClinicApplication.Interfaces;
+using DoctorClinicApplication.Models;
+using DoctorClinicApplication.Services;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+
+namespace DoctorClinicApplication.Controllers
+{
+    public class AppointmnetController : Controller
+    {
+        private readonly IAppointmentService _appointmentService;
+        private readonly IDoctorService _doctorService;
+        private readonly ILogger<AppointmnetController> _logger;
+
+        public AppointmnetController(IAppointmentService appointmentService,
+            IDoctorService doctorService,
+            ILogger<AppointmnetController> logger) 
+        {
+            _appointmentService = appointmentService;
+            _doctorService = doctorService;
+            _logger = logger;
+
+        }
+        public IActionResult Index()
+        {
+            List<Appointment> appointments = new List<Appointment>();
+            try
+            {
+                appointments = _appointmentService.GetAll().ToList();
+                return View(appointments);
+            }
+            catch (Exception e)
+            {
+                ViewBag.ErrorMessage = e.Message;
+                _logger.LogInformation("There were no appointments");
+            }
+            return View(appointments);
+        }
+        [HttpGet]
+        public IActionResult Create() 
+        {
+            ViewBag.Doctors = GetDoctors();
+            return View();
+        }
+        [HttpPost]
+        public IActionResult Create(Appointment appointment)
+        {
+            ViewBag.Doctors = GetDoctors();
+            try
+            {
+                var myAppointment = _appointmentService.Add(appointment);
+                ViewBag.Registered = myAppointment.AppointmentNumber;
+                return View(myAppointment);
+            }
+            catch (Exception e)
+            {
+
+                ViewBag.ErrorMessage = e.Message;
+                _logger.LogInformation("Unable to add appointment");
+            }
+            return View(appointment);
+        }
+        private List<SelectListItem> GetDoctors()
+        {
+
+            List<SelectListItem> doctors = new List<SelectListItem>();
+            foreach (var item in _doctorService.GetAllDoctor())
+            {
+                var li = new SelectListItem
+                {
+                    Text = item.Name+" - "+item.Speciality,
+                    Value = item.Id.ToString()
+                };
+                doctors.Add(li);
+            }
+            return doctors;
+            
+        }
+    }
+}
+================================================================
+create.cshtml appointment controller
+-----------------------------------------------------------------------------------------------------------------------------
+@model DoctorClinicApplication.Models.Appointment
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>Appointment</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+           
+            <div class="form-group">
+                <label asp-for="PatientId" class="control-label"></label>
+                <input asp-for="PatientId" class="form-control" />
+                <span asp-validation-for="PatientId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DoctorId" class="control-label"></label>
+                <select asp-items="@ViewBag.Doctors" class="form-control" asp-for="DoctorId"></select>
+                <span asp-validation-for="DoctorId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="AppointmentDateTime" class="control-label"></label>
+                <input asp-for="AppointmentDateTime" class="form-control" />
+                <span asp-validation-for="AppointmentDateTime" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+@if (ViewBag.Registered != null)
+{
+    <div class="alert alert-success">
+        Your appointment is booked successfully. YOur appointment Number is @ViewBag.Registered
+    </div>
+}
+@if (ViewBag.ErrorMessage != null)
+{
+    <div class="alert alert-danger">
+        @ViewBag.ErrorMessage
+    </div>
+}
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+
+
+
+
+-----------------------------------------------------------------------------------------------------------------------------
+namespace DoctorClinicApplication.Utilities
+{
+    public class DoctorNotFreeException : Exception
+    {
+        public override string Message => "Doctor is already occupied";
+    }
+}
+
+sssssss

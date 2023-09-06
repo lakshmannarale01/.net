@@ -1,0 +1,86 @@
+first page 
+
+!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <link href="../lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
+    <style>
+        h1{
+            text-align:center;
+        }
+    </style>
+</head>
+<body>
+    <h1 class="alert alert-success">
+        Hello from First Page
+    </h1>
+</body>
+</html>
+-----------------------------------
+FirstController
+Index.cshtml in First folder inside the view
+
+<h1 class="alert alert-primary">
+    First - Index
+</h1>
+<div>
+    <ul>
+        @for (int i = 0; i < 10; i++)
+        {
+            <li>@i</li>
+        }
+    </ul>
+</div>
+-------------------------------
+Pizza Controller
+
+using Microsoft.AspNetCore.Mvc;
+
+namespace FirstWebApp.Controllers
+{
+    public class PizzaController : Controller
+    {
+        public IActionResult Index()
+        {
+            ViewBag.PizzaName = "ABC Pizza";
+            ViewBag.PIzzaPrice = 200;
+
+            return View();
+        }
+    }
+}
+<div class="alert alert-danger">
+    <h2>@ViewBag.PizzaName</h2>
+    Buy for Rs. @ViewBag.PizzaPrice
+</div>
+
+
+List.cshtml
+
+<h1 class="alert alert-info">Pizzas Available</h1>
+<ol>
+    @foreach (var pizza in ViewBag.Pizzas)
+    {
+        <li>@pizza</li>
+    }
+</ol>
+----------------------------
+ermodelling 
+
+ A Simple Case on ER Modelling
+•	Goal – to demonstrate how to build an E-R model from a simple Statement of Objectives of a movie store. ( given very clearly in statement forms)
+Scenario:
+•	A video store rents movies to members.
+•	Each movie in the store has a title and is identified by a unique movie number.
+•	A movie can be in VHS, VCD, or DVD format.
+•	Each movie belongs to one of a given set of categories (action, adventure, comedy, ... )
+•	The store has a name and a (unique) phone number for each member.
+•	Each member may provide a favorite movie category (used for marketing purposes).
+•	There are two types of members: 
+o	Golden Members:
+o	Bronze Members:
+•	Using  their credit cards gold members can rent one or more movies and bronze members max. of one movie.  
+•	A member may have a number of dependents (with known names).
+•	Each dependent is allowed to rent one (1) movie at a time.

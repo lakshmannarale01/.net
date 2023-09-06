@@ -1,0 +1,22 @@
+C:\deva_Lakshman\.net training\.net\30 Aug 2023\PizzaSolution\PizzaStoreModelLibrary\bin\Debug\net7.0\PizzaStoreModelLibrary.deps.json
+C:\deva_Lakshman\.net training\.net\30 Aug 2023\PizzaSolution\PizzaStoreModelLibrary\bin\Debug\net7.0\PizzaStoreModelLibrary.dll
+C:\deva_Lakshman\.net training\.net\30 Aug 2023\PizzaSolution\PizzaStoreModelLibrary\bin\Debug\net7.0\PizzaStoreModelLibrary.pdb
+C:\deva_Lakshman\.net training\.net\30 Aug 2023\PizzaSolution\PizzaStoreModelLibrary\obj\Debug\net7.0\PizzaStoreModelLibrary.GeneratedMSBuildEditorConfig.editorconfig
+C:\deva_Lakshman\.net training\.net\30 Aug 2023\PizzaSolution\PizzaStoreModelLibrary\obj\Debug\net7.0\PizzaStoreModelLibrary.AssemblyInfoInputs.cache
+C:\deva_Lakshman\.net training\.net\30 Aug 2023\PizzaSolution\PizzaStoreModelLibrary\obj\Debug\net7.0\PizzaStoreModelLibrary.AssemblyInfo.cs
+C:\deva_Lakshman\.net training\.net\30 Aug 2023\PizzaSolution\PizzaStoreModelLibrary\obj\Debug\net7.0\PizzaStoreModelLibrary.csproj.CoreCompileInputs.cache
+C:\deva_Lakshman\.net training\.net\30 Aug 2023\PizzaSolution\PizzaStoreModelLibrary\obj\Debug\net7.0\PizzaStoreModelLibrary.dll
+C:\deva_Lakshman\.net training\.net\30 Aug 2023\PizzaSolution\PizzaStoreModelLibrary\obj\Debug\net7.0\refint\PizzaStoreModelLibrary.dll
+C:\deva_Lakshman\.net training\.net\30 Aug 2023\PizzaSolution\PizzaStoreModelLibrary\obj\Debug\net7.0\PizzaStoreModelLibrary.pdb
+C:\deva_Lakshman\.net training\.net\30 Aug 2023\PizzaSolution\PizzaStoreModelLibrary\obj\Debug\net7.0\ref\PizzaStoreModelLibrary.dll
+C:\deva_Lakshman\.net training\.net\30 Aug 2023 day 7\PizzaSolution\PizzaStoreModelLibrary\bin\Debug\net7.0\PizzaStoreModelLibrary.deps.json
+C:\deva_Lakshman\.net training\.net\30 Aug 2023 day 7\PizzaSolution\PizzaStoreModelLibrary\bin\Debug\net7.0\PizzaStoreModelLibrary.dll
+C:\deva_Lakshman\.net training\.net\30 Aug 2023 day 7\PizzaSolution\PizzaStoreModelLibrary\bin\Debug\net7.0\PizzaStoreModelLibrary.pdb
+C:\deva_Lakshman\.net training\.net\30 Aug 2023 day 7\PizzaSolution\PizzaStoreModelLibrary\obj\Debug\net7.0\PizzaStoreModelLibrary.GeneratedMSBuildEditorConfig.editorconfig
+C:\deva_Lakshman\.net training\.net\30 Aug 2023 day 7\PizzaSolution\PizzaStoreModelLibrary\obj\Debug\net7.0\PizzaStoreModelLibrary.AssemblyInfoInputs.cache
+C:\deva_Lakshman\.net training\.net\30 Aug 2023 day 7\PizzaSolution\PizzaStoreModelLibrary\obj\Debug\net7.0\PizzaStoreModelLibrary.AssemblyInfo.cs
+C:\deva_Lakshman\.net training\.net\30 Aug 2023 day 7\PizzaSolution\PizzaStoreModelLibrary\obj\Debug\net7.0\PizzaStoreModelLibrary.csproj.CoreCompileInputs.cache
+C:\deva_Lakshman\.net training\.net\30 Aug 2023 day 7\PizzaSolution\PizzaStoreModelLibrary\obj\Debug\net7.0\PizzaStoreModelLibrary.dll
+C:\deva_Lakshman\.net training\.net\30 Aug 2023 day 7\PizzaSolution\PizzaStoreModelLibrary\obj\Debug\net7.0\refint\PizzaStoreModelLibrary.dll
+C:\deva_Lakshman\.net training\.net\30 Aug 2023 day 7\PizzaSolution\PizzaStoreModelLibrary\obj\Debug\net7.0\PizzaStoreModelLibrary.pdb
+C:\deva_Lakshman\.net training\.net\30 Aug 2023 day 7\PizzaSolution\PizzaStoreModelLibrary\obj\Debug\net7.0\ref\PizzaStoreModelLibrary.dll

@@ -1,0 +1,14 @@
+C:\deva_Lakshman\.net training\.net\day 12 6 sept 2023\EmployeeAppSolution\EmployeeApp\bin\Debug\net7.0\EmployeeApp.exe
+C:\deva_Lakshman\.net training\.net\day 12 6 sept 2023\EmployeeAppSolution\EmployeeApp\bin\Debug\net7.0\EmployeeApp.deps.json
+C:\deva_Lakshman\.net training\.net\day 12 6 sept 2023\EmployeeAppSolution\EmployeeApp\bin\Debug\net7.0\EmployeeApp.runtimeconfig.json
+C:\deva_Lakshman\.net training\.net\day 12 6 sept 2023\EmployeeAppSolution\EmployeeApp\bin\Debug\net7.0\EmployeeApp.dll
+C:\deva_Lakshman\.net training\.net\day 12 6 sept 2023\EmployeeAppSolution\EmployeeApp\bin\Debug\net7.0\EmployeeApp.pdb
+C:\deva_Lakshman\.net training\.net\day 12 6 sept 2023\EmployeeAppSolution\EmployeeApp\obj\Debug\net7.0\EmployeeApp.GeneratedMSBuildEditorConfig.editorconfig
+C:\deva_Lakshman\.net training\.net\day 12 6 sept 2023\EmployeeAppSolution\EmployeeApp\obj\Debug\net7.0\EmployeeApp.AssemblyInfoInputs.cache
+C:\deva_Lakshman\.net training\.net\day 12 6 sept 2023\EmployeeAppSolution\EmployeeApp\obj\Debug\net7.0\EmployeeApp.AssemblyInfo.cs
+C:\deva_Lakshman\.net training\.net\day 12 6 sept 2023\EmployeeAppSolution\EmployeeApp\obj\Debug\net7.0\EmployeeApp.csproj.CoreCompileInputs.cache
+C:\deva_Lakshman\.net training\.net\day 12 6 sept 2023\EmployeeAppSolution\EmployeeApp\obj\Debug\net7.0\EmployeeApp.dll
+C:\deva_Lakshman\.net training\.net\day 12 6 sept 2023\EmployeeAppSolution\EmployeeApp\obj\Debug\net7.0\refint\EmployeeApp.dll
+C:\deva_Lakshman\.net training\.net\day 12 6 sept 2023\EmployeeAppSolution\EmployeeApp\obj\Debug\net7.0\EmployeeApp.pdb
+C:\deva_Lakshman\.net training\.net\day 12 6 sept 2023\EmployeeAppSolution\EmployeeApp\obj\Debug\net7.0\EmployeeApp.genruntimeconfig.cache
+C:\deva_Lakshman\.net training\.net\day 12 6 sept 2023\EmployeeAppSolution\EmployeeApp\obj\Debug\net7.0\ref\EmployeeApp.dll

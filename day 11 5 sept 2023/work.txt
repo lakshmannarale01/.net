@@ -1,0 +1,511 @@
+@model IEnumerable<DoctorClinicApplication.Models.Doctor>
+
+@{
+    ViewData["Title"] = "Index";
+}
+<style>
+    #docDiv {
+        float:left;
+        position:relative;
+        margin:5px;
+    }
+</style>
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+
+@foreach (var item in Model)
+{
+    <div class="card" id="docDiv" style="width: 18rem;">
+        <img style="height:200px;width:200px;" class="card-img-top" src="@item.Pic" alt="Card image cap">
+        <div class="card-body">
+            <h5 class="card-title">@item.Name</h5>
+            <p class="card-text">The doc has @item.Experience and is a @item.Speciality</p>
+            <a href="../BookAppointment/@item.Id" class="btn btn-primary">Book Appointment</a>
+        </div>
+    </div>
+}
+
+<div class="alert alert-danger">
+    @ViewBag.ErrorMessage
+</div>
+--------------------------------------------------------------------------------------------------------------------------------
+using DoctorClinicApplication.Interfaces;
+using DoctorClinicApplication.Models;
+using DoctorClinicApplication.Services;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+
+namespace DoctorClinicApplication.Controllers
+{
+    public class AppointmnetController : Controller
+    {
+        private readonly IAppointmentService _appointmentService;
+        private readonly IDoctorService _doctorService;
+        private readonly ILogger<AppointmnetController> _logger;
+
+        public AppointmnetController(IAppointmentService appointmentService,
+            IDoctorService doctorService,
+            ILogger<AppointmnetController> logger) 
+        {
+            _appointmentService = appointmentService;
+            _doctorService = doctorService;
+            _logger = logger;
+
+        }
+        public IActionResult Index()
+        {
+            List<Appointment> appointments = new List<Appointment>();
+            try
+            {
+                appointments = _appointmentService.GetAll().ToList();
+                return View(appointments);
+            }
+            catch (Exception e)
+            {
+                ViewBag.ErrorMessage = e.Message;
+                _logger.LogInformation("There were no appointments");
+            }
+            return View(appointments);
+        }
+        [HttpGet]
+        [Route("BookAppointment/{id}")]
+        public IActionResult Create(int id) 
+        {
+            ViewBag.Doctors = GetDoctors();
+            Appointment appointment = new Appointment();
+            appointment.DoctorId = id;
+            appointment.AppointmentDateTime = DateTime.Now;
+            return View(appointment);
+        }
+        [HttpPost]
+        [Route("{controller}/BookAppointment/{id}")]
+        public IActionResult Create(int id,Appointment appointment)
+        {
+            ViewBag.Doctors = GetDoctors();
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    var myAppointment = _appointmentService.Add(appointment);
+                    ViewBag.Registered = myAppointment.AppointmentNumber;
+                    return View(myAppointment);
+                }
+                catch (Exception e)
+                {
+
+                    ViewBag.ErrorMessage = e.Message;
+                    _logger.LogInformation("Unable to add appointment");
+                }
+            }
+            return View(appointment);
+        }
+        private List<SelectListItem> GetDoctors()
+        {
+
+            List<SelectListItem> doctors = new List<SelectListItem>();
+            foreach (var item in _doctorService.GetAllDoctor())
+            {
+                var li = new SelectListItem
+                {
+                    Text = item.Name+" - "+item.Speciality,
+                    Value = item.Id.ToString()
+                };
+                doctors.Add(li);
+            }
+            return doctors;
+            
+        }
+    }
+}
+
+----------------------------------------------------------------------------------------------------------------------------
+@model DoctorClinicApplication.Models.Appointment
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>Appointment</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="BookAppointment" asp-route-id="@Model.DoctorId" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+           
+            <div class="form-group">
+                <label asp-for="PatientId" class="control-label"></label>
+                <input asp-for="PatientId" class="form-control" />
+                <span asp-validation-for="PatientId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DoctorId" class="control-label"></label>
+                <select asp-items="@ViewBag.Doctors" class="form-control" asp-for="DoctorId"></select>
+                <br />
+                <span class="alert alert-warning"> You have selcted @Model.DoctorId</span>
+                <br />
+                <span asp-validation-for="DoctorId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="AppointmentDateTime" class="control-label"></label>
+                <input asp-for="AppointmentDateTime" class="form-control" />
+                <span asp-validation-for="AppointmentDateTime" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+@if (ViewBag.Registered != null)
+{
+    <div class="alert alert-success">
+        Your appointment is booked successfully. YOur appointment Number is @ViewBag.Registered
+    </div>
+}
+@if (ViewBag.ErrorMessage != null)
+{
+    <div class="alert alert-danger">
+        @ViewBag.ErrorMessage
+    </div>
+}
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+-------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------------
+namespace DoctorClinicApplication.Utilities
+{
+    public class InvalidCredentialsException:Exception
+    {
+        public override string Message => "Invalid username or password";
+    }
+}
+
+------------------------------------------------------------------------------------------------------------------------------
+using System.ComponentModel.DataAnnotations;
+
+namespace DoctorClinicApplication.Models.DTOs
+{
+    public class LoginDTO
+    {
+        [Required(ErrorMessage ="User Id is manditory")]
+        public int Id { get; set; }
+        [Required(ErrorMessage = "Password is manditory")]
+        public string Password { get; set; }
+    }
+}
+
+
+------------------------------------------------------------------------------------------------------------------------------
+using DoctorClinicApplication.Models;
+using DoctorClinicApplication.Models.DTOs;
+
+namespace DoctorClinicApplication.Interfaces
+{
+    public interface ILoginService
+    {
+        public Patient Login(LoginDTO loginDTO);
+    }
+}
+
+
+------------------------------------------------------------------------------------------------------------------------------
+using DoctorClinicApplication.Interfaces;
+using DoctorClinicApplication.Models;
+using DoctorClinicApplication.Models.DTOs;
+using DoctorClinicApplication.Utilities;
+
+namespace DoctorClinicApplication.Services
+{
+    public class LoginService : ILoginService
+    {
+        private readonly IRepository<int, Patient> _repository;
+
+        public LoginService(IRepository<int,Patient> repository)
+        {
+            _repository = repository;
+        }
+        public Patient Login(LoginDTO loginDTO)
+        {
+            try
+            {
+                var patient = _repository.GetById(loginDTO.Id);
+                if (patient.Phone == loginDTO.Password)
+                    return patient;
+            }
+            catch (NoSuchEntityException e)
+            {
+                throw new InvalidCredentialsException();
+            }
+            throw new InvalidCredentialsException();
+        }
+    }
+}
+
+
+
+------------------------------------------------------------------------------------------------------------------------------
+using DoctorClinicApplication.Interfaces;
+using DoctorClinicApplication.Models.DTOs;
+using DoctorClinicApplication.Utilities;
+using Microsoft.AspNetCore.Mvc;
+
+namespace DoctorClinicApplication.Controllers
+{
+    public class LoginController : Controller
+    {
+        private readonly ILoginService _loginService;
+
+        public LoginController(ILoginService service)
+        {
+            _loginService = service; 
+        }
+        [HttpGet]
+        //Route("Login")]
+        public IActionResult UserLogin()
+        {
+            return View();
+        }
+        [HttpPost]
+        //[Route("Login")]
+        public IActionResult UserLogin(LoginDTO loginDTO)
+        {
+            if(ModelState.IsValid)
+            {
+                try
+                {
+                    var patient = _loginService.Login(loginDTO);
+                    if(patient != null)
+                    {
+                        TempData.Add("un", patient.Name);
+                    }
+                    return RedirectToAction("Index", "Doctor");
+                }
+                catch (InvalidCredentialsException e)
+                {
+                    ViewBag.ErrorMessage = e.Message;
+                }
+            }
+
+            return View(loginDTO);
+        }
+    }
+}
+
+------------------------------------------------------------------------------------------------------------------------------
+@model DoctorClinicApplication.Models.DTOs.LoginDTO
+
+@{
+    ViewData["Title"] = "UserLogin";
+}
+
+<h1>UserLogin</h1>
+
+<h4>LoginDTO</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="UserLogin">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Id" class="control-label"></label>
+                <input asp-for="Id" class="form-control" />
+                <span asp-validation-for="Id" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Password" class="control-label"></label>
+                <input asp-for="Password" type="password" class="form-control" />
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Login" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+@if (ViewBag.ErrorMessage != null)
+{
+    <div class="alert alert-danger">
+        @ViewBag.ErrorMessage
+    </div>
+}
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+
+
+------------------------------------------------------------------------------------------------------------------------------
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - DoctorClinicApplication</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/DoctorClinicApplication.styles.css" asp-append-version="true" />
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+            <div class="container-fluid">
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">DoctorClinicApplication</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                    <ul class="navbar-nav flex-grow-1">
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        @if(TempData.Peek("un") != null)
+        {
+            <h2>Welcome @TempData.Peek("un")</h2>
+        }
+        else
+        {
+            <a asp-action="UserLogin" asp-controller="Login"  class="btn btn-primary">Login</a>
+        }
+    </header>
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="border-top footer text-muted">
+        <div class="container">
+            &copy; 2023 - DoctorClinicApplication - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+        </div>
+    </footer>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>
+
+------------------------------------------------------------------------------------------------------------------------------
+using DoctorClinicApplication.Interfaces;
+using DoctorClinicApplication.Models;
+using DoctorClinicApplication.Models.DTOs;
+using DoctorClinicApplication.Services;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+
+namespace DoctorClinicApplication.Controllers
+{
+    public class DoctorController : Controller
+    {
+        List<SelectListItem> specilities = new List<SelectListItem>()
+        {
+            new SelectListItem{Value="Dentists", Text="Dentists"},
+            new SelectListItem{Value="Cardiologist", Text="Cardiologist"},
+            new SelectListItem{Value="Dermatologits", Text="Dermatologits"},
+            new SelectListItem{Value="Pediatrician", Text="Pediatrician" }
+        };
+        private readonly IDoctorService _doctorService;
+        private readonly ILogger<DoctorController> _logger;
+
+        public DoctorController(IDoctorService doctorService,ILogger<DoctorController> logger)
+        {
+            _doctorService = doctorService;
+            _logger = logger;
+        }
+        public IActionResult Index()
+        {
+            var doctors = new List<Doctor>();
+            try
+            {
+               
+                if (TempData.Peek("un") == null)
+                    return RedirectToAction("UserLogin", "Login");
+                ViewBag.Username = TempData.Peek("un").ToString();
+                doctors = _doctorService.GetAllDoctor().ToList();
+            }
+            catch (Exception e)
+            {
+                ViewBag.ErrorMessage = e.Message;
+                _logger.LogError("No doctors are available and call this a hospital..");
+            }
+            return View(doctors);
+        }
+
+        [HttpGet]
+        public IActionResult Create()
+        {
+            ViewBag.Specialities = specilities;
+            return View();
+        }
+        [HttpPost]
+        public IActionResult Create(Doctor doctor)
+        {
+            ViewBag.ErrorMessage = "";
+            ViewBag.Specialities = specilities;
+            try
+            {
+                var myDoctor = _doctorService.Add(doctor);
+                _logger.LogInformation("Created doctor record");
+                return RedirectToAction("Index");
+            }
+            catch (Exception e)
+            {
+                ViewBag.ErrorMessage = e.Message;
+                //Logging for programmer
+                _logger.LogError("Unable to add doctor "+DateTime.Now.ToString());
+            }
+           return View();
+        }
+        [HttpGet]
+        public IActionResult Update(int id)
+        {
+            ViewBag.Specialities = specilities;
+            var doc = _doctorService.GetAllDoctor().SingleOrDefault(x => x.Id == id);
+            var doctor = new DoctorSpecialDTO { Id= id,Speciality=doc.Speciality };
+            return View(doctor);
+        }
+        [HttpPost]
+        public IActionResult Update(int id,DoctorSpecialDTO doctor)
+        {
+            ViewBag.Specialities = specilities;
+            try
+            {
+               var result =  _doctorService.UpdateSpecialization(doctor);
+                return RedirectToAction("Index");
+            }
+            catch (Exception e)
+            {
+                ViewBag.ErrorMessage = e.Message;
+                //Logging for programmer
+                _logger.LogError("Unable to upadte doctor speciality " + DateTime.Now.ToString());
+            }
+            return View(doctor);
+        }
+    }
+}
+
+------------------------------------------------------------------------------------------------------------------------------
+

@@ -1,0 +1,1025 @@
+using DoctorApp.Models;
+using Microsoft.EntityFrameworkCore;
+
+namespace DoctorApp.Contexts
+{
+    public class DoctorAppContexts : DbContext
+    {
+        internal object appointment;
+
+        public DoctorAppContexts(DbContextOptions options) : base(options) // ctor chaining
+        {
+
+        }
+            #region CollectionToTable
+        public DbSet<Doctor> doctors { get; set; }// doctor
+        public DbSet<Patient> patients { get; set; } //patient
+        public DbSet<Appointment> appointments { get; set; } // appointments
+        #endregion
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Appointment>().HasKey(es => new { es.DoctorId, es.PatientId });
+
+
+            // Initializing data
+                     modelBuilder.Entity<Doctor>().HasData(
+                new Doctor { DoctorId = 1, DoctorName = "Deva1", YearOfExp = 4, Speciality = "Surgen", Doctorphone = "1236541256", DoctorEmail = "abc@gmail.com", pic = "/Images/pic1.jpeg" }, // path is necessary
+
+                 new Doctor { DoctorId = 2, DoctorName = "Deva2", YearOfExp = 4, Speciality = "General", Doctorphone = "8856904770", DoctorEmail = "xyz@gmail.com", pic = "/Images/pic2.jpeg" } // path is necessary
+                 );
+
+            modelBuilder.Entity<Patient>().HasData(
+                new Patient { PatientId=101,PatientName="Ramu1",Age=23,PatientEmail="ramu1@gmail.com",PatientPhone="8525852252"},
+                 new Patient { PatientId = 102, PatientName = "Ramu2", Age = 50, PatientEmail = "ramu2@gmail.com", PatientPhone = "00012102151" }
+                );
+
+
+
+        }
+    }
+ }
+
+===========================================
+
+using DoctorApp.Interfaces;
+using DoctorApp.Models;
+using DoctorApp.Repositories;
+using DoctorApp.Services;
+using DoctorApplication.Repositories;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+
+namespace DoctorApp.Controllers
+{
+    public class AppointmentController : Controller
+    {
+
+        private readonly IRepository<int, Appointment> _repository;
+        private readonly AppointmentService _appointmentService;
+        private readonly AppointmentRepository _ARepo;
+
+        static List<Patient> patient = new List<Patient>();
+        public AppointmentController(IRepository<int, Appointment> repository, AppointmentRepository repository1, AppointmentService appointmentService)
+        {
+            _repository = repository;
+            _appointmentService = appointmentService;
+            _ARepo = repository1;
+        }
+        public IActionResult Index()
+        {
+            return View(_repository.GetAll());
+        }
+
+        [HttpGet]
+         public IActionResult BookAppointment()
+        {
+            return View();
+        }
+        [HttpPost]
+        public IActionResult BookAppointment(Appointment appointment)
+        {
+            _repository.Add(appointment);
+            return RedirectToAction("Index");
+        }
+
+        [HttpGet]
+        public IActionResult CheckAvailability(Appointment appointment)
+        {
+
+        }
+
+
+    }
+}
+============================================================
+
+using DoctorApp.Interfaces;
+using DoctorApp.Models;
+using DoctorApp.Repositories;
+using DoctorApp.Services;
+using DoctorApplication.Repositories;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Diagnostics;
+
+namespace DoctorApp.Controllers
+{
+    public class DoctorController : Controller
+    {
+        private readonly IRepository<int, Doctor> _repository;
+        private readonly DoctorService _doctorService;
+        private readonly DoctorsRepository _docRe;
+
+        static List<Doctor> doctors = new List<Doctor>();
+        public DoctorController(IRepository<int, Doctor> repository, DoctorsRepository repository1, DoctorService doctorService)
+        {
+            _repository = repository;
+            _doctorService = doctorService;
+            _docRe=repository1;
+        }
+        #region index
+        public IActionResult Index()
+        {
+            return View(_repository.GetAll());
+        }
+        #endregion
+
+        #region
+        [HttpGet]
+        public IActionResult Add()
+        {
+            ViewBag.doctorList = GetDoctor();
+            return View();
+        }
+        [HttpPost]
+        public IActionResult Add(Doctor doctor)
+        {
+            ViewBag.doctorList = GetDoctor();
+            _repository.Add(doctor);
+            return RedirectToAction("Index");
+        }
+
+        private List<SelectListItem> GetDoctor()
+        {
+            List<SelectListItem> doctorList = new List<SelectListItem>();
+            var doct = _docRe.GetAll();
+            foreach (var d in doct)
+            {
+                doctorList.Add(
+                    new SelectListItem
+                    { Text = d.DoctorName, Value = d.DoctorId.ToString() }
+                    );
+            }
+            return doctorList;
+        }
+        #endregion
+
+        #region update Experience
+        [HttpGet]
+        public IActionResult Updateexp(int id)
+        {
+            var doctor = _repository.Get(id);
+            return View(doctor);
+        }
+        [HttpPost]
+        public IActionResult Updateexp(int id, Doctor doctor)
+        {
+            ViewBag.Message = "";
+            try
+            {
+                _doctorService.UpdateDoctorExp(id , doctor);
+             
+                _repository.Update(doctor);
+
+                return RedirectToAction("Index");
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                ViewBag.Message = "doctor  not found";
+            }
+            return View(doctor);
+        }
+        #endregion
+
+        #region update Speciality
+        [HttpGet]
+        public IActionResult UpdateDoctorSpeciality(int id)
+        {
+            var doctorexp = _repository.Get(id);
+            return View(doctorexp);
+        }
+        [HttpPost]
+        public IActionResult UpdateDoctorSpeciality(int id, Doctor doctor)
+        {
+            ViewBag.Message = "";
+            try
+            {
+                _doctorService.UpdateDoctorSpeciality(id , doctor);
+                _repository.Update(doctor);
+
+                return RedirectToAction("Index");
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                ViewBag.Message = "doctor  not found";
+            }
+            return View(doctor);
+        }
+        #endregion
+
+        #region delete
+        [HttpGet]
+        public IActionResult Delete(int id)
+        {
+            var doctor = _repository.Get(id);
+            return View(doctor);
+        }
+        [HttpPost]
+        public IActionResult Delete(int id, Doctor doctor)
+        {
+
+            ViewBag.Message = "";
+            try
+            {
+                _repository.Delete(id);
+
+                return RedirectToAction("Index");
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                ViewBag.Message = "Unable to delete doctor";
+
+            }
+            return View(doctor);
+        }
+        #endregion
+
+
+        #region update Phone
+        [HttpGet]
+        public IActionResult UpdateDoctorPhone(int id)
+        {
+            var doctorexp = _repository.Get(id);
+            return View(doctorexp);
+        }
+        [HttpPost]
+        public IActionResult UpdateDoctorPhone(int id, Doctor doctor)
+        {
+            ViewBag.Message = "";
+            try
+            {
+                _doctorService.UpdateDoctorPhone(id, doctor);
+                _repository.Update(doctor);
+                return RedirectToAction("Index");
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                ViewBag.Message = "doctor  not found";
+            }
+            return View(doctor);
+        }
+        #endregion
+
+    }
+}
+======================================================================
+
+namespace DoctorApp.Exceptions.PatientException
+{
+    public class InvalidPatientException : Exception
+    {
+        string message;
+
+        public InvalidPatientException()
+        {
+            message = "Invalid Patient";
+        }
+        public override string Message => message;
+    }
+}
+=============================================
+
+namespace DoctorApp.Exceptions
+{
+    public class DoctorNotAvailableException : Exception
+    {
+        string message;
+        public DoctorNotAvailableException()
+        {
+            message = "Doctors Not Available";
+        }
+        public override string Message => message;
+    }
+}
+==============================
+namespace DoctorApp.Exceptions
+{
+    public class InvalidDoctorExceptions : Exception
+    {
+        string message;
+        public InvalidDoctorExceptions()
+        
+        {
+            message = "Invalid Doctor Id";
+        }
+        public override string Message => message;
+    }
+}
+==========================================
+namespace DoctorApp.Exceptions
+{
+    public class InvalidRangeOfYearOfExpException : Exception
+    {
+        string message;
+        public InvalidRangeOfYearOfExpException()
+        {
+            message = "Invalid value range Id";
+        }
+        public override string Message => message;
+    }
+}
+=============================================
+using DoctorApp.Models;
+
+namespace DoctorApp.Interfaces
+{
+    public interface IManageAppointmentService
+    {
+        Appointment BookAppointment(Appointment appointment);
+
+        public Appointment cancelAppointment(Appointment appointment);
+        bool CheckAvailability(Appointment appointment);
+    }
+}
+===================================
+using DoctorApp.Models;
+
+namespace DoctorApp.Interfaces
+{
+    public interface IManageDoctorService
+    {
+        Doctor AddDoctor(Doctor doctor);
+     
+
+        public ICollection<Doctor> GetDoctorExp(int min, int max);
+
+        public Doctor UpdateDoctorExp(int id, Doctor doctor);
+
+        public Doctor UpdateDoctorPhone(int id, Doctor doctor);
+
+        public Doctor UpdateDoctorSpeciality(int id, Doctor doctor);
+    }
+}
+=======================================================
+using DoctorApp.Models;
+
+namespace DoctorApp.Interfaces
+{
+    public interface IManagePatientService
+    {
+        Patient AddPatient(Patient patient);
+
+        
+    }
+}
+=================================================
+namespace DoctorApp.Interfaces
+{
+    public interface IRepository<K,T>
+    {
+        public T Add(T entity);
+        public T Delete(K id);
+        public T Get(K id);
+
+        public T Update(T entity);
+
+      
+        public ICollection<T> GetAll();
+
+    }
+}
+=================================================
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace DoctorApp.Models
+{
+    public class Appointment
+    {
+        [Key]
+        public int AppointmentNumber { get; set; }
+
+        public DateTime DateTime { get; set; }
+
+        public int DoctorId { get; set; }
+
+        [ForeignKey("DoctorId")]
+        public Doctor Doctor { get; set; }
+
+        public int PatientId { get; set; }
+        [ForeignKey("PatientId")]
+        public Patient Patient { get; set; }
+
+        public ICollection<Doctor> Doctors { get; set; }
+
+        public ICollection<Patient> Patients { get; set; }
+
+    }
+}
+=================================================
+using System.ComponentModel.DataAnnotations;
+
+namespace DoctorApp.Models
+{
+    public class Doctor
+    {
+        [Key]
+        public int DoctorId { get; set; }
+
+        public string DoctorName { get; set; }
+
+        public int YearOfExp { get; set; }
+
+        public string Speciality { get; set; }
+
+        public string Doctorphone { get; set; }
+
+        public string DoctorEmail { get; set; }
+
+        public string? pic { get; set; }
+
+       
+
+
+
+    }
+}
+==================================================
+using System.ComponentModel.DataAnnotations;
+
+namespace DoctorApp.Models
+{
+    public class Patient
+    {
+        [Key]
+        public int PatientId { get; set; }
+
+        public string PatientName { get; set; }
+
+        public int Age { get; set; }
+
+        public string PatientPhone { get; set; }
+
+        public string PatientEmail { get; set; }
+
+  
+    }
+}
+==========================================================
+using DoctorApp.Interfaces;
+using DoctorApp.Models;
+using DoctorApp.Contexts;
+using DoctorApp.Interfaces;
+using DoctorApp.Models;
+
+
+
+
+
+namespace DoctorApplication.Repositories
+{
+    public class AppointmentRepository : IRepository<int, Appointment>
+    {
+        private readonly DoctorAppContexts _context;
+
+        static List<Appointment> appointments = new List<Appointment>();
+
+
+
+        public Appointment Add(Appointment entity)
+        {
+            _context.appointments.Add(entity);
+            _context.SaveChanges();
+            return entity;
+        }
+
+        
+
+        public Appointment Delete(int id)
+        {
+            var apmt = Get(id);
+            _context.appointments.Remove(apmt);
+            _context.SaveChanges();
+            return apmt;
+        }
+        public Appointment Get(int id)
+        {
+            var apmt = _context.appointments.FirstOrDefault(d => d.AppointmentNumber == id);
+            return apmt;
+        }
+   
+
+
+
+        public ICollection<Appointment> GetAll()
+        {
+            return _context.appointments.ToList();
+        }
+
+
+        public Appointment Update(Appointment entity)
+        {
+            _context.Update(entity);
+            _context.SaveChanges();
+            return entity;
+        }
+    }
+}
+====================================================================
+using DoctorApp.Contexts;
+using DoctorApp.Interfaces;
+using DoctorApp.Models;
+using Microsoft.EntityFrameworkCore;
+
+namespace DoctorApp.Repositories
+{
+    public class DoctorsRepository : IRepository<int, Doctor>
+    {
+        private readonly DoctorAppContexts _context;
+        static List<Doctor> doctors = new List<Doctor>();
+
+        public DoctorsRepository(DoctorAppContexts contexts)
+        {
+            _context  = contexts;
+        }
+        public Doctor Add(Doctor entity)
+        {
+            if (entity == null)
+                throw new ArgumentNullException("No Doctor Available");
+            entity.DoctorId = GenerateIndex();
+            _context.doctors.Add(entity);
+            _context.SaveChanges();
+            return entity;
+        }
+
+        private int GenerateIndex()
+        {
+            int DoctorId = doctors.Count;
+            return ++DoctorId;
+        }
+      
+        public Doctor Delete(int id)
+        {
+            var doctor = GetById(id);
+            if (doctor != null)
+            {
+                _context.doctors.Remove(doctor);
+                _context.SaveChanges();
+                return doctor;
+            }
+            return doctor;
+        }
+       
+
+        public ICollection<Doctor> GetAll()
+        {
+            return _context.doctors.ToList();
+        }
+
+        public Doctor Update(Doctor entity)
+        {
+            _context.Entry<Doctor>(entity).State = EntityState.Modified;
+            _context.SaveChanges();
+            return entity;
+        }
+        public Doctor GetById(int id)
+        {
+            Doctor doct = doctors.FirstOrDefault(p => p.DoctorId == id);
+            if (doct == null)
+                throw new InvalidOperationException("No doctor with id " + id);
+            return doct;
+        }
+      
+
+      
+
+      
+    }
+}
+===================================
+using DoctorApp.Contexts;
+using DoctorApp.Interfaces;
+using DoctorApp.Models;
+using Microsoft.EntityFrameworkCore;
+
+namespace DoctorApp.Repositories
+{
+    public class DoctorsRepository : IRepository<int, Doctor>
+    {
+        private readonly DoctorAppContexts _context;
+        static List<Doctor> doctors = new List<Doctor>();
+
+        public DoctorsRepository(DoctorAppContexts contexts)
+        {
+            _context  = contexts;
+        }
+        public Doctor Add(Doctor entity)
+        {
+            if (entity == null)
+                throw new ArgumentNullException("No Doctor Available");
+            entity.DoctorId = GenerateIndex();
+            _context.doctors.Add(entity);
+            _context.SaveChanges();
+            return entity;
+        }
+
+        private int GenerateIndex()
+        {
+            int DoctorId = doctors.Count;
+            return ++DoctorId;
+        }
+      
+        public Doctor Delete(int id)
+        {
+            var doctor = GetById(id);
+            if (doctor != null)
+            {
+                _context.doctors.Remove(doctor);
+                _context.SaveChanges();
+                return doctor;
+            }
+            return doctor;
+        }
+       
+
+        public ICollection<Doctor> GetAll()
+        {
+            return _context.doctors.ToList();
+        }
+
+        public Doctor Update(Doctor entity)
+        {
+            _context.Entry<Doctor>(entity).State = EntityState.Modified;
+            _context.SaveChanges();
+            return entity;
+        }
+        public Doctor GetById(int id)
+        {
+            Doctor doct = doctors.FirstOrDefault(p => p.DoctorId == id);
+            if (doct == null)
+                throw new InvalidOperationException("No doctor with id " + id);
+            return doct;
+        }
+      
+
+      
+
+      
+    }
+}
+========================================================================================
+using DoctorApp.Contexts;
+using DoctorApp.Interfaces;
+using DoctorApp.Models;
+using Microsoft.EntityFrameworkCore;
+
+namespace DoctorApp.Repositories
+{
+    public class PatientRepository : IRepository<int, Patient>
+    {
+        private readonly DoctorAppContexts _context;
+        static List<Patient> patients = new List<Patient>();
+        public PatientRepository(DoctorAppContexts contexts)
+        {
+            _context = contexts;
+        }
+
+
+        public Patient Add(Patient entity)
+        {
+            _context.patients.Add(entity);
+            _context.SaveChanges();
+            return entity;
+        }
+        public Patient Delete(int id)
+        {
+            var patient = Get(id);
+            if (patient != null)
+            {
+                _context.patients.Remove(patient);
+                _context.SaveChanges();
+                return patient;
+            }
+            return patient;
+        }
+
+        public Patient Get(int id)
+        {
+            var employee = _context.patients.FirstOrDefault(e => e.PatientId == id);
+            return employee;
+        }
+
+        public ICollection<Patient> GetAll()
+        {
+            return _context.patients.ToList();
+        }
+
+        public Patient Update(Patient entity)
+        {
+            _context.Entry<Patient>(entity).State = EntityState.Modified;
+            _context.SaveChanges();
+            return entity;
+        }
+     
+        public Patient GetById(int id)
+        {
+            Patient doct = patients.FirstOrDefault(predicate: p => p.PatientId == id);
+            if (doct == null)
+                throw new InvalidOperationException("No Patient with id " + id);
+            return doct;
+        }
+        public Patient UpdatePatient(Patient patient )
+        {
+            Patient pat=GetById(patient.PatientId);
+            pat.PatientName = patient.PatientName;
+            pat.PatientPhone = patient.PatientPhone;
+            pat.PatientEmail = patient.PatientEmail;
+            
+            return pat;
+        }
+    }
+}
+===================================================
+using DoctorApp.Exceptions;
+using DoctorApp.Exceptions.PatientException;
+using DoctorApp.Interfaces;
+using DoctorApp.Models;
+using DoctorApp.Repositories;
+using Microsoft.EntityFrameworkCore;
+
+namespace DoctorApp.Services
+{
+    public class AppointmentService : IManageAppointmentService
+    {
+        private readonly IRepository<int, Appointment> _repository;
+        private readonly IRepository<int, Doctor> _DRepository;
+        private readonly IRepository<int, Patient> _PRepository;
+
+        //static List<Doctor> doctors = new List<Doctor>();
+        public AppointmentService(IRepository<int, Appointment> repository , IRepository<int , Doctor>repository1 , IRepository<int , Patient>repository2)
+        {
+            _repository = repository;
+            _DRepository=repository1;
+            _PRepository=repository2;
+        }
+        public Appointment BookAppointment(Appointment appointment)
+        {
+            bool book = CheckAvailability(appointment);
+            if (book== true)
+            {
+                _repository.Add(appointment);
+                return appointment;
+            }
+            else
+            {
+                throw new DoctorNotAvailableException();
+            }
+        }
+
+     public Appointment cancelAppointment(Appointment appointment) 
+        {
+            var dAppointment = _repository.Get(appointment.AppointmentNumber);
+            if(dAppointment == null)
+            {
+                throw new InvalidPatientException();
+            }
+            dAppointment = _repository.Delete(dAppointment.AppointmentNumber);
+            return dAppointment;
+        }
+
+        public bool CheckAvailability(Appointment appointment)
+        {
+            if(appointment != null)
+            {
+                Doctor details = _DRepository.Get(appointment.DoctorId);
+                if(details != null) 
+                {
+                    var appointments = _repository.GetAll();
+                    var existingAppointment = appointments.Where(D => D.DoctorId == appointment.DoctorId
+                    && D.DateTime == appointment.DateTime).ToList();
+                    if(existingAppointment == null)
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+                else
+                {
+                    throw new InvalidDoctorExceptions();
+                }
+            }
+            throw new InvalidDoctorExceptions();
+
+        }
+    }
+}
+================================================
+using DoctorApp.Exceptions;
+using DoctorApp.Exceptions;
+using DoctorApp.Interfaces;
+using DoctorApp.Models;
+using DoctorApp.Repositories;
+
+namespace DoctorApp.Services
+{
+    public class DoctorService : IManageDoctorService
+    {
+        private readonly IRepository<int, Doctor> _repository;
+        private readonly DoctorsRepository _dRepository;
+        private object p;
+
+        //static List<Doctor> doctors = new List<Doctor>();
+        public DoctorService(IRepository<int, Doctor> repository, DoctorsRepository repository1)
+        {
+            _repository = repository;
+            _dRepository= repository1;
+        }
+        #region AddDoctor
+        /// <summary>
+        /// this method to add Doctor 
+        /// </summary>
+        /// <param name="doctor"></param>
+        /// <returns></returns>
+        public Doctor AddDoctor(Doctor doctor)
+        {
+            var result = _repository.Add(doctor);
+            return result;
+        }
+        #endregion
+
+        #region GetDoctor Experience
+        public ICollection<Doctor> GetDoctorExp(int min, int max)
+        {
+            var doct = _repository.GetAll();
+            if (min >= 00 || max > 0)
+            {
+                var expRange = doct.Where(p=>p.YearOfExp>= min && p.YearOfExp <= max).ToList();
+                if (expRange.Count == 0)
+                    throw new InvalidDoctorExceptions();
+                return expRange;
+            }
+            throw new InvalidRangeOfYearOfExpException();
+        }
+        #endregion
+
+
+        #region Update Doctor Speciality
+
+        public Doctor UpdateDoctorSpeciality(int id, Doctor doctor)
+        {
+            var doct = _dRepository.GetById(id);
+            if (doct == null)
+                throw new InvalidDoctorExceptions();
+            doct.Speciality = doctor.Speciality;
+            doct = _repository.Update(doct);
+            return doct;
+        }
+        #endregion
+
+        #region Update Doctor Experience
+
+        public Doctor UpdateDoctorExp(int id ,Doctor doctor)
+        {
+            var doct = _dRepository.GetById(id);
+            if (doct == null)
+                throw new InvalidDoctorExceptions();
+            doct.YearOfExp = doctor.YearOfExp;
+            doct = _repository.Update(doct);
+            return doct;
+        }
+        #endregion
+
+        #region Update Doctor Phone
+        public Doctor UpdateDoctorPhone(int id, Doctor doctor)
+        {
+            var doct = _dRepository.GetById(id);
+            if (doct == null)
+                throw new InvalidDoctorExceptions();
+            doct.Doctorphone = doctor.Doctorphone;
+            doct = _repository.Update(doct);
+            return doct;
+        }
+        #endregion
+
+        #region Update Doctor
+        public Doctor UpdateDoctor(Doctor doctor)
+        {
+            Doctor doct = _dRepository.GetById(doctor.DoctorId);
+            doct.DoctorName = doctor.DoctorName;
+            doct.YearOfExp = doctor.YearOfExp;
+            doct.Doctorphone = doctor.Doctorphone;
+            doct.DoctorEmail = doctor.DoctorEmail;
+            doct.Speciality = doctor.Speciality;
+            doct.pic = doctor.pic;
+
+            return doct;
+        }
+        #endregion
+    }
+}
+===========================================================
+using DoctorApp.Interfaces;
+using DoctorApp.Models;
+using DoctorApp.Repositories;
+using Microsoft.EntityFrameworkCore;
+using System.Numerics;
+
+namespace DoctorApp.Services
+{
+    public class PatientService : IManagePatientService
+    {
+     
+
+        private readonly IRepository<int, Patient> _repository;
+        private object p;
+        private readonly PatientRepository _pRepository;
+
+        public PatientService(IRepository<int, Patient> repository , PatientRepository repository1)
+        {
+            _repository = repository;
+            _pRepository = repository1;
+
+        }
+        public Patient AddPatient(Patient patient)
+        {
+            var result = _repository.Add(patient);
+            return result;
+        }
+
+        #region Update Doctor
+        public Patient UpdatePatient(Patient patient)
+        {
+            Patient pat = _pRepository.GetById(patient.PatientId);
+            pat.PatientName = patient.PatientName;
+            pat.PatientPhone = patient.PatientPhone;
+            pat.PatientEmail = patient.PatientEmail;
+
+            return pat;
+        }
+        #endregion
+    }
+}
+=====================================
+{
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information",
+      "Microsoft.AspNetCore": "Warning"
+    }
+  },
+  "ConnectionStrings": {
+    "DefaultConnection": "Host=localhost;Port=5432;Database=dbMyDoctorApp;UserId=postgres;Password=root;"
+  },
+  "AllowedHosts": "*"
+}
+=====================================================================
+using DoctorApp.Contexts;
+using DoctorApp.Interfaces;
+using DoctorApp.Models;
+using DoctorApp.Repositories;
+using DoctorApplication.Repositories;
+using Microsoft.EntityFrameworkCore;
+
+namespace DoctorApp
+{
+    public class Program
+    {
+        public static void Main(string[] args)
+        {
+            var builder = WebApplication.CreateBuilder(args);
+
+            // Add services to the container.
+            builder.Services.AddControllersWithViews();
+
+            #region AddingConetexts
+            builder.Services.AddDbContext<DoctorAppContexts>(opts =>
+            {
+                opts.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"));
+            });
+            #endregion
+            #region AddingUserderfinedServices
+            builder.Services.AddScoped<IRepository<int, Doctor>, DoctorsRepository>();
+            builder.Services.AddScoped<IRepository<int, Patient>, PatientRepository>();
+            builder.Services.AddScoped<IRepository<int, Appointment>, AppointmentRepository>();
+            #endregion
+            var app = builder.Build();
+
+            AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true); // time postgress sobat set karnyasathi
+
+            // Configure the HTTP request pipeline.
+            if (!app.Environment.IsDevelopment())
+            {
+                app.UseExceptionHandler("/Home/Error");
+            }
+            app.UseStaticFiles();
+
+            app.UseRouting();
+
+            app.UseAuthorization();
+
+            app.MapControllerRoute(
+                name: "default",
+                pattern: "{controller=Home}/{action=Index}/{id?}");
+
+            app.Run();
+        }
+    }
+}

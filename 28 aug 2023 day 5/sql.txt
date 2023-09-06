@@ -1,0 +1,179 @@
+Q ----Write a query to fetch the film names which are stared by actor's first names that ends with 'e'
+
+
+select title from  film where film_id in (select film_id from film_actor where actor_id in (select actor_id from actor where first_name like '%e' ))
+
+
+------------------------------------------------------------------
+alternate querry for group by 
+SELECT title, rating, length, avg(length) OVER (PARTITION BY rating) FROM film;
+
+
+
+inner join
+
+select name from language where language_id in (select distinct(language_id) from film) ---- not inner join query
+
+select language.name, film.title from language inner join film
+on language.language_id = film.language_id                          --- inner join query
+
+
+
+outer  join querry
+
+select language.name, film.title from language left outer join film
+on language.language_id = film.language_id
+order by 1 desc
+-------------------------------------------------------------
+
+--actor name and fim name
+
+select film.title, concat(actor.first_name,' ',actor.last_name) actor_name 
+from film join film_actor on film.film_id = film_actor.film_id
+join actor on film_actor.actor_id=actor.actor_id
+---------------------------------
+
+--number of movies started by every actor and actor name only if they have starred more than 25 films
+
+select  concat(actor.first_name,' ',actor.last_name) actor_name ,
+count(film.film_id) number_of_movie_stared
+from film join film_actor on film.film_id = film_actor.film_id
+join actor on film_actor.actor_id=actor.actor_id
+group by concat(actor.first_name,' ',actor.last_name)
+having count(film.film_id) >25
+order by actor_name
+
+------------------------------------------
+
+--print the customer name and the total amount paid by every customer for renting movie
+select concat(customer.first_name,' ',customer.last_name) customer_name,
+sum(amount) toal_amount_paid_by_Every_Customer
+from customer join payment
+on customer.customer_id = payment.customer_id
+group by customer.customer_id
+order by 2
+----------------------------------------------------------------
+
+--Print all film names and the number of times it has been rented, 
+--If the film has not been rented then print the names as well
+select (film.title) film_name , count(rental_id) NoOfTimersRented 
+from film left outer  join inventory on 
+film.film_id = inventory.film_id
+left outer join rental on rental.inventory_id =inventory.inventory_id
+group by film.title
+order by 2
+---------------------------
+batch querry
+
+create procedure proc_insertArea(an varchar(20),azip varchar(3))
+language plpgsql
+as $$
+begin
+   insert into areas values(an,concat(123,azip));
+end;$$;
+
+call proc_insertArea('IJK','667');
+select * from areas
+-------------------------------------
+
+create or replace procedure proc_insertArea(an varchar(20),azip varchar(3))
+language plpgsql
+as $$
+declare len integer := 0;
+begin
+    len := (select length(azip));
+	if len =3 then
+	begin
+		insert into areas values(an,concat(123,azip));
+		Raise Notice 'Inserted';
+	end;
+	else
+	   Raise Notice 'invalid zipcode. Zip code cannot be more than 3 chars';
+	end if;
+end;$$;
+
+call proc_insertArea('PPP','0877');
+select * from areas
+--------------------------------
+create procedure pro_name(n varchar(20))
+language plpgsql
+as $$
+begin 
+ raise notice 'hello% ' ,n;
+end;$$;
+call pro_name(' deva');
+----------------------------------
+fuction 
+ return scalar i.e. scalar function
+create or replace function getAreas()
+returns integer
+language plpgsql
+as 
+$$
+declare 
+   rowcount int;
+begin 
+   select count(*) into rowcount from areas;
+   return rowcount;
+end;
+$$;
+
+select * from getAreas()
+-----------------------------------
+function 
+returning table
+create or replace function udfn_getEmployeeData(ephone varchar(3))
+returns  table(
+	ename varchar(20),
+	ephoneno varchar(15)
+)
+language plpgsql
+as 
+$$
+begin
+   return query select name,phone from employees where phone like ephone;
+end;$$
+
+select * from udfn_getEmployeeData('1%')
+---------------------------------------------
+--create a function that gets the film name and actor name for those 
+--films which have 'the' in the title
+
+ drop function getFilmNameAndActorName
+
+
+create or replace function getFilmNameAndActorName(s varchar(5))
+returns table(
+film_name varchar(50),
+	actor_name text
+)
+language plpgsql
+as 
+$$
+begin
+		return query
+	    select film.title film_name, concat(actor.first_name,' ',actor.last_name) actor_name 
+         from film join film_actor on film.film_id = film_actor.film_id
+        join actor on film_actor.actor_id=actor.actor_id where title like s;
+		
+end;$$
+select * from getFilmNameAndActorName('The%');
+--------------------------------------------------------
+view    
+
+create or replace view vw_sample
+as
+  select film.title, count(rental_id) from 
+film left outer join inventory
+on film.film_id = inventory.film_id
+left outer join rental on rental.inventory_id = inventory.inventory_id
+group by film.title
+
+
+--populate the view with the data from the underlying table and display
+select * from vw_sample
+----------------------------------------------------------------------
+
+
+
+

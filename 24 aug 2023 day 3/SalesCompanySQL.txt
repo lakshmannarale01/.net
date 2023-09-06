@@ -1,0 +1,251 @@
+
+Table Schema:	
+Create Tables with Integrity Constrains:
+
+a)	EMP (empno - primary key, empname, salary, deptname - references entries in a deptname of department table with null constraint, bossno - references entries in an empno of emp table with null constraint)
+b)	DEPARTMENT (deptname - primary key, floor, phone, empno - references entries in an empno of emp table not null)
+c)	SALES (salesno - primary key, saleqty, itemname -references entries in a itemname of item table with not null constraint, deptname - references entries in a deptname of department table with not null constraint)
+d)	ITEM (itemname - primary key, itemtype, itemcolor)
+
+Data For Tables:
+
+Bossno  is a reference EMPto the empno
+
+EMP table:
+Empno		Empname 	         Empsalary	             Department             Bossno
+1		Alice 			75000			Management	          -------
+2		Ned			45000			Marketing		1
+3		Andrew			25000			Marketing		2
+4		Clare			22000			Marketing		2
+5		Todd			38000			Accounting		1
+6		Nancy			22000			Accounting		5
+7		Brier			43000			Purchasing		1
+8		Sarah			56000			Purchasing		7
+9		Sophile			35000			Personnel		1
+10		Sanjay			15000			Navigation		3
+11		Rita			15000			Books			4
+12		Gigi			16000			Clothes			4
+13		Maggie			11000			Clothes			4
+14		Paul			15000			Equipment		3
+15		James			15000			Equipment		3
+16		Pat			15000			Furniture		3
+17		Mark			15000			Recreation		3
+
+
+DEPARTMENT:
+Deptname		Deptfloor	Deptphone		MgrId
+Management		5		34			1
+Books			1		81			4
+Clothes			2		24			4
+Equipment		3		57			3
+Furniture		4		14			3
+Navigation		1		41			3
+Recreation		2		29			4
+Accounting		5		35			5
+Purchasing		5		36			7
+Personnel		5		37			9
+Marketing		5		38			2
+
+SALES Table:
+Salesno		Saleqty		itemname			Deptname
+101		2		Boots-snake proof		Clothes
+102		1		Pith Helmet			Clothes	
+103		1		Sextant				Navigation
+104		3		Hat-polar Explorer		Clothes
+105		5		Pith Helmet			Equipment
+106		2		Pocket Knife-Nile		Clothes
+107		3		Pocket Knife-Nile 		Recreation	
+108		1		Compass			Navigation	
+109		2		Geo positioning system		Navigation
+110		5		Map Measure			Navigation
+
+
+
+111		1		Geo positioning system		Books
+112		1		Sextant				Books
+113		3		Pocket Knife-Nile	  	Books
+114		1		Pocket Knife-Nile		Navigation	
+115		1		Pocket Knife-Nile		Equipment	
+116		1		Sextant				Clothes
+117		1		"				Equipment
+118		1		"				Recreation
+119		1		"				Furniture
+120		1		Pocket Knife-Nile		"
+121		1		Exploring in 10 easy lessons	Books
+122		1		How to win foreign friends	"
+123		1		Compass			"
+124		1		Pith Helmet			"
+125		1		Elephant Polo stick		Recreation
+126		1		Camel Saddle			Recreation
+
+ITEM table:
+Itemname 				itemtype		itemcolor
+Pocket Knife-Nile			E			Brown
+Pocket Knife-Avon			E			Brown
+Compass				N			--
+Geo positioning system			N			--
+Elephant Polo stick			R			Bamboo
+Camel Saddle				R			Brown
+Sextant					N			--
+Map Measure				N			--
+Boots-snake proof			C			Green
+Pith Helmet				C			Khaki
+Hat-polar Explorer			C			White
+Exploring in 10 Easy Lessons		B			--
+Hammock				F			Khaki
+How to win Foreign Friends		B			--
+Map case				E			Brown
+Safari Chair				F			Khaki
+Safari cooking kit			F			Khaki
+Stetson					C			Black
+Tent - 2 person				F			Khaki
+Tent -8	 person				F			Khaki
+
+
+==========================================================================
+
+TABLE ITEM
+create table ITEM(itemname varchar(25) primary key,itemtype varchar(5),itemcolor varchar(15));
+
+\d item;
+---------------------------------------------------------------
+TABLE DEPARTMENT
+create table DEPARTMENT(deptname varchar(20) primary key,deptphone varchar(15) , deptfloor int, DeptMgrId int));
+
+\d department
+---------------------------------------------------------------
+EMP TABLE
+create table EMP(empno int  GENERATED ALWAYS AS IDENTITY ,empname varchar(30),empsalary varchar(8),bossno int,deptname varchar(30) references DEPARTMENT(deptname) not null,constraint fk_emp_deptname Foreign key(deptname) references DEPARTMENT(deptname))
+alter table EMP add constraint pk_empempno primary key(empno);
+\d emp
+-----------------------------------------------------------------
+SALES TABLE
+create table SALES(salesno int primary  key,saleqty int,itemname varchar(30) references ITEM(itemname) not null,deptname varchar(30) 
+				   references DEPARTMENT(deptname) not null,constraint fk_item_itemname Foreign key(itemname) references ITEM(itemname));
+
+\d sales
+------------------------------------------------------------------
+INSERT DATA
+in item
+insert into item(itemname,itemtype, itemcolor) values('pocket knife-Nile','E','Brown');
+select * from item;
+insert into item(itemname,itemtype, itemcolor) values('pocket knife-Avon','E','Brown');
+select * from item;
+	insert into item(itemname,itemtype, itemcolor) values('Compass','N','none');
+	insert into item(itemname,itemtype, itemcolor) values('Geo positioning system','N','none');
+	insert into item(itemname,itemtype, itemcolor) values('Elephant Polo stick','R','Bamboo');
+	insert into item(itemname,itemtype, itemcolor) values('Camel Saddle','R','Brown');
+	insert into item(itemname,itemtype, itemcolor) values('Sextant','N','none');
+	insert into item(itemname,itemtype, itemcolor) values('Map Measure','N','none');
+	insert into item(itemname,itemtype, itemcolor) values('Boots-snake proof','C','Green');
+	insert into item(itemname,itemtype, itemcolor) values('Pith Helmet','c','Khaki');
+	insert into item(itemname,itemtype, itemcolor) values('Hat-polar Explorer ','C','White');
+	insert into item(itemname,itemtype, itemcolor) values('Exploring in 10 Easy Lessons','B','none');
+	insert into item(itemname,itemtype, itemcolor) values('Hammock','F','Khaki');
+	insert into item(itemname,itemtype, itemcolor) values('How to win Foreign Friends','B','none');
+	insert into item(itemname,itemtype, itemcolor) values('Map case','E','Brown');
+	insert into item(itemname,itemtype, itemcolor) values('Safari Chair','F','Khaki');
+	insert into item(itemname,itemtype, itemcolor) values('Safari cooking kit','F','Khaki');
+	insert into item(itemname,itemtype, itemcolor) values('Stetson','C','Black');
+	insert into item(itemname,itemtype, itemcolor) values('Tent-2 person','F','Khaki');
+	insert into item(itemname,itemtype, itemcolor) values('Tent-8 person','F','Khaki');
+	select * from item
+-----------------------------------------------------------------------------
+
+
+in department
+insert into department(deptname,deptphone, deptfloor,DeptMgrId) values('Management','34','5','1');
+select * from department;
+insert into department(deptname,deptphone, deptfloor,DeptMgrId) values('Books','81','1','4');
+select * from department;
+insert into department(deptname,deptphone, deptfloor,DeptMgrId) values('Clothes','24','2','4');
+select * from department;
+insert into department(deptname,deptphone, deptfloor,DeptMgrId) values('Equipment','57','3','3');
+select * from department;
+insert into department(deptname,deptphone, deptfloor,DeptMgrId) values('Furniture','14','4','3');
+select * from department;
+insert into department(deptname,deptphone, deptfloor,DeptMgrId) values('Navigation','41','1','3');
+select * from department;
+insert into department(deptname,deptphone, deptfloor,DeptMgrId) values('Recreation','29','2','4');
+select * from department;
+insert into department(deptname,deptphone, deptfloor,DeptMgrId) values('Accounting','35','5','5');
+select * from department;
+insert into department(deptname,deptphone, deptfloor,DeptMgrId) values('Purchesing','36','5','7');
+select * from department;
+insert into department(deptname,deptphone, deptfloor,DeptMgrId) values('Personnel','37','5','9');
+select * from department;
+insert into department(deptname,deptphone, deptfloor,DeptMgrId) values('Marketing','38','5','2');
+select * from department;
+-----------------------------------------------------------------------------------------
+
+in EMP
+insert into EMP(empno,empname, empsalary,bossno,deptname) values('1','Alice','75000','0','management');
+select * from department;
+ insert into EMP(empno,empname, empsalary,bossno,deptname) values('2','Ned','45000','1','Marketing');
+    insert into EMP(empno,empname, empsalary,bossno,deptname) values('3','Andrew','25000','2','Marketing');
+	 insert into EMP(empno,empname, empsalary,bossno,deptname) values('4','Clare','22000','2','Marketing');
+   select * from department;
+	  insert into EMP(empno,empname, empsalary,bossno,deptname) values('5','Todd','38000','1','Accounting');
+	   insert into EMP(empno,empname, empsalary,bossno,deptname) values('6','Nancy','22000','5','Accounting');
+	    insert into EMP(empno,empname, empsalary,bossno,deptname) values('7','Brier','43000','1','Purchesing');
+		 insert into EMP(empno,empname, empsalary,bossno,deptname) values('8','Sarah','56000','7','Purchesing');
+     select * from department;
+		  insert into EMP(empno,empname, empsalary,bossno,deptname) values('9','Sophile','35000','1','Personnel');
+		   insert into EMP(empno,empname, empsalary,bossno,deptname) values('10','Sanjay','15000','3','Navigation');
+		    insert into EMP(empno,empname, empsalary,bossno,deptname) values('11','Rita','15000','4','Books');
+			 insert into EMP(empno,empname, empsalary,bossno,deptname) values('12','Gigi','16000','4','Clothes');
+       select * from department;
+			  insert into EMP(empno,empname, empsalary,bossno,deptname) values('13','Maggie','11000','4','Clothes');
+			   insert into EMP(empno,empname, empsalary,bossno,deptname) values('14','Paul','15000','3','Equipment');
+			    insert into EMP(empno,empname, empsalary,bossno,deptname) values('15','James','15000','3','Equipment');
+				 insert into EMP(empno,empname, empsalary,bossno,deptname) values('16','Pat','15000','3','Furniture');
+         select * from department;
+				  insert into EMP(empno,empname, empsalary,bossno,deptname) values('17','Mark','15000','3','Recreation');
+          select * from department;
+				  
+-------------------------------------------------------------------------------------
+in sales
+ insert into sales(salesno,saleqty,itemname,deptname)values('101','2','Boots-snake proof','Clothes');  
+ select * from sales;
+ 
+  insert into sales(salesno,saleqty,itemname,deptname)values('102','1','Pith Helmet','Clothes');
+  insert into sales(salesno,saleqty,itemname,deptname)values('103','1','Sextant','Navigation');
+  insert into sales(salesno,saleqty,itemname,deptname)values('104','3','Hat-polar Explorer ','Clothes');
+  
+  insert into sales(salesno,saleqty,itemname,deptname)values('105','5','Pith Helmet','Equipment');
+  insert into sales(salesno,saleqty,itemname,deptname)values('106','2','pocket knife-Nile','Clothes');
+  insert into sales(salesno,saleqty,itemname,deptname)values('107','3','pocket knife-Nile','Recreation');
+  
+   insert into sales(salesno,saleqty,itemname,deptname)values('108','1','Compass','Navigation');
+  insert into sales(salesno,saleqty,itemname,deptname)values('109','2','Geo positioning system','Navigation');
+  insert into sales(salesno,saleqty,itemname,deptname)values('110','5','Map Measure','Navigation');
+  
+  insert into sales(salesno,saleqty,itemname,deptname)values('111','1','Geo positioning system','Books');
+  insert into sales(salesno,saleqty,itemname,deptname)values('112','1','Sextant','Books');
+  insert into sales(salesno,saleqty,itemname,deptname)values('113','3','pocket Knife-Nile','Books');
+  insert into sales(salesno,saleqty,itemname,deptname)values('114','1','pocket knife-Nile','Navigation');
+ insert into sales(salesno,saleqty,itemname,deptname)values('115','1','pocket knife-Nile','Equipment');
+ insert into sales(salesno,saleqty,itemname,deptname)values('116','1','Sextant','Clothes');
+  
+  ---------------------------------------------------------------------------------------------------------
+   
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,115 @@
+--select all columns
+Select * from Customer
+--select specific column
+Select first_name,last_name from Customer
+--select specific colum and use function
+Select concat(first_name,' ',last_name) from customer
+
+--alias column name
+Select first_name Firstname,last_name LatName from Customer
+Select concat(first_name,' ',last_name) FullName from customer
+
+--Restricting teh number of rows
+select * from film where rating = 'G'
+
+select * from film where rating = 'G' or rating = 'R'
+
+select * from film where rating = 'G' and length>100
+
+
+select * from film
+
+select * from film where rental_rate=4.99
+
+select * from film where title = 'Airport Pollock'
+
+select * from film where description like '%Epic%' --- first % is use for search anywhere and last is use for fetch word
+
+select * from film where title like '__i%'   ---- to get third char and last is use for fetch word
+
+select * from film where title like '%__i%'  
+
+select * from film where description like '%Epic  -------  first % is use for last Word
+
+
+select * from film where special_features is  null
+select * from film where special_features is not null
+--------------------------------
+AND , between Use
+select * from film where rental_duration >= 5 and rental_duration <= 7
+select * from film where rental_duration between 5 and 7
+-------------------------------------------------
+or and in
+select * from film where rental_duration = 5 or rental_duration = 7 or rental_duration=9
+--in a list
+select * from film where rental_duration in (5,7,9) ------in is usefor list
+----------------------------------------------------
+
+
+
+--unique values
+select distinct(rental_duration) from film
+select distinct(rental_duration,rental_rate) from film    -------- Combine output
+
+
+----------------------------
+Aggregation Function i.e. check all value and operation on that 
+
+select sum(rental_rate) sum_of_Rantal from film;
+select avg(rental_rate) average_of_Rantal from film;
+select floor(avg(rental_rate)) as average_of_Rantal  from film;
+select min(rental_rate) minimum_of_Rantal from film;
+select max(rental_rate) maximum_of_Rantal from film;
+select count(rental_rate) count_of_Rantal from film;
+
+
+select count(rental_rate) count_of_Rental, max(rental_rate) maximum_of_Rental from film;
+
+--wrong query
+select count(rental_rate) count_of_Rantal, title from film;
+
+---------------------------------
+Group BY and Having 
+select rating, avg(length)from film group by rating
+select rating, avg(length)from film group by rating having avg(length)>115
+select rating, avg(length)from film where rental_rate>2 group by rating having avg(length)>115
+----------------------------------------
+Sort (Order by )
+select * from film order by film_id
+select * from film order by film_id desc  ---- desc use for descending
+select * from film order by length
+select * from film order by length ,rating
+select * from film order by length desc,rating
+select * from film where rating ='G' order by length
+
+select rating ,avg(length) from  film group by rating order by rating  --------
+select rating ,avg(length) from  film group by rating order by 1       --------^^^ same output 
+
+select rating ,avg(length) from  film where rental_rate>2 group by rating having avg(length)>115 order by rating
+select rating ,avg(length) from  film where rental_rate>2 group by rating having avg(length)>115 order by 1
+
+-----------------------------------------------------------------------
+Nested Query
+
+select customer_id from customer where first_name like 'J%' 						-- 1st Query
+select * from payment where customer_id in (select customer_id from customer where first_name like 'J%') -- nested Query !st Query is in 
+
+select * from customer where address_id in
+(select address_id from address where district =  'California')
+
+Q--select the payment details  of customers who have the word 'Strret' in their address
+select * from payment where customer_id in
+(select customer_id from customer where address_id in
+ (select address_id from address where address like '%Street%'))
+
+ Q-- print the sum of all the ammount  paid by every customer who comes from California
+ select customer_id,sum (amount) from payment where customer_id in 
+ (select customer_id from customer where address_id in
+  (select address_id from address where district = 'California'))
+  group by customer_id order by 1
+ Q--print the name name of the actors who have acteed in film that are of rating 'G'
+   select actor_id, first_name,last_name from actor where actor_id in
+   (select actor_id from film_actor where actor_id in
+	(select film_id from film where rating = 'G' group by film_id order by 1)) group by actor_id order by 1
+
+         

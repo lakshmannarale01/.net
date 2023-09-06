@@ -1,0 +1,74 @@
+create table
+	
+Create table Skills (skill varchar(20) primary key, description varchar(200));
+
+------------------------------------------------------------------------------
+\d skills;
+
+------------------------------------------------------------------------------
+get all from select
+
+select table_name,column_name,data_type from information_schema.columns where table_name = 'skills';
+-----------------------------------------------------------
+delete table 
+drop table skills;
+----------------------------------------------------------
+primary key
+Create table Skills (skill varchar(20) primary key, description varchar(200));
+----------------------------------------------------------------------------------
+alter table --- to add column in the table
+ALTER TABLE skills ADD dummy int;
+ALTER TABLE skills alter column year TYPE char(4);
+ALTER TABLE skills alter column year SET NOT Null;
+----------------------------------------
+close --- clear screen
+\! cls or \cls   fix mahit nahi 
+-----------------------------------------
+clear
+--------------------------------
+create table area
+create table Areas(area varchar(20) primary key, zipcode varchar(8));
+-------------------------------
+create table Employees
+ create table Employees(id int GENERATED ALWAYS AS IDENTITY,name varchar(50) NOT NULL ,phone varchar(15),area
+varchar(20) references Areas(area));
+--------------------------------------------------------
+alter Employees with foriegn ky wit area 
+alter table Employees add constraint pk_empid primary key(id);
+--------------------------------------------------------------
+DML
+Insert into table area table
+insert into Areas(area,zipcode) values('ABC','123456);
+insert into Areas(area,zipcode) values('ABC','123456); not executed because can not area is duplicate-XXXXXX
+insert into Areas(area,zipcode) values('EFG','123456);
+insert into Areas(zipcode) values('123456); ----------XXXXXXXX
+insert into Areas(area) values('ABC');
+insert into Areasvalues('ABC','123456');
+--------------------------------------------------------------------
+insert into Employees(name,phone,area) values ('Ramu','1234567890','ABC');
+insert into Employees values ('Ramu','1234567890','ABC');XXXXXXXXX
+----------------------------------------------------------------
+get detals from the table
+select * from areas;
+-----------------------------------
+update Employees set area
+
+update Employees set area = 'ABC' where id =2;
+
+update Employees set area = 'ABC',phone='1235325125' where id =2;
+-----------------------------------------------
+Delete
+Delete from Employees where id = 3;
+Delete from Areas where area = 'ABC';XXXXXX )bcoz 'EFG'id present in child table/ has child record
+--------------------------------------
+create skill table
+create table Areas(area varchar(20) primary key, zipcode varchar(8));
+----------------------------------------------------------------------
+create table EmployeesSkills
+ (Employee_id int,
+Skill_name varchar(20),
+Skill_Level int,
+primary key(Employee_id,Skill_name),
+constraint fk_empSkill Foreign key(Employee_id) references Employees(id),
+constraint fk_skillEmp Foreign key(Skill_name) references Skills(Skill));
+

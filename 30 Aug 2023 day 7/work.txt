@@ -1,0 +1,688 @@
+namespace PIzzaStoreModelLibrary
+{
+    public class Pizza: IEquatable<Pizza>, IComparable<Pizza>
+    {
+        public int Id { get; set; }
+        public string? Name { get; set; }
+        public int Quantity { get; set; }
+        public double Price { get; set; }
+        public string? Type { get; set; }
+
+        #region PizzaToStringMethod
+
+        /// <summary>
+        /// When reff of Pizza object is used for printing this method will print the details of
+        /// the properties
+        /// </summary>
+        /// <returns>Stringtaht hold details of pizza name,pricenquantity and type</returns>
+        public override string ToString()
+        {
+            return $"Pizza Id : {Id} \n " +
+                $"Pizza Name : {Name} \n" +
+                $"Pizza Price : Rs.{Price} \n" +
+                $"Pizza Quantity : {Quantity} \n" +
+                $"Pizza Type : {Type}";
+        }
+        #endregion
+
+        #region PizzaEqualsMethod
+        /// <summary>
+        /// Checks if 2 Pizza objects are equal basedon the ID of the Pizza
+        /// </summary>
+        /// <param name="other">Takes the pizza object that has to be compares</param>
+        /// <returns>Will be true if teh Ids are same otherwise false</returns>
+        public bool Equals(Pizza? other)
+        {
+            Pizza p1, p2;
+            p1 = other??new Pizza();//If parameter is null then it will create a new object
+            p2 = this;
+            if (p1.Id == p2.Id)
+                return true;
+            return false;
+        }
+        #endregion
+
+        #region PizzaCompareToMethod
+        /// <summary>
+        /// Method that is called while teh objects are sorted
+        /// </summary>
+        /// <param name="other">Pizza object that has to be compared gets passed</param>
+        /// <returns>integer based on the id of the pizza is greater or not</returns>
+        public int CompareTo(Pizza? other)
+        {
+            Pizza p1, p2;
+            p1 = this;
+            p2 = other??new Pizza();
+            return p1.Id.CompareTo(p2.Id);
+        }
+        #endregion
+    }
+}
+-------------------------------------
+using Microsoft.AspNetCore.Mvc;
+using PIzzaStoreModelLibrary;
+
+namespace PizzaStoreApp.Controllers
+{
+    public class PizzaController : Controller
+    {
+        static List<Pizza> pizzas = new List<Pizza>()
+        {
+            new Pizza{Id=1,Name="Schezwan Margherita", Price=389,Quantity=3,Type="Non-Veg"},
+            new Pizza{Id=2,Name="Ultimate Tandoori Veggie", Price=609,Quantity=2,Type="Veg"}
+        };
+        public IActionResult Index()
+        {
+            ViewBag.Pizzas = pizzas;
+            return View();
+        }
+    }
+}
+@* @foreach (var pizza in ViewBag.Pizzas)
+{
+    <div class="alert alert-secondary">
+        <h2>@pizza.Name</h2>
+        <p>The Pizza is @pizza.Type and only @pizza.Quantity left</p>
+        <br>
+        Buy for $@pizza.Price
+    </div>
+}
+ *@
+ @* ------------------------------- *@
+
+@* Strogly bind my view with mode *@
+
+@model IEnumerable<PIzzaStoreModelLibrary.Pizza>
+
+@foreach(var pizza in Model)
+{
+    <div class="alert alert-secondary">
+        <h2>@pizza.Name</h2>
+        <p>The Pizza is @pizza.Type and only @pizza.Quantity left</p>
+        <br>
+        Buy for $@pizza.Price
+    </div>
+}
+
+using PIzzaStoreModelLibrary;
+
+namespace PizzaStoreApp.Models
+{
+    public class PizzaWithPic :Pizza
+    {
+        public string Pic { get; set; }
+    }
+}
+using Microsoft.AspNetCore.Mvc;
+using PizzaStoreApp.Models;
+using PIzzaStoreModelLibrary;
+
+namespace PizzaStoreApp.Controllers
+{
+    public class PizzaController : Controller
+    {
+        static List<PizzaWithPic> pizzas = new List<PizzaWithPic>()
+        {
+            new PizzaWithPic{Id=1,Name="Schezwan Margherita", Price=389,Quantity=3,Type="Non-Veg",Pic="/images/Pizza1.jpeg"},
+            new PizzaWithPic{Id=2,Name="Ultimate Tandoori Veggie", Price=609,Quantity=2,Type="Veg" ,Pic="/images/Pizza2.jpeg"}
+        };
+        public IActionResult Index()
+        {
+            //ViewBag.Pizzas = pizzas;
+            //return View();
+            return View(pizzas);
+        }
+    }
+}
+@* @foreach (var pizza in ViewBag.Pizzas)
+{
+    <div class="alert alert-secondary">
+        <h2>@pizza.Name</h2>
+        <p>The Pizza is @pizza.Type and only @pizza.Quantity left</p>
+        <br>
+        Buy for $@pizza.Price
+    </div>
+}	
+ *@
+ @* ------------------------------- *@
+
+@* Strogly bind my view with mode *@
+
+@model IEnumerable<PizzaStoreApp.Models.PizzaWithPic>
+
+@foreach(var pizza in Model)
+{
+    <div class="card" style="width: 18rem;float:left;margin:2px;">
+        <h2 style="text-align:center;" class="alert alert-info">@pizza.Name</h2>
+        <img height="200" width="200" class="card-img-top" src="@pizza.Pic" alt="Card image cap">
+        <div class="card-body">
+            <p class="card-text">The Pizza is @pizza.Type and only @pizza.Quantity left</p>
+        </div>
+    </div>
+}
+-------------------------
+for pizza Controller
+
+
+using Microsoft.AspNetCore.Mvc;
+using PizzaStoreApp.Models;
+using PIzzaStoreModelLibrary;
+
+namespace PizzaStoreApp.Controllers
+{
+    public class PizzaController : Controller
+    {
+        static List<PizzaWithPic> pizzas = new List<PizzaWithPic>()
+        {
+            new PizzaWithPic{Id=1,Name="Schezwan Margherita", Price=389,Quantity=3,Type="Non-Veg",Pic="/images/Pizza1.jpeg"},
+            new PizzaWithPic{Id=2,Name="Ultimate Tandoori Veggie", Price=609,Quantity=2,Type="Veg" ,Pic="/images/Pizza2.jpeg"}
+        };
+        [HttpGet]
+        public IActionResult Index()
+        {
+            //ViewBag.Pizzas = pizzas;
+            //return View();
+            return View(pizzas);
+        }
+        [HttpGet]
+        public IActionResult Create()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult Create(PizzaWithPic pizza)
+        {
+            pizza.Pic = "/images/" + pizza.Pic;
+            pizzas.Add(pizza);
+            return RedirectToAction("Index");
+        }
+    }
+}
+------------------
+for create view
+
+
+@model PizzaStoreApp.Models.PizzaWithPic
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>Pizza</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Id" class="control-label"></label>
+                <input asp-for="Id" class="form-control" />
+                <span asp-validation-for="Id" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Quantity" class="control-label"></label>
+                <input asp-for="Quantity" class="form-control" />
+                <span asp-validation-for="Quantity" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Price" class="control-label"></label>
+                <input asp-for="Price" class="form-control" />
+                <span asp-validation-for="Price" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Type" class="control-label"></label>
+                <input asp-for="Type" class="form-control" />
+                <span asp-validation-for="Type" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Pic" class="control-label"></label>
+                <input type="file" asp-for="Pic" class="form-control" />
+                <span asp-validation-for="Pic" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+--------------------------------------------------------------
+details code
+
+
+
+@model PizzaStoreApp.Models.PizzaWithPic
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>PizzaWithPic</h4>
+    <hr />
+    <dl class="row">
+       <img src="@Model.Pic" alt="No pic for this pizza" height="400" width="300" />
+       <hr />
+        
+      
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Quantity)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Quantity)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Price)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Price)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Type)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Type)
+        </dd>
+    </dl>
+</div>
+<div>
+    @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
+    <a asp-action="Index">Back to List</a>
+</div>
+---------------------
+new pizzacontroller
+
+using Microsoft.AspNetCore.Mvc;
+using PizzaStoreApp.Models;
+using PIzzaStoreModelLibrary;
+
+namespace PizzaStoreApp.Controllers
+{
+    public class PizzaController : Controller
+    {
+        static List<PizzaWithPic> pizzas = new List<PizzaWithPic>()
+        {
+            new PizzaWithPic{Id=1,Name="Schezwan Margherita", Price=389,Quantity=3,Type="Non-Veg",Pic="/images/Pizza1.jpeg"},
+            new PizzaWithPic{Id=2,Name="Ultimate Tandoori Veggie", Price=609,Quantity=2,Type="Veg" ,Pic="/images/Pizza2.jpeg"}
+        };
+        [HttpGet]
+        public IActionResult Index()
+        {
+            //ViewBag.Pizzas = pizzas;
+            //return View();
+            return View(pizzas);
+        }
+        [HttpGet]
+        public IActionResult Details(int id)
+        {
+            Pizza pizza = pizzas.SingleOrDefault(x => x.Id == id);
+            return View(pizza);
+        }
+
+
+        [HttpGet]
+        public IActionResult Create()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult Create(PizzaWithPic pizza)
+        {
+            pizza.Pic = "/images/" + pizza.Pic;
+            pizzas.Add(pizza);
+            return RedirectToAction("Index");
+        }
+    }
+}
+------------------------
+change pizzawithpic
+
+using PIzzaStoreModelLibrary;
+
+namespace PizzaStoreApp.Models
+{
+    public class PizzaWithPic :Pizza
+    {
+        public string? Pic { get; set; }
+        public override bool Equals(object? obj)
+        {
+            return ((PizzaWithPic)obj).Id== Id;
+        }
+    }
+}
+------------------------------
+
+------------------------
+namespace PizzaStoreApp.Interfaces
+{
+ 
+    public interface IRepository<K, T>
+    {
+        List<T> GetAll();
+        T GetById(K key);
+        T Add(T item);
+        T Update(T item);
+        T Delete(K key);
+
+    }
+}
+-----------------------------------------------
+using PizzaStoreApp.Models;
+using PIzzaStoreModelLibrary;
+
+namespace PizzaStoreApp.Interfaces
+{
+    public interface IPizzaService
+    {
+        public ICollection<PizzaWithPic> GetPizzasByRange(int min, int max);
+        public ICollection<PizzaWithPic> GetPizzaByType(string type);
+    }
+}
+-------------------------------------------------
+using PizzaStoreApp.Models;
+using PIzzaStoreModelLibrary;
+
+namespace PizzaStoreApp.Interfaces
+{
+    public interface IManagePizzaService
+    {
+        PizzaWithPic AddPizza(PizzaWithPic pizza);
+        PizzaWithPic UpdatePizzaPrice(PizzaWithPic pizza);
+        PizzaWithPic UpdatePizzaQuantity(PizzaWithPic pizza);
+
+    }
+}
+
+--------------------------------------------------
+using PizzaStoreApp.Exceptions;
+using PizzaStoreApp.Interfaces;
+using PizzaStoreApp.Models;
+using PIzzaStoreModelLibrary;
+
+namespace PizzaStoreApp.Repositories
+{
+    public class PizzaRepository :IRepository<int, PizzaWithPic>
+    {
+        static List<PizzaWithPic> pizzas = new List<PizzaWithPic>()
+        {
+            new PizzaWithPic{Id=1,Name="Schezwan Margherita", Price=389,Quantity=3,Type="Non-Veg",Pic="/images/Pizza1.jpeg"},
+            new PizzaWithPic{Id=2,Name="Ultimate Tandoori Veggie", Price=609,Quantity=2,Type="Veg" ,Pic="/images/Pizza2.jpeg"}
+        };
+        public PizzaWithPic Add(PizzaWithPic item)
+        {
+            if (item == null)
+                throw new ArgumentNullException("No Pizza object present");
+            item.Id = GeterateIndex();
+            pizzas.Add(item);
+            return item;
+        }
+
+        private int GeterateIndex()
+        {
+            int id = pizzas.Count;
+            return ++id;
+        }
+
+        public PizzaWithPic Delete(int key)
+        {
+            PizzaWithPic pizza = GetById(key);
+            pizzas.Remove(pizza);//How will it compare the pizza object???
+            return pizza;
+        }
+
+        public List<PizzaWithPic> GetAll()
+        {
+            if (pizzas.Count == 0)
+                throw new PizzaStackEmptyException();
+            return pizzas;
+        }
+
+        public PizzaWithPic GetById(int key)
+        {
+            PizzaWithPic pizza = pizzas.FirstOrDefault(p => p.Id == key);//LINQ -> Language Integrated Query
+            if (pizza == null)
+                throw new InvalidOperationException("No pizza with id " + key);
+            return pizza;
+        }
+
+        public PizzaWithPic Update(PizzaWithPic item)
+        {
+            PizzaWithPic pizza = GetById(item.Id);
+            pizza.Name = item.Name;
+            pizza.Price = item.Price;
+            pizza.Quantity = item.Quantity;
+            pizza.Type = item.Type;
+            return pizza;
+        }
+    }
+}
+-----------------------------------------------------------
+using PizzaStoreApp.Exceptions;
+using PizzaStoreApp.Interfaces;
+using PizzaStoreApp.Models;
+using PIzzaStoreModelLibrary;
+
+namespace PizzaStoreApp.Services
+{
+    public class PizzaServicecs : IPizzaService, IManagePizzaService
+    {
+        private readonly IRepository<int, PizzaWithPic> _repository;
+
+        public PizzaServicecs(IRepository<int,PizzaWithPic> repository) {
+            _repository = repository;
+        }
+        public PizzaWithPic AddPizza(PizzaWithPic pizza)
+        {
+            pizza.Pic = "/images/" + pizza.Pic;
+            var result = _repository.Add(pizza);
+            return result;
+            
+        }
+        #region GetPizzaByType
+        /// <summary>
+        /// This method will get the pizzas of the type that you provide(Veg/Non-Veg)
+        /// </summary>
+        /// <param name="type">Veg/Non-Veg</param>
+        /// <returns></returns>
+        /// <exception cref="PizzaStackEmptyException"></exception>
+        /// <exception cref="InvalidPizzaTypeException"></exception>
+        public ICollection<PizzaWithPic> GetPizzaByType(string type)
+        {
+            var pizzas = _repository.GetAll();
+            if (type == "Veg" || type == "Non-Veg")
+            {
+                var typeSpecificPizza = pizzas.Where(p => p.Type == type).ToList();
+                if (typeSpecificPizza.Count == 0)
+                    throw new PizzaStackEmptyException();
+                return typeSpecificPizza;
+            }
+            throw new InvalidPizzaTypeException();
+        }
+        #endregion
+
+        #region GetPizzaWithRange
+        /// <summary>
+        /// Given the range gets all teh pizza within teh range
+        /// </summary>
+        /// <param name="min"></param>
+        /// <param name="max"></param>
+        /// <returns></returns>
+        /// <exception cref="PizzaStackEmptyException"></exception>
+        /// <exception cref="InValidPizzaPriceRangeException"></exception>
+        public ICollection<PizzaWithPic> GetPizzasByRange(int min, int max)
+        {
+            var pizzas = _repository.GetAll();
+            if (min >= 00 || max > 0)
+            {
+                var pizzasInRange = pizzas.Where(p => p.Price >= min && p.Price <= max).ToList();
+                if (pizzasInRange.Count == 0)
+                    throw new PizzaStackEmptyException();
+                return pizzasInRange;
+            }
+            throw new InValidPizzaPriceRangeException();
+        }
+        #endregion
+
+        #region UpdatePizzaPrice
+        /// <summary>
+        /// Update the pice of the pizza
+        /// </summary>
+        /// <param name="pizza">the pizza object with the updated price and id</param>
+        /// <returns>Updated pizza object</returns>
+        /// <exception cref="PizzaStackEmptyException"></exception>
+        public PizzaWithPic UpdatePizzaPrice(PizzaWithPic pizza)
+        {
+            var myPizza = _repository.GetById(pizza.Id);
+            if (myPizza == null)
+                throw new PizzaStackEmptyException();
+            myPizza.Price = pizza.Price;
+            myPizza = _repository.Update(myPizza);
+            return myPizza;
+        }
+        #endregion
+
+        #region UpdatePizzaQuantity
+        /// <summary>
+        /// Updats quantity of the pizza
+        /// </summary>
+        /// <param name="pizza">the pizza object with the updated quantity and id</param>
+        /// <returns>Updated pizza object</returns>
+        /// <exception cref="PizzaStackEmptyException"></exception>
+        public PizzaWithPic UpdatePizzaQuantity(PizzaWithPic pizza)
+        {
+            var myPizza = _repository.GetById(pizza.Id);
+            if (myPizza == null)
+                throw new PizzaStackEmptyException();
+            myPizza.Quantity = pizza.Quantity;
+            myPizza = _repository.Update(myPizza);
+            return myPizza;
+        }
+        #endregion
+    }
+}
+
+------------------------------------------------
+namespace PizzaStoreApp.Models.DTO
+{
+    public class PriceRangeDTO
+    {
+        public int Minimum { get; set; }
+        public int Maximum { get; set; }
+        public ICollection<PizzaWithPic> SearchedPizzas { get; set; }
+    }
+}
+--------------------------------------------
+using Microsoft.AspNetCore.Mvc;
+using PizzaStoreApp.Interfaces;
+using PizzaStoreApp.Models;
+using PizzaStoreApp.Models.DTO;
+
+namespace PizzaStoreApp.Controllers
+{
+    public class SearchPizzaController : Controller
+    {
+        private readonly IPizzaService _pizzaService;
+
+        public SearchPizzaController(IPizzaService pizzaService)
+        {
+            _pizzaService = pizzaService;
+        }
+        [HttpGet]
+        public IActionResult GetPizzas()
+        {
+            PriceRangeDTO priceRange = new PriceRangeDTO
+            {
+                SearchedPizzas = new List<PizzaWithPic>()
+            };
+            return View(priceRange);
+        }
+        [HttpPost]
+        public IActionResult GetPizzas(PriceRangeDTO priceRange)
+        {
+            var pizzas = _pizzaService.GetPizzasByRange(priceRange.Minimum, priceRange.Maximum);
+            priceRange.SearchedPizzas = pizzas;
+            return View(priceRange);
+        }
+    }
+}
+-----------------------------------------------------------
+@model PizzaStoreApp.Models.DTO.PriceRangeDTO
+
+@{
+    ViewData["Title"] = "GetPizzas";
+}
+<h1>Search Pizza</h1>
+<form asp-action="GetPizzas">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="form-group">
+        <label asp-for="Minimum" class="control-label"></label>
+        <input asp-for="Minimum"class="form-control" />
+        <span asp-validation-for="Minimum" class="text-danger"></span>
+        <label asp-for="Maximum" class="control-label"></label>
+        <input asp-for="Maximum" class="form-control" />
+        <span asp-validation-for="Maximum" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <input type="submit" value="Search" class="btn btn-primary" />
+    </div>
+</form>
+<hr />
+@foreach (var pizza in Model.SearchedPizzas)
+{
+    <div class="card" style="width: 18rem;float:left;margin:2px;">
+        <h2 style="text-align:center;" class="alert alert-info">
+            @pizza.Name
+            <span><a asp-controller="Pizza" asp-action="Delete" asp-route-id="@pizza.Id" type="button" class="btn btn-danger">-</a></span>
+        </h2>
+        <img height="200" width="200" class="card-img-top" src="@pizza.Pic" alt="Card image cap">
+        <div class="card-body">
+            <p class="card-text">The Pizza is @pizza.Type and only @pizza.Quantity left</p>
+        </div>
+        <a asp-controller="Pizza" asp-action="Details" asp-route-id="@pizza.Id" class="btn btn-primary">View Details</a>
+    </div>
+}
+
+
+@section Scripts {
+    @{
+    await Html.RenderPartialAsync("_ValidationScriptsPartial");
+}
+}
+
+
+
+--------------------------
+homework read and understand
+
+Datatypes, Objects, Static, Exception handling, Collections, Generics
+
+ like 1
+
+
+
+
+

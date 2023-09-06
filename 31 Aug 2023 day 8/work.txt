@@ -1,0 +1,1032 @@
+update
+----------------------------------------
+Npgsql.EntityFrameworkCore.PostgreSQL -> 6.0.8
+Microsoft.EntityFrameworkCore.Design -> 6.0.21
+Microsoft.EntityFrameworkCore.Tools -> 6.0.21
+Microsoft.EntityFrameworkCore -> 6.0.21
+
+=====================================================
+
+namespace CompanyApplication.Models
+{
+    public class Employee
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public DateTime DateOfBirth { get; set; }
+        public string Phone { get; set; }
+        public float Salary { get; set; }
+    }
+}
+================================================
+appsettings.json
+---------------------------------------------
+{
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information",
+      "Microsoft.AspNetCore": "Warning"
+    }
+  },
+  "ConnectionStrings": {
+    "DefaultConnection": "Host=localhost;Port=;Database=;UserId=;Password=;"
+  },
+  "AllowedHosts": "*"
+}
+=====================================================
+program.cs
+----------------------------------------
+using CompanyApplication.Contexts;
+using Microsoft.EntityFrameworkCore;
+
+namespace CompanyApplication
+{
+    public class Program
+    {
+        public static void Main(string[] args)
+        {
+            var builder = WebApplication.CreateBuilder(args);
+
+            // Add services to the container.
+            builder.Services.AddControllersWithViews();
+
+
+            #region AddingConetexts
+            builder.Services.AddDbContext<CompanyContext>(opts =>
+            {
+                opts.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"));
+            });
+            #endregion
+
+
+            var app = builder.Build();
+
+            // Configure the HTTP request pipeline.
+            if (!app.Environment.IsDevelopment())
+            {
+                app.UseExceptionHandler("/Home/Error");
+            }
+            app.UseStaticFiles();
+
+            app.UseRouting();
+
+            app.UseAuthorization();
+
+            app.MapControllerRoute(
+                name: "default",
+                pattern: "{controller=Home}/{action=Index}/{id?}");
+
+            app.Run();
+        }
+    }
+}
+===================================================
+CompanyContext
+--------------------------------------
+using CompanyApplication.Models;
+using Microsoft.EntityFrameworkCore;
+
+namespace CompanyApplication.Contexts
+{
+    public class CompanyContext: DbContext
+    {
+        public CompanyContext(DbContextOptions options):base(options)//constructor chaining
+        {
+            
+        }
+        //public DbSet<Employee> Employees { get; set; }//"Employees"
+        public DbSet<Employee> employees { get; set; }//employees
+    }
+}
+=======================================================
+tools - nugetpaxkage manager - package manager console
+-------------------------------------------------
+add-migration Initial
+
+
+update-database
+
+
+==================================
+model- department
+----------------------------------------
+using System.ComponentModel.DataAnnotations;
+
+namespace CompanyApplication.Models
+{
+    public class Department
+    {
+        [Key]
+        public int DepartmentNumber { get; set; }
+        public string Name { get; set; }
+    }
+}
+==========================================================
+model-Employees
+---------------------------------------------
+
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace CompanyApplication.Models
+{
+    public class Employee
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public DateTime DateOfBirth { get; set; }
+        public string Phone { get; set; }
+        public float Salary { get; set; }
+        public int DepartmnetId { get; set; }
+
+        [ForeignKey("DepartmnetId")]
+        public Department Department  { get; set; }
+    }
+}
+========================================
+Context-DbContext
+---------------------------------------------
+using CompanyApplication.Models;
+using Microsoft.EntityFrameworkCore;
+
+namespace CompanyApplication.Contexts
+{
+    public class CompanyContext: DbContext
+    {
+        public CompanyContext(DbContextOptions options):base(options)//constructor chaining
+        {
+            
+        }
+        //public DbSet<Employee> Employees { get; set; }//"Employees"
+        public DbSet<Employee> employees { get; set; }//employees
+        public DbSet<Department> departments { get; set; }
+    }
+}
+
+=======================================
+tools - nugetpaxkage manager - package manager console
+--------------------------------------------------------------
+add-migration DepartmentUpdate
+
+update-database
+=====================
+delete migration
+-----------------------------
+update-database privious migration name
+==============================
+
+=======================
+new project
+-----------------
+Start projecta nd do from the start
+Doctor
+Patient
+Appoitment
+================
+DepartmentController
+-------------------------------------------------
+using CompanyApplication.Interfaces;
+using CompanyApplication.Models;
+using Microsoft.AspNetCore.Mvc;
+
+namespace CompanyApplication.Controllers
+{
+    public class DepartmentController : Controller
+    {
+        private readonly IRepository<int, Department> _repository;
+
+        public DepartmentController(IRepository<int,Department> repository)
+        {
+            _repository = repository;
+        }
+        public IActionResult Index()
+        {
+            return View(_repository.GetAll());
+        }
+        [HttpGet]
+        public IActionResult Add()
+        { 
+            return View();
+        }
+        [HttpPost]
+        public IActionResult Add(Department department)
+        {
+            _repository.Add(department);
+            return RedirectToAction("Index");
+        }
+    }
+}
+==========================================================
+EmployeeRepository
+---------------------------------------
+using CompanyApplication.Contexts;
+using CompanyApplication.Interfaces;
+using CompanyApplication.Models;
+using Microsoft.EntityFrameworkCore;
+
+
+namespace CompanyApplication.Repositories
+{
+    public class EmployeeRepository : IRepository<int, Employee>
+    {
+        private readonly CompanyContext _context;
+
+        public EmployeeRepository(CompanyContext context)
+        {
+            _context = context;
+        }
+        public Employee Add(Employee entity)
+        {
+            _context.employees.Add(entity);
+            _context.SaveChanges();
+            return entity;
+        }
+
+        public Employee Delete(int key)
+        {
+            var employee = Get(key);
+            if (employee != null)
+            {
+                _context.employees.Remove(employee);
+                _context.SaveChanges();
+                return employee;
+            }
+            return employee;
+        }
+
+        public Employee Get(int key)
+        {
+            var employee = _context.employees.FirstOrDefault(e => e.Id == key);
+            return employee;
+        }
+
+        public ICollection<Employee> GetAll()
+        {
+            return _context.employees.ToList();
+        }
+
+        public Employee Update(Employee entity)
+        {
+            _context.Entry<Employee>(entity).State = EntityState.Modified;
+            _context.SaveChanges();
+            return entity;
+        }
+    }
+}
+============================================================
+Program
+-------------------------------------------
+using CompanyApplication.Contexts;
+using CompanyApplication.Interfaces;
+using CompanyApplication.Models;
+using CompanyApplication.Repositories;
+using Microsoft.EntityFrameworkCore;
+
+namespace CompanyApplication
+{
+    public class Program
+    {
+        public static void Main(string[] args)
+        {
+            var builder = WebApplication.CreateBuilder(args);
+
+            // Add services to the container.
+            builder.Services.AddControllersWithViews();
+
+
+            #region AddingConetexts
+            builder.Services.AddDbContext<CompanyContext>(opts =>
+            {
+                opts.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"));
+            });
+            #endregion
+            #region AddingUserderfinedServices
+            builder.Services.AddScoped<IRepository<int, Department>, DepartmentRepository>();
+            builder.Services.AddScoped<IRepository<int, Employee>, EmployeeRepository>();
+            #endregion
+
+
+            var app = builder.Build();
+
+            // Configure the HTTP request pipeline.
+            if (!app.Environment.IsDevelopment())
+            {
+                app.UseExceptionHandler("/Home/Error");
+            }
+            app.UseStaticFiles();
+
+            app.UseRouting();
+
+            app.UseAuthorization();
+
+            app.MapControllerRoute(
+                name: "default",
+                pattern: "{controller=Home}/{action=Index}/{id?}");
+
+            app.Run();
+        }
+    }
+}
+============================================
+rmployee repository
+------------------------------
+using CompanyApplication.Contexts;
+using CompanyApplication.Interfaces;
+using CompanyApplication.Models;
+using Microsoft.EntityFrameworkCore;
+
+
+namespace CompanyApplication.Repositories
+{
+    public class EmployeeRepository : IRepository<int, Employee>
+    {
+        private readonly CompanyContext _context;
+
+        public EmployeeRepository(CompanyContext context)
+        {
+            _context = context;
+        }
+        public Employee Add(Employee entity)
+        {
+            _context.employees.Add(entity);
+            _context.SaveChanges();
+            return entity;
+        }
+
+        public Employee Delete(int key)
+        {
+            var employee = Get(key);
+            if (employee != null)
+            {
+                _context.employees.Remove(employee);
+                _context.SaveChanges();
+                return employee;
+            }
+            return employee;
+        }
+
+        public Employee Get(int key)
+        {
+            var employee = _context.employees.FirstOrDefault(e => e.Id == key);
+            return employee;
+        }
+
+        public ICollection<Employee> GetAll()
+        {
+            return _context.employees.ToList();
+        }
+
+        public Employee Update(Employee entity)
+        {
+            _context.Entry<Employee>(entity).State = EntityState.Modified;
+            _context.SaveChanges();
+            return entity;
+        }
+    }
+}
+======================================================
+employee controller
+-------------------------
+using CompanyApplication.Interfaces;
+using CompanyApplication.Models;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Drawing.Printing;
+
+namespace CompanyApplication.Controllers
+{
+    public class EmployeeController : Controller
+    {
+        private readonly IRepository<int, Employee> _repository;
+        private readonly IRepository<int, Department> _departmentRepo;
+
+        public EmployeeController(IRepository<int,Employee> repository,IRepository<int,Department> departmentRepo) 
+        {
+            _repository = repository;
+            _departmentRepo = departmentRepo;
+        }
+        public IActionResult Index()
+        {
+            var employees = _repository.GetAll();
+            return View(employees);
+        }
+
+        public IActionResult Create()
+        {
+            ViewBag.departmentList = GetDepartments();
+            return View();
+        }
+        [HttpPost]
+        public IActionResult Create(Employee employee)
+        {
+            ViewBag.departmentList = GetDepartments();
+            _repository.Add(employee);
+            return RedirectToAction("Index");
+        }
+        private List<SelectListItem> GetDepartments()
+        {
+            List<SelectListItem> departmentList = new List<SelectListItem>();
+            var departments = _departmentRepo.GetAll();
+            foreach (var item in departments)
+            {
+                departmentList.Add(
+                    new SelectListItem
+                    { Text = item.Name, Value = item.DepartmentNumber.ToString() }
+                    );
+            }
+            return departmentList;
+        }
+    }
+}
+=================================================
+program.cs
+------------------------
+using CompanyApplication.Contexts;
+using CompanyApplication.Interfaces;
+using CompanyApplication.Models;
+using CompanyApplication.Repositories;
+using Microsoft.EntityFrameworkCore;
+
+namespace CompanyApplication
+{
+    public class Program
+    {
+        public static void Main(string[] args)
+        {
+            var builder = WebApplication.CreateBuilder(args);
+
+            // Add services to the container.
+            builder.Services.AddControllersWithViews();
+
+
+            #region AddingConetexts
+            builder.Services.AddDbContext<CompanyContext>(opts =>
+            {
+                opts.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"));
+            });
+            #endregion
+            #region AddingUserderfinedServices
+            builder.Services.AddScoped<IRepository<int, Department>, DepartmentRepository>();
+            builder.Services.AddScoped<IRepository<int, Employee>, EmployeeRepository>();
+            #endregion
+
+
+            var app = builder.Build();
+            AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);    // change
+
+
+            // Configure the HTTP request pipeline.
+            if (!app.Environment.IsDevelopment())
+            {
+                app.UseExceptionHandler("/Home/Error");
+            }
+            app.UseStaticFiles();
+
+            app.UseRouting();
+
+            app.UseAuthorization();
+
+            app.MapControllerRoute(
+                name: "default",
+                pattern: "{controller=Home}/{action=Index}/{id?}");
+
+            app.Run();
+        }
+    }
+}
+==========================
+create.cshtml employee controller
+-----------------------------------------
+@model CompanyApplication.Models.Employee
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>Employee</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            @*< div class="form-group">
+                <label asp-for="Id" class="control-label"></label>
+                <input asp-for="Id" class="form-control" />
+                <span asp-validation-for="Id" class="text-danger"></span>
+            </div> *@
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DateOfBirth" class="control-label"></label>
+                <input asp-for="DateOfBirth" class="form-control" />
+                <span asp-validation-for="DateOfBirth" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Phone" class="control-label"></label>
+                <input asp-for="Phone" class="form-control" />
+                <span asp-validation-for="Phone" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Salary" class="control-label"></label>
+                <input asp-for="Salary" class="form-control" />
+                <span asp-validation-for="Salary" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DepartmnetId" class="control-label"></label>
+               @*  <input asp-for="DepartmnetId" class="form-control" /> 
+               <select>
+                   @foreach (var item in ViewBag.departmentList)
+                    {
+                        <option value="@item.Value">@item.Text</option>
+                    }
+                </select>*@
+                <select asp-for="DepartmnetId" class="form-control" asp-items="@ViewBag.departmentList"></select>
+                <span asp-validation-for="DepartmnetId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+========================================
+Index.cshtml employee controller
+------------------------------------------
+@model IEnumerable<CompanyApplication.Models.Employee>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DateOfBirth)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Phone)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Salary)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DepartmnetId)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DateOfBirth)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Phone)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Salary)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DepartmnetId)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+===============================================================
+using CompanyApplication.Interfaces;
+using CompanyApplication.Models;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using System.Diagnostics;
+
+namespace CompanyApplication.Controllers
+{
+    public class DepartmentController : Controller
+    {
+        private readonly IRepository<int, Department> _repository;
+
+        public DepartmentController(IRepository<int, Department> repository)
+        {
+            _repository = repository;
+        }
+        //List<Department> departments = new List<Department>();
+        public IActionResult Index()
+        {
+            return View(_repository.GetAll());
+        }
+        [HttpGet]
+        public IActionResult Add()
+        {
+            return View();
+        }
+        [HttpPost]
+        public IActionResult Add(Department department)
+        {
+            _repository.Add(department);
+            return RedirectToAction("Index");
+        }
+        #region update
+        [HttpGet]
+        public IActionResult Update(int id)
+        {
+            var department = _repository.Get(id);
+            return View(department);
+        }
+        [HttpPost]
+        public IActionResult Update(int id, Department department)
+        {
+            ViewBag.Message = "";
+            try
+            {
+                _repository.Update(department);
+
+                return RedirectToAction("Index");
+            }
+            catch (Exception e) 
+            {
+                Debug.WriteLine(e.Message);
+                ViewBag.Message = "department not found";
+            }
+            return View(department);
+        }
+        #endregion
+        #region delete
+        [HttpGet]
+        public IActionResult Delete(int id)
+        {
+           var department = _repository.Get(id);
+            return View(department);
+        }
+        [HttpPost]
+        public IActionResult Delete(int id, Department department)
+        {
+
+            ViewBag.Message = "";
+            try
+            {
+                _repository.Delete(id);
+
+                return RedirectToAction("Index");
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                ViewBag.Message = "Unable to delete department";
+
+            }
+            return View(department);
+        }
+        #endregion
+
+
+
+    }
+}
+==========================================================
+using CompanyApplication.Interfaces;
+using CompanyApplication.Models;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Diagnostics;
+using System.Drawing.Printing;
+
+namespace CompanyApplication.Controllers
+{
+    public class EmployeeController : Controller
+    {
+        private readonly IRepository<int, Employee> _repository;
+        private readonly IRepository<int, Department> _departmentRepo;
+
+        public EmployeeController(IRepository<int, Employee> repository, IRepository<int, Department> departmentRepo)
+        {
+            _repository = repository;
+            _departmentRepo = departmentRepo;
+        }
+        //List<Employee> employees = new List<Employee>();
+        public IActionResult Index()
+        {
+            var employees = _repository.GetAll();
+            return View(employees);
+        }
+
+        public IActionResult Create()
+        {
+            ViewBag.departmentList = GetDepartments();
+            return View();
+        }
+        [HttpPost]
+        public IActionResult Create(Employee employee)
+        {
+            ViewBag.departmentList = GetDepartments();
+            _repository.Add(employee);
+            return RedirectToAction("Index");
+        }
+        private List<SelectListItem> GetDepartments()
+        {
+            List<SelectListItem> departmentList = new List<SelectListItem>();
+            var departments = _departmentRepo.GetAll();
+            foreach (var item in departments)
+            {
+                departmentList.Add(
+                    new SelectListItem
+                    { Text = item.Name, Value = item.DepartmentNumber.ToString() }
+                    );
+            }
+            return departmentList;
+        }
+
+       
+        #region update
+        [HttpGet]
+        public IActionResult Update(int id)
+        {
+            var employee = _repository.Get(id);
+            return View(employee);
+        }
+        [HttpPost]
+        public IActionResult Update(int id, Employee employee)
+        {
+            ViewBag.Message = "";
+            try
+            {
+                _repository.Update(employee);
+
+                return RedirectToAction("Index");
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                ViewBag.Message = "Employee not found";
+            }
+            return View(employee);
+        }
+        #endregion
+        #region delete
+        [HttpGet]
+        public IActionResult Delete(int id)
+        {
+            var employee = _repository.Get(id);
+            return View(employee);
+        }
+        [HttpPost]
+        public IActionResult Delete(int id, Employee employee)
+        {
+
+            ViewBag.Message = "";
+            try
+            {
+                _repository.Delete(id);
+
+                return RedirectToAction("Index");
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                ViewBag.Message = "Unable to delete employee";
+
+            }
+            return View(employee);
+        }
+        #endregion
+
+    }
+}
+=======================================================
+employee-update
+--------------------------
+
+@model CompanyApplication.Models.Employee
+
+@{
+    ViewData["Title"] = "Update";
+}
+
+<h1>Update</h1>
+
+<h4>Employee</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Update">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+           @*  <div class="form-group">
+                <label asp-for="Id" class="control-label"></label>
+                <input asp-for="Id" class="form-control" />
+                <span asp-validation-for="Id" class="text-danger"></span>
+            </div> *@
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DateOfBirth" class="control-label"></label>
+                <input asp-for="DateOfBirth" class="form-control" />
+                <span asp-validation-for="DateOfBirth" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Phone" class="control-label"></label>
+                <input asp-for="Phone" class="form-control" />
+                <span asp-validation-for="Phone" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Salary" class="control-label"></label>
+                <input asp-for="Salary" class="form-control" />
+                <span asp-validation-for="Salary" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DepartmnetId" class="control-label"></label>
+                <input asp-for="DepartmnetId" class="form-control" />
+                <span asp-validation-for="DepartmnetId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+=========================================================
+employee- delete
+---------------------------------------
+@model CompanyApplication.Models.Employee
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<h1>Delete</h1>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>Employee</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Id)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Id)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.DateOfBirth)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.DateOfBirth)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Phone)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Phone)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Salary)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Salary)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.DepartmnetId)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.DepartmnetId)
+        </dd>
+    </dl>
+    
+    <form asp-action="Delete">
+        <input type="submit" value="Delete" class="btn btn-danger" /> |
+        <a asp-action="Index">Back to List</a>
+    </form>
+</div>
+===============================================================
+department-- update
+-----------------------
+@model CompanyApplication.Models.Department
+
+@{
+    ViewData["Title"] = "Update";
+}
+
+<h1>Update</h1>
+
+<h4>Department</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Update">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            @* <div class="form-group">
+                <label asp-for="DepartmentNumber" class="control-label"></label>
+                <input asp-for="DepartmentNumber" class="form-control" />
+                <span asp-validation-for="DepartmentNumber" class="text-danger"></span>
+            </div> *@
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+======================
+department --- delete
+-------------------
+@model CompanyApplication.Models.Department
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<h1>Delete</h1>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>Department</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.DepartmentNumber)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.DepartmentNumber)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+    </dl>
+    
+    <form asp-action="Delete">
+        <input type="submit" value="Delete" class="btn btn-danger" /> |
+        <a asp-action="Index">Back to List</a>
+    </form>
+</div>
+
+==========================================================
+Include the edit and delete functionalities for both employee and department
+
+

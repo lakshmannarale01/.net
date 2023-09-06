@@ -1,0 +1,93 @@
+is_global = true
+build_property.TargetFramework = net6.0
+build_property.TargetPlatformMinVersion = 
+build_property.UsingMicrosoftNETSdkWeb = true
+build_property.ProjectTypeGuids = 
+build_property.InvariantGlobalization = 
+build_property.PlatformNeutralAssembly = 
+build_property.EnforceExtendedAnalyzerRules = 
+build_property._SupportedPlatformList = Linux,macOS,Windows
+build_property.RootNamespace = DoctorApp
+build_property.RootNamespace = DoctorApp
+build_property.ProjectDir = C:\deva_Lakshman\.net training\.net\day 9 1 Sept 2023\DoctorSolution\DoctorApp\
+build_property.RazorLangVersion = 6.0
+build_property.SupportLocalizedComponentNames = 
+build_property.GenerateRazorMetadataSourceChecksumAttributes = 
+build_property.MSBuildProjectDirectory = C:\deva_Lakshman\.net training\.net\day 9 1 Sept 2023\DoctorSolution\DoctorApp
+build_property._RazorSourceGeneratorDebug = 
+
+[C:/deva_Lakshman/.net training/.net/day 9 1 Sept 2023/DoctorSolution/DoctorApp/Views/Appointment/BookAppointment.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQXBwb2ludG1lbnRcQm9va0FwcG9pbnRtZW50LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/deva_Lakshman/.net training/.net/day 9 1 Sept 2023/DoctorSolution/DoctorApp/Views/Appointment/cancelAppointment.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQXBwb2ludG1lbnRcY2FuY2VsQXBwb2ludG1lbnQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/deva_Lakshman/.net training/.net/day 9 1 Sept 2023/DoctorSolution/DoctorApp/Views/Appointment/CheckAvailability.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQXBwb2ludG1lbnRcQ2hlY2tBdmFpbGFiaWxpdHkuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/deva_Lakshman/.net training/.net/day 9 1 Sept 2023/DoctorSolution/DoctorApp/Views/Doctor/Add.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRG9jdG9yXEFkZC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/deva_Lakshman/.net training/.net/day 9 1 Sept 2023/DoctorSolution/DoctorApp/Views/Doctor/Delete.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRG9jdG9yXERlbGV0ZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/deva_Lakshman/.net training/.net/day 9 1 Sept 2023/DoctorSolution/DoctorApp/Views/Doctor/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRG9jdG9yXEluZGV4LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/deva_Lakshman/.net training/.net/day 9 1 Sept 2023/DoctorSolution/DoctorApp/Views/Doctor/UpdateDoctorExp.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRG9jdG9yXFVwZGF0ZURvY3RvckV4cC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/deva_Lakshman/.net training/.net/day 9 1 Sept 2023/DoctorSolution/DoctorApp/Views/Doctor/UpdateDoctorPhone.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRG9jdG9yXFVwZGF0ZURvY3RvclBob25lLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/deva_Lakshman/.net training/.net/day 9 1 Sept 2023/DoctorSolution/DoctorApp/Views/Doctor/UpdateDoctorSpeciality.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRG9jdG9yXFVwZGF0ZURvY3RvclNwZWNpYWxpdHkuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/deva_Lakshman/.net training/.net/day 9 1 Sept 2023/DoctorSolution/DoctorApp/Views/Home/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/deva_Lakshman/.net training/.net/day 9 1 Sept 2023/DoctorSolution/DoctorApp/Views/Home/Privacy.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxQcml2YWN5LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/deva_Lakshman/.net training/.net/day 9 1 Sept 2023/DoctorSolution/DoctorApp/Views/Patient/Add.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUGF0aWVudFxBZGQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/deva_Lakshman/.net training/.net/day 9 1 Sept 2023/DoctorSolution/DoctorApp/Views/Patient/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUGF0aWVudFxJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/deva_Lakshman/.net training/.net/day 9 1 Sept 2023/DoctorSolution/DoctorApp/Views/Patient/UpdatePatient.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUGF0aWVudFxVcGRhdGVQYXRpZW50LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/deva_Lakshman/.net training/.net/day 9 1 Sept 2023/DoctorSolution/DoctorApp/Views/Shared/Error.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXEVycm9yLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/deva_Lakshman/.net training/.net/day 9 1 Sept 2023/DoctorSolution/DoctorApp/Views/Shared/_ValidationScriptsPartial.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/deva_Lakshman/.net training/.net/day 9 1 Sept 2023/DoctorSolution/DoctorApp/Views/_ViewImports.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/deva_Lakshman/.net training/.net/day 9 1 Sept 2023/DoctorSolution/DoctorApp/Views/_ViewStart.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdTdGFydC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/deva_Lakshman/.net training/.net/day 9 1 Sept 2023/DoctorSolution/DoctorApp/Views/Shared/_Layout.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = b-q3m4jdqfcy
