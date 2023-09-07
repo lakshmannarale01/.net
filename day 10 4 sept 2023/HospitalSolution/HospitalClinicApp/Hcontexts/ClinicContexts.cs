@@ -61,7 +61,7 @@ namespace HospitalClinicApp.contexts
                     Email = "aaa@gmail.com",
                     Age = 22
                 }
-                );;
+                );
         }
 
     }

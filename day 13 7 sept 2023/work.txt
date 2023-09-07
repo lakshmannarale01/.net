@@ -1,0 +1,250 @@
+namespace UnderstandingStateManagmentApp.Models
+{
+    public class User
+    {
+        public string Username { get; set; }
+        public string Password { get; set; }
+    }
+}
+--------------------------------------------------------
+using UnderstandingStateManagmentApp.Models;
+
+namespace UnderstandingStateManagmentApp.Services
+{
+    public class UserService
+    {
+        List<User> users = new List<User>()
+        {
+        new User(){Username="Ramu",Password="1234"},
+        new User(){Username="Somu",Password="1122"}
+        };
+        public bool LoginCheck(User user)
+        {
+            var myUser = users.SingleOrDefault(u=>u.Username == user.Username && u.Password==user.Password);
+            if(myUser == null)
+                return false;
+            return true;
+        }
+    }
+}
+----------------------------------------------------------
+using UnderstandingStateManagmentApp.Services;
+
+namespace UnderstandingStateManagmentApp
+{
+    public class Program
+    {
+        public static void Main(string[] args)
+        {
+            var builder = WebApplication.CreateBuilder(args);
+
+            // Add services to the container.
+            builder.Services.AddControllersWithViews();
+            builder.Services.AddSession(opts =>
+            {
+                opts.IdleTimeout = TimeSpan.FromMinutes(5);
+            });
+
+            builder.Services.AddScoped<UserService>();
+
+            var app = builder.Build();
+
+            // Configure the HTTP request pipeline.
+            if (!app.Environment.IsDevelopment())
+            {
+                app.UseExceptionHandler("/Home/Error");
+            }
+            app.UseStaticFiles();
+
+            app.UseRouting();
+
+            app.UseSession();
+
+            app.UseAuthorization();
+
+            app.MapControllerRoute(
+                name: "default",
+                pattern: "{controller=User}/{action=Login}/{id?}");
+
+            app.Run();
+        }
+    }
+}
+------------------------------------------------------------------------------
+using Microsoft.AspNetCore.Mvc;
+using UnderstandingStateManagmentApp.Models;
+using UnderstandingStateManagmentApp.Services;
+
+namespace UnderstandingStateManagmentApp.Controllers
+{
+    public class UserController : Controller
+    {
+        private readonly UserService _userService;
+
+        public UserController(UserService userService) 
+        {
+            _userService = userService;
+        }
+        [HttpGet]
+        public IActionResult Login()
+        {
+            return View();
+        }
+        [HttpPost]
+        public IActionResult Login(User user)
+        {
+            var result = _userService.LoginCheck(user);
+            if(result)
+            {
+                HttpContext.Session.SetString("Username", user.Username);
+                return RedirectToAction("Index", "Home");
+            }
+              
+            ViewBag.ErrorMessage = "Invalid username or password";
+            return View(user);
+        }
+    }
+}
+--------------------------------------------------------------------------------
+@model UnderstandingStateManagmentApp.Models.User
+
+@{
+    ViewData["Title"] = "Login";
+}
+
+<h1>Login</h1>
+
+<h4>User</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Login">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Username" class="control-label"></label>
+                <input asp-for="Username" class="form-control" />
+                <span asp-validation-for="Username" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Password" class="control-label"></label>
+                <input type="password" asp-for="Password" class="form-control" />
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Login" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="alert alert-danger">
+    @ViewBag.ErrorMessage
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+-------------------------------------------------------------------------------------------
+using Microsoft.AspNetCore.Mvc;
+using System.Diagnostics;
+using UnderstandingStateManagmentApp.Models;
+
+namespace UnderstandingStateManagmentApp.Controllers
+{
+    public class HomeController : Controller
+    {
+        private readonly ILogger<HomeController> _logger;
+
+        public HomeController(ILogger<HomeController> logger)
+        {
+            _logger = logger;
+        }
+
+        public IActionResult Index()
+        {
+            try
+            {
+                ViewBag.User = HttpContext.Session.GetString("Username").ToString();
+            }
+            catch (Exception)
+            {
+                return RedirectToAction("Login","User");
+            } 
+            return View();
+        }
+
+        public IActionResult Privacy()
+        {
+            return View();
+        }
+
+        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+        public IActionResult Error()
+        {
+            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+    }
+}
+-----------------------------------------------------------------------------------------------
+Home-Indexcshtml
+
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome @ViewBag.User</h1>
+    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+</div>
+------------------------------------------------------------------------------------------------
+using Microsoft.AspNetCore.Mvc;
+
+namespace UnderstandingStateManagmentApp.Controllers
+{
+    public class ProfileController : Controller
+    {
+        [HttpGet]
+        public IActionResult UserProfile()
+        {
+            try
+            {
+                ViewBag.User = HttpContext.Session.GetString("Username").ToString();
+            }
+            catch (Exception)
+            {
+                return RedirectToAction("Login", "User");
+            }
+            return View();
+        }
+        [HttpGet]
+        public IActionResult UserLogout(string un)
+        {
+            HttpContext.Session.Clear();
+            return RedirectToAction("Login", "User");
+        }
+    }
+}
+---------------------------
+@model UnderstandingStateManagmentApp.Models.User
+
+@{
+    ViewData["Title"] = "UserProfile";
+}
+
+<h1>UserProfile</h1>
+
+<div>
+    <h4>User</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Username)
+        </dt>
+        <dd class = "col-sm-10">
+            <span>@ViewBag.User</span>
+        </dd>
+          <a asp-action="UserLogout" asp-controller="Profile" asp-route-un="@ViewBag.User" class="btn btn-primary">Logout</a>
+    </dl>
+</div>
+
