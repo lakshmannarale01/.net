@@ -14,11 +14,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\deva_Lakshman\\.net training\\.net\\23 aug 2023\\program\\PizzaStoreAppSolution\\PizzaStoreModelLibrary\\PizzaStoreModelLibrary.csproj",
+      "projectUniqueName": "C:\\deva_Lakshman\\.net training\\.net\\23 aug 2023 day 2\\program\\PizzaStoreAppSolution\\PizzaStoreModelLibrary\\PizzaStoreModelLibrary.csproj",
       "projectName": "PizzaStoreModelLibrary",
-      "projectPath": "C:\\deva_Lakshman\\.net training\\.net\\23 aug 2023\\program\\PizzaStoreAppSolution\\PizzaStoreModelLibrary\\PizzaStoreModelLibrary.csproj",
+      "projectPath": "C:\\deva_Lakshman\\.net training\\.net\\23 aug 2023 day 2\\program\\PizzaStoreAppSolution\\PizzaStoreModelLibrary\\PizzaStoreModelLibrary.csproj",
       "packagesPath": "C:\\Users\\lakshman.narale\\.nuget\\packages\\",
-      "outputPath": "C:\\deva_Lakshman\\.net training\\.net\\23 aug 2023\\program\\PizzaStoreAppSolution\\PizzaStoreModelLibrary\\obj\\",
+      "outputPath": "C:\\deva_Lakshman\\.net training\\.net\\23 aug 2023 day 2\\program\\PizzaStoreAppSolution\\PizzaStoreModelLibrary\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

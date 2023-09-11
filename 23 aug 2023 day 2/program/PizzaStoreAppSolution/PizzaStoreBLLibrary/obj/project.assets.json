@@ -52,11 +52,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\deva_Lakshman\\.net training\\.net\\23 aug 2023\\program\\PizzaStoreAppSolution\\PizzaStoreBLLibrary\\PizzaStoreBLLibrary.csproj",
+      "projectUniqueName": "C:\\deva_Lakshman\\.net training\\.net\\23 aug 2023 day 2\\program\\PizzaStoreAppSolution\\PizzaStoreBLLibrary\\PizzaStoreBLLibrary.csproj",
       "projectName": "PizzaStoreBLLibrary",
-      "projectPath": "C:\\deva_Lakshman\\.net training\\.net\\23 aug 2023\\program\\PizzaStoreAppSolution\\PizzaStoreBLLibrary\\PizzaStoreBLLibrary.csproj",
+      "projectPath": "C:\\deva_Lakshman\\.net training\\.net\\23 aug 2023 day 2\\program\\PizzaStoreAppSolution\\PizzaStoreBLLibrary\\PizzaStoreBLLibrary.csproj",
       "packagesPath": "C:\\Users\\lakshman.narale\\.nuget\\packages\\",
-      "outputPath": "C:\\deva_Lakshman\\.net training\\.net\\23 aug 2023\\program\\PizzaStoreAppSolution\\PizzaStoreBLLibrary\\obj\\",
+      "outputPath": "C:\\deva_Lakshman\\.net training\\.net\\23 aug 2023 day 2\\program\\PizzaStoreAppSolution\\PizzaStoreBLLibrary\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -78,11 +78,11 @@
         "net7.0": {
           "targetAlias": "net7.0",
           "projectReferences": {
-            "C:\\deva_Lakshman\\.net training\\.net\\23 aug 2023\\program\\PizzaStoreAppSolution\\PizzaStoreDALLibrary\\PizzaStoreDALLibrary.csproj": {
-              "projectPath": "C:\\deva_Lakshman\\.net training\\.net\\23 aug 2023\\program\\PizzaStoreAppSolution\\PizzaStoreDALLibrary\\PizzaStoreDALLibrary.csproj"
+            "C:\\deva_Lakshman\\.net training\\.net\\23 aug 2023 day 2\\program\\PizzaStoreAppSolution\\PizzaStoreDALLibrary\\PizzaStoreDALLibrary.csproj": {
+              "projectPath": "C:\\deva_Lakshman\\.net training\\.net\\23 aug 2023 day 2\\program\\PizzaStoreAppSolution\\PizzaStoreDALLibrary\\PizzaStoreDALLibrary.csproj"
             },
-            "C:\\deva_Lakshman\\.net training\\.net\\23 aug 2023\\program\\PizzaStoreAppSolution\\PizzaStoreModelLibrary\\PizzaStoreModelLibrary.csproj": {
-              "projectPath": "C:\\deva_Lakshman\\.net training\\.net\\23 aug 2023\\program\\PizzaStoreAppSolution\\PizzaStoreModelLibrary\\PizzaStoreModelLibrary.csproj"
+            "C:\\deva_Lakshman\\.net training\\.net\\23 aug 2023 day 2\\program\\PizzaStoreAppSolution\\PizzaStoreModelLibrary\\PizzaStoreModelLibrary.csproj": {
+              "projectPath": "C:\\deva_Lakshman\\.net training\\.net\\23 aug 2023 day 2\\program\\PizzaStoreAppSolution\\PizzaStoreModelLibrary\\PizzaStoreModelLibrary.csproj"
             }
           }
         }

@@ -25,6 +25,11 @@ namespace HospitalClinicApp
             });
             #endregion
 
+            builder.Services.AddSession(opts =>
+            {
+                opts.IdleTimeout = TimeSpan.FromMinutes(5);
+            });
+            builder.Services.AddMemoryCache();
             #region injection
             builder.Services.AddScoped<IRepository<int , Author >,AuthorRepository>();
             builder.Services.AddScoped<IRepository<int, BlogPost>, BlogPostRepository>();
@@ -33,7 +38,7 @@ namespace HospitalClinicApp
             builder.Services.AddScoped<IAuthorService , AuthorService>();
             builder.Services.AddScoped<IBlogPostService, BlogPostService>();
             builder.Services.AddScoped<ICategoryTagService, CategoryTagService>();
-            builder.Services.AddScoped<ILoginService, LoginService>();
+            builder.Services.AddScoped<LoginService>();
             #endregion
 
             var app = builder.Build();
@@ -48,6 +53,8 @@ namespace HospitalClinicApp
 
             app.UseRouting();
 
+            app.UseSession();
+            app.UseResponseCaching();
             app.UseAuthorization();
 
             app.MapControllerRoute(

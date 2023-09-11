@@ -24,11 +24,11 @@ namespace BlogApplication.Migrations
 
             modelBuilder.Entity("BlogApplication.Models.Author", b =>
                 {
-                    b.Property<int>("AuthorId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("AuthorId"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("AuthorsName")
                         .IsRequired()
@@ -42,88 +42,91 @@ namespace BlogApplication.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<string>("Phone")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<string>("Pic")
                         .HasColumnType("text");
 
-                    b.HasKey("AuthorId");
+                    b.HasKey("Id");
 
                     b.ToTable("authors");
 
                     b.HasData(
                         new
                         {
-                            AuthorId = 1,
+                            Id = 1,
                             AuthorsName = "ABC",
                             Description = "full time Blooger",
                             Email = "abc@gmail.com",
+                            Phone = "8856904770",
                             Pic = "/images/pic1.png"
                         },
                         new
                         {
-                            AuthorId = 2,
+                            Id = 2,
                             AuthorsName = "DEF",
                             Description = "Bloger on Social Media",
                             Email = "def@gmail.com",
+                            Phone = "8856904771",
                             Pic = "/images/pic2.png"
                         });
                 });
 
             modelBuilder.Entity("BlogApplication.Models.BlogPost", b =>
                 {
-                    b.Property<int>("BlogPostId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("BlogPostId"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("AuthorId")
-                        .HasColumnType("integer");
+                    b.Property<string>("AuthorsName")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<string>("BPost")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<int>("TagId")
-                        .HasColumnType("integer");
+                    b.Property<DateTime>("Post_Publish_DateTime")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.HasKey("BlogPostId");
-
-                    b.HasIndex("AuthorId");
-
-                    b.HasIndex("TagId");
+                    b.HasKey("Id");
 
                     b.ToTable("blogPosts");
 
                     b.HasData(
                         new
                         {
-                            BlogPostId = 1,
-                            AuthorId = 1,
+                            Id = 1,
+                            AuthorsName = "ABC",
                             BPost = "blog, in full Web log or Weblog, online journal where an individual, group, or corporation presents a record of activities, thoughts, or beliefs. Some blogs operate mainly as news filters, collecting various online sources and adding short comments and Internet links. Other blogs concentrate on presenting original material. In addition, many blogs provide a forum to allow visitors to leave comments and interact with the publisher. “To blog” is the act of composing material for a blog. Materials are largely written, but pictures, audio, and videos are important elements of many blogs. The “blogosphere” is the online universe of blogs.",
-                            TagId = 1,
+                            Post_Publish_DateTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Title = "Blog"
                         },
                         new
                         {
-                            BlogPostId = 2,
-                            AuthorId = 2,
+                            Id = 2,
+                            AuthorsName = "DEF",
                             BPost = "The tiger has a muscular body with strong forelimbs, a large head and a tail that is about half the length of its body. Its pelage colouration varies between shades of orange with a white underside and distinctive vertical black stripes; the patterns of which are unique in each individual",
-                            TagId = 2,
+                            Post_Publish_DateTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Title = "Tiger"
                         });
                 });
 
             modelBuilder.Entity("BlogApplication.Models.CategoryTag", b =>
                 {
-                    b.Property<int>("TagId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("TagId"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<int?>("BlogPostId")
                         .HasColumnType("integer");
@@ -132,7 +135,7 @@ namespace BlogApplication.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.HasKey("TagId");
+                    b.HasKey("Id");
 
                     b.HasIndex("BlogPostId");
 
@@ -141,38 +144,19 @@ namespace BlogApplication.Migrations
                     b.HasData(
                         new
                         {
-                            TagId = 1,
+                            Id = 1,
                             TagTitle = "Social"
                         },
                         new
                         {
-                            TagId = 2,
+                            Id = 2,
                             TagTitle = "animal"
                         },
                         new
                         {
-                            TagId = 3,
+                            Id = 3,
                             TagTitle = "country"
                         });
-                });
-
-            modelBuilder.Entity("BlogApplication.Models.BlogPost", b =>
-                {
-                    b.HasOne("BlogApplication.Models.Author", "Author")
-                        .WithMany()
-                        .HasForeignKey("AuthorId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("BlogApplication.Models.CategoryTag", "CategoryTag")
-                        .WithMany()
-                        .HasForeignKey("TagId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Author");
-
-                    b.Navigation("CategoryTag");
                 });
 
             modelBuilder.Entity("BlogApplication.Models.CategoryTag", b =>

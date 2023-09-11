@@ -5,7 +5,7 @@ namespace BlogApplication.Models
     public class Login
     {
         [Required(ErrorMessage = "User Id is manditory")]
-        public int Id { get; set; }
+        public string Username { get; set; }
         [Required(ErrorMessage = "Password is manditory")]
         public string Password { get; set; }
     }

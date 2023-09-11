@@ -2,6 +2,8 @@
 {
     public interface IRepository<K,T> where T : class
     {
+       
+
         public T Add(T entity);
 
         public T Update(T entity);

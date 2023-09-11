@@ -15,13 +15,25 @@ namespace BlogApplication.repositories
             _context=contexts;
         }
         #region
+
+        static List<CategoryTag> catcnt = new List<CategoryTag>();
         public CategoryTag Add(CategoryTag entity)
         {
+            //entity.Id=GenerateIndex();
             _context.categoryTags.Add(entity);
             _context.SaveChanges();
             return entity;
         }
         #endregion
+
+        //#region
+        //private int GenerateIndex()
+        //{
+        //    int id = catcnt.Count();
+        //    return ++id;
+        //}
+
+        //#endregion
 
         #region Delete
         public CategoryTag Delete(int key)
@@ -50,7 +62,7 @@ namespace BlogApplication.repositories
 
         public CategoryTag GetById(int key)
         {
-            var tag = _context.categoryTags.SingleOrDefault(c=>c.TagId == key);
+            var tag = _context.categoryTags.SingleOrDefault(c=>c.Id == key);
             if(tag != null)
             {
                 return tag;
@@ -60,14 +72,15 @@ namespace BlogApplication.repositories
 
         public CategoryTag Update(CategoryTag entity)
         {
-            var tag = GetById(entity.TagId);
-            if(tag != null)
+            var tag = GetById(entity.Id);
+            if(tag == null)
             {
-                _context.Entry<CategoryTag>(entity).State = EntityState.Modified;
-                _context.SaveChanges();
-                return tag;
+                throw new NoSuchEntityException("Category");
+               
             }
-            throw new NoSuchEntityException("Category");
+            _context.categoryTags.Update(tag);
+            _context.SaveChanges();
+            return entity;
         }
         #endregion
     }

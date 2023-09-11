@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\deva_Lakshman\\.net training\\.net\\29 Aug 2023\\FirstWebSolution\\FirstWebApp\\FirstWebApp.csproj": {}
+    "C:\\deva_Lakshman\\.net training\\.net\\29 Aug 2023 day 6\\FirstWebSolution\\FirstWebApp\\FirstWebApp.csproj": {}
   },
   "projects": {
-    "C:\\deva_Lakshman\\.net training\\.net\\29 Aug 2023\\FirstWebSolution\\FirstWebApp\\FirstWebApp.csproj": {
+    "C:\\deva_Lakshman\\.net training\\.net\\29 Aug 2023 day 6\\FirstWebSolution\\FirstWebApp\\FirstWebApp.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\deva_Lakshman\\.net training\\.net\\29 Aug 2023\\FirstWebSolution\\FirstWebApp\\FirstWebApp.csproj",
+        "projectUniqueName": "C:\\deva_Lakshman\\.net training\\.net\\29 Aug 2023 day 6\\FirstWebSolution\\FirstWebApp\\FirstWebApp.csproj",
         "projectName": "FirstWebApp",
-        "projectPath": "C:\\deva_Lakshman\\.net training\\.net\\29 Aug 2023\\FirstWebSolution\\FirstWebApp\\FirstWebApp.csproj",
+        "projectPath": "C:\\deva_Lakshman\\.net training\\.net\\29 Aug 2023 day 6\\FirstWebSolution\\FirstWebApp\\FirstWebApp.csproj",
         "packagesPath": "C:\\Users\\lakshman.narale\\.nuget\\packages\\",
-        "outputPath": "C:\\deva_Lakshman\\.net training\\.net\\29 Aug 2023\\FirstWebSolution\\FirstWebApp\\obj\\",
+        "outputPath": "C:\\deva_Lakshman\\.net training\\.net\\29 Aug 2023 day 6\\FirstWebSolution\\FirstWebApp\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

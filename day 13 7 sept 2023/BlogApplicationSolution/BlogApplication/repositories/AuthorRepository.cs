@@ -15,9 +15,12 @@ namespace BlogApplication.repositories
             _context=contexts;
             
         }
+
+        static List<Author> autcnt = new List<Author>();
         #region Add
         public Author Add(Author entity)
         {
+            //entity.Id = GenerateIndex();
            _context.authors.Add(entity);
             _context.SaveChanges();
             return entity;
@@ -46,11 +49,20 @@ namespace BlogApplication.repositories
             }
             return author.ToList();
         }
-#endregion
+        #region
+        // private int GenerateIndex()
+        //{
+        //    int id = autcnt.Count();
+        //    return ++id;
+        //}
+
+        #endregion
+
+        #endregion
         #region GetById
         public Author GetById(int key)
         {
-           var author = _context.authors.SingleOrDefault(a=>a.AuthorId==key);
+           var author = _context.authors.SingleOrDefault(a=>a.Id == key);
             if(author != null)
             {
                 return author;
@@ -61,15 +73,17 @@ namespace BlogApplication.repositories
         #region Update
         public Author Update(Author entity)
         {
-            var author = GetById(entity.AuthorId);
-            if(author != null)
-            {
-                _context.Entry<Author>(entity).State=EntityState.Modified;
-                _context.SaveChanges();
-                return entity;
-            }
-            throw new NoSuchEntityException("Author");
+
+            var author = GetById(entity.Id);
+            if (author == null)
+                throw new NoSuchEntityException("Author");
+            _context.authors.Update(author);
+            _context.SaveChanges();
+            return entity;
+
         }
         #endregion
+
+        
     }
 }

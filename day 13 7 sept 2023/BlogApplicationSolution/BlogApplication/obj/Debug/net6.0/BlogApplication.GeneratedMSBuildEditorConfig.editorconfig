@@ -16,6 +16,70 @@ build_property.GenerateRazorMetadataSourceChecksumAttributes =
 build_property.MSBuildProjectDirectory = C:\deva_Lakshman\.net training\.net\day 13 7 sept 2023\BlogApplicationSolution\BlogApplication
 build_property._RazorSourceGeneratorDebug = 
 
+[C:/deva_Lakshman/.net training/.net/day 13 7 sept 2023/BlogApplicationSolution/BlogApplication/Views/Author/Delete.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQXV0aG9yXERlbGV0ZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/deva_Lakshman/.net training/.net/day 13 7 sept 2023/BlogApplicationSolution/BlogApplication/Views/Author/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQXV0aG9yXERldGFpbHMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/deva_Lakshman/.net training/.net/day 13 7 sept 2023/BlogApplicationSolution/BlogApplication/Views/Author/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQXV0aG9yXEluZGV4LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/deva_Lakshman/.net training/.net/day 13 7 sept 2023/BlogApplicationSolution/BlogApplication/Views/Author/SignUpAuthor.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQXV0aG9yXFNpZ25VcEF1dGhvci5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/deva_Lakshman/.net training/.net/day 13 7 sept 2023/BlogApplicationSolution/BlogApplication/Views/Author/Update.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQXV0aG9yXFVwZGF0ZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/deva_Lakshman/.net training/.net/day 13 7 sept 2023/BlogApplicationSolution/BlogApplication/Views/Author/UpdateDescription.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQXV0aG9yXFVwZGF0ZURlc2NyaXB0aW9uLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/deva_Lakshman/.net training/.net/day 13 7 sept 2023/BlogApplicationSolution/BlogApplication/Views/Author/UpdateEmail.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQXV0aG9yXFVwZGF0ZUVtYWlsLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/deva_Lakshman/.net training/.net/day 13 7 sept 2023/BlogApplicationSolution/BlogApplication/Views/Author/UpdateName.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQXV0aG9yXFVwZGF0ZU5hbWUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/deva_Lakshman/.net training/.net/day 13 7 sept 2023/BlogApplicationSolution/BlogApplication/Views/BlogPost/CreateBlogPost.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQmxvZ1Bvc3RcQ3JlYXRlQmxvZ1Bvc3QuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/deva_Lakshman/.net training/.net/day 13 7 sept 2023/BlogApplicationSolution/BlogApplication/Views/BlogPost/Delete.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQmxvZ1Bvc3RcRGVsZXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/deva_Lakshman/.net training/.net/day 13 7 sept 2023/BlogApplicationSolution/BlogApplication/Views/BlogPost/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQmxvZ1Bvc3RcRGV0YWlscy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/deva_Lakshman/.net training/.net/day 13 7 sept 2023/BlogApplicationSolution/BlogApplication/Views/BlogPost/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQmxvZ1Bvc3RcSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/deva_Lakshman/.net training/.net/day 13 7 sept 2023/BlogApplicationSolution/BlogApplication/Views/BlogPost/UpdateBlogPost.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQmxvZ1Bvc3RcVXBkYXRlQmxvZ1Bvc3QuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/deva_Lakshman/.net training/.net/day 13 7 sept 2023/BlogApplicationSolution/BlogApplication/Views/CategoryTag/Createtag.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2F0ZWdvcnlUYWdcQ3JlYXRldGFnLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/deva_Lakshman/.net training/.net/day 13 7 sept 2023/BlogApplicationSolution/BlogApplication/Views/CategoryTag/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2F0ZWdvcnlUYWdcSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/deva_Lakshman/.net training/.net/day 13 7 sept 2023/BlogApplicationSolution/BlogApplication/Views/CategoryTag/UpdateT.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2F0ZWdvcnlUYWdcVXBkYXRlVC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/deva_Lakshman/.net training/.net/day 13 7 sept 2023/BlogApplicationSolution/BlogApplication/Views/Home/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
@@ -28,12 +92,20 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTG9naW5cVXNlckxvZ2luLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/deva_Lakshman/.net training/.net/day 13 7 sept 2023/BlogApplicationSolution/BlogApplication/Views/Profile/UserProfile.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvZmlsZVxVc2VyUHJvZmlsZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/deva_Lakshman/.net training/.net/day 13 7 sept 2023/BlogApplicationSolution/BlogApplication/Views/Shared/Error.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXEVycm9yLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/deva_Lakshman/.net training/.net/day 13 7 sept 2023/BlogApplicationSolution/BlogApplication/Views/Shared/_ValidationScriptsPartial.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/deva_Lakshman/.net training/.net/day 13 7 sept 2023/BlogApplicationSolution/BlogApplication/Views/Time/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVGltZVxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/deva_Lakshman/.net training/.net/day 13 7 sept 2023/BlogApplicationSolution/BlogApplication/Views/_ViewImports.cshtml]

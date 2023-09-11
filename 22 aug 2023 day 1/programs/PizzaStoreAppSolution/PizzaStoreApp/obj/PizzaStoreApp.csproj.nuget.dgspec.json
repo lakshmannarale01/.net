@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\lakshman.narale\\OneDrive - ascendion\\Desktop\\.net training\\.net\\22 aug 2023\\programs\\PizzaStoreAppSolution\\PizzaStoreApp\\PizzaStoreApp.csproj": {}
+    "C:\\deva_Lakshman\\.net training\\.net\\22 aug 2023 day 1\\programs\\PizzaStoreAppSolution\\PizzaStoreApp\\PizzaStoreApp.csproj": {}
   },
   "projects": {
-    "C:\\Users\\lakshman.narale\\OneDrive - ascendion\\Desktop\\.net training\\.net\\22 aug 2023\\programs\\PizzaStoreAppSolution\\PizzaStoreApp\\PizzaStoreApp.csproj": {
+    "C:\\deva_Lakshman\\.net training\\.net\\22 aug 2023 day 1\\programs\\PizzaStoreAppSolution\\PizzaStoreApp\\PizzaStoreApp.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\lakshman.narale\\OneDrive - ascendion\\Desktop\\.net training\\.net\\22 aug 2023\\programs\\PizzaStoreAppSolution\\PizzaStoreApp\\PizzaStoreApp.csproj",
+        "projectUniqueName": "C:\\deva_Lakshman\\.net training\\.net\\22 aug 2023 day 1\\programs\\PizzaStoreAppSolution\\PizzaStoreApp\\PizzaStoreApp.csproj",
         "projectName": "PizzaStoreApp",
-        "projectPath": "C:\\Users\\lakshman.narale\\OneDrive - ascendion\\Desktop\\.net training\\.net\\22 aug 2023\\programs\\PizzaStoreAppSolution\\PizzaStoreApp\\PizzaStoreApp.csproj",
+        "projectPath": "C:\\deva_Lakshman\\.net training\\.net\\22 aug 2023 day 1\\programs\\PizzaStoreAppSolution\\PizzaStoreApp\\PizzaStoreApp.csproj",
         "packagesPath": "C:\\Users\\lakshman.narale\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\lakshman.narale\\OneDrive - ascendion\\Desktop\\.net training\\.net\\22 aug 2023\\programs\\PizzaStoreAppSolution\\PizzaStoreApp\\obj\\",
+        "outputPath": "C:\\deva_Lakshman\\.net training\\.net\\22 aug 2023 day 1\\programs\\PizzaStoreAppSolution\\PizzaStoreApp\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

@@ -4,6 +4,6 @@ namespace BlogApplication.Interfaces
 {
     public interface ILoginService
     {
-        public Author login(Login login);
+        public Author LoginCheck(Login login);
     }
 }

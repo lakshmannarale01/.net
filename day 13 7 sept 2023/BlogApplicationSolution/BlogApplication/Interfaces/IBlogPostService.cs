@@ -8,9 +8,9 @@ namespace BlogApplication.Interfaces
 
         public BlogPost UpdateBPost(BlogPost blogPost);
 
-        public BlogPost UpdateAuthorId(BlogPost blogPost);
+        //public BlogPost UpdateAuthorId(BlogPost blogPost);
 
-        public BlogPost UpdateTagId(BlogPost blogPost);
+        //public BlogPost UpdateTagId(BlogPost blogPost);
 
         public IList<BlogPost> GetAllBlogPost();
     }

@@ -2,15 +2,17 @@
 using BlogApplication.Models;
 using BlogApplication.Services;
 using BlogApplication.Utilities;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Authentication;
 
 namespace BlogApplication.Controllers
 {
     public class LoginController : Controller
     {
-        private readonly ILoginService _loginservice;
+        private readonly LoginService _loginservice;
 
-        public LoginController(ILoginService service)
+        public LoginController(LoginService service)
         {
             _loginservice=service;
         }
@@ -28,20 +30,33 @@ namespace BlogApplication.Controllers
             {
                 try
                 {
-                    var author = _loginservice.login(login);
+                    var author = _loginservice.LoginCheck(login);
                     if (author != null)
                     {
-                        TempData.Add("un", author.AuthorId);
+                        HttpContext.Session.SetString("Username", login.Username);
+                        return RedirectToAction("Index", "Home");
                     }
-                    return RedirectToAction("Index", "Author");
+
+                    ViewBag.ErrorMessage = "Invalid username or password";
+                    return View(login);
                 }
-                catch (InvalidCredentialsException e)
+                catch (Exception)
                 {
-                    ViewBag.ErrorMessage = e.Message;
+                    ViewBag.ErrorMessage = "Invalid username or password";
+                    return View(login);
                 }
             }
-
             return View(login);
+
+
+            //var result =_loginservice.LoginCheck(login);
+            // if(result!= null)
+            // {
+            //     HttpContext.Session.SetString("Username", login.Username);
+            //     return RedirectToAction("Index", "Home");
+            // }
+            // ViewBag.ErrorMessage = "Invalid username or password";
+            // return View(login);
         }
     }
 }

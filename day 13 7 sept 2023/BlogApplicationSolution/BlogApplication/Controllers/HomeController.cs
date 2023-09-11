@@ -15,6 +15,15 @@ namespace BlogApplication.Controllers
 
         public IActionResult Index()
         {
+            try
+            {
+                ViewBag.User = HttpContext.Session.GetString("Username").ToString();
+
+            }
+            catch (Exception)
+            {
+                return RedirectToAction("UserLogin", "Login");
+            }
             return View();
         }
 

@@ -19,35 +19,36 @@ namespace BlogApplication.Services
         }
         #endregion
 
-        #region Update Author id for that blog
-        public BlogPost UpdateAuthorId(BlogPost blogPost)
-        {
-            var blp = _repository.GetById(blogPost.BlogPostId);
-            blp.AuthorId = blogPost.AuthorId;
-            _repository.Update(blp);
-            return blp;
-        }
-        #endregion
+        //#region Update Author id for that blog
+        //public BlogPost UpdateAuthorId(BlogPost blogPost)
+        //{
+        //    var blp = _repository.GetById(blogPost.BlogPostId);
+        //    //blp.AuthorId = blogPost.AuthorId;
+        //    _repository.Update(blp);
+        //    return blp;
+        //}
+        //#endregion
 
         public BlogPost UpdateBPost(BlogPost blogPost)
         {
-            var blp = _repository.GetById(blogPost.BlogPostId);
+            var blp = _repository.GetById(blogPost.Id);
             blp.BPost = blogPost.BPost;
+            blp.Title = blogPost.Title;
             _repository.Update(blp);
             return blp;
         }
 
-        public BlogPost UpdateTagId(BlogPost blogPost)
-        {
-            var blp = _repository.GetById(blogPost.BlogPostId);
-            blp.TagId = blogPost.TagId;
-            _repository.Update(blp);
-            return blp;
-        }
+        //public BlogPost UpdateTagId(BlogPost blogPost)
+        //{
+        //    var blp = _repository.GetById(blogPost.BlogPostId);
+        //    //blp.TagId = blogPost.TagId;
+        //    _repository.Update(blp);
+        //    return blp;
+        //}
 
         public BlogPost UpdateTitle(BlogPost blogPost)
         {
-            var blp = _repository.GetById(blogPost.BlogPostId);
+            var blp = _repository.GetById(blogPost.Id);
             blp.Title = blogPost.Title;
             _repository.Update(blp);
                 return blp;

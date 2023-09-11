@@ -21,7 +21,7 @@ namespace BlogApplication.Services
         #region update description
         public Author UpdateDesc(Author author)
         {
-            var myauthor = _repository.GetById(author.AuthorId);
+            var myauthor = _repository.GetById(author.Id);
             myauthor.Description = author.Description;
             _repository.Update(myauthor);
             return myauthor;
@@ -32,7 +32,7 @@ namespace BlogApplication.Services
 
         public Author UpdateEmail(Author author)
         {
-            var myauthor = _repository.GetById(author.AuthorId);
+            var myauthor = _repository.GetById(author.Id);
             myauthor.Email = author.Email;  
             _repository.Update(myauthor);
             return myauthor;
@@ -42,7 +42,7 @@ namespace BlogApplication.Services
         #region Update Name
         public Author UpdateName(Author author)
         {
-            var myauthor = _repository.GetById(author.AuthorId);
+            var myauthor = _repository.GetById(author.Id);
             myauthor.AuthorsName = author.AuthorsName;
             _repository.Update(myauthor);
                 return myauthor;
@@ -53,7 +53,7 @@ namespace BlogApplication.Services
 
         public Author UpdatePic(Author author)
         {
-            var myauthor = _repository.GetById(author.AuthorId);
+            var myauthor = _repository.GetById(author.Id);
             myauthor.Pic = author.Pic;
             _repository.Update(myauthor);
             return myauthor;

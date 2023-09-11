@@ -13,7 +13,7 @@ namespace BlogApplication.Services
         }
         public CategoryTag UpdateTitle(CategoryTag tag)
         {
-            var t = _repository.GetById(tag.TagId);
+            var t = _repository.GetById(tag.Id);
                 t.TagTitle = tag.TagTitle;
             _repository.Update(t);
             return t;

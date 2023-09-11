@@ -8,26 +8,23 @@ namespace BlogApplication.Services
     {
         private readonly IRepository<int, Author> _repository;
 
-        public LoginService(IRepository<int,Author> repository)
+        public LoginService(IRepository<int, Author> repository)
         {
-            _repository=repository;
+            _repository = repository;
         }
+     
 
-        public Author login(Login login)
+      
+
+        public Author LoginCheck(Login login)
         {
-            try
+            var author = _repository.GetAll();
+            var myAuthor = author.SingleOrDefault(x => x.AuthorsName == login.Username && x.Phone == login.Password);
+            if (myAuthor == null)
             {
-                var author = _repository.GetById(login.Id);
-                if(author.AuthorsName==login.Password)
-                {
-                    return author;
-                }
+               throw new InvalidCredentialsException();
             }
-            catch (NoSuchEntityException e )
-            {
-                throw new InvalidCredentialsException();
-            }
-            throw new InvalidCredentialsException();
+            return myAuthor;
         }
     }
 }
