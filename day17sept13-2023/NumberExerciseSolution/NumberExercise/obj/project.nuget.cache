@@ -1,0 +1,15 @@
+{
+  "version": 2,
+  "dgSpecHash": "ZE2mzG86NlYc5os4FBR8VD5BlRhiu5hhtZTk/WjMcWumRUmvLwmCrA8Cyh93SNoEXlgBACEr1PaELkc2bzw5Hw==",
+  "success": true,
+  "projectFilePath": "C:\\deva_Lakshman\\.net training\\.net\\day17sept13-2023\\NumberExerciseSolution\\NumberExercise\\NumberExercise.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\lakshman.narale\\.nuget\\packages\\microsoft.extensions.apidescription.server\\6.0.5\\microsoft.extensions.apidescription.server.6.0.5.nupkg.sha512",
+    "C:\\Users\\lakshman.narale\\.nuget\\packages\\microsoft.openapi\\1.2.3\\microsoft.openapi.1.2.3.nupkg.sha512",
+    "C:\\Users\\lakshman.narale\\.nuget\\packages\\swashbuckle.aspnetcore\\6.5.0\\swashbuckle.aspnetcore.6.5.0.nupkg.sha512",
+    "C:\\Users\\lakshman.narale\\.nuget\\packages\\swashbuckle.aspnetcore.swagger\\6.5.0\\swashbuckle.aspnetcore.swagger.6.5.0.nupkg.sha512",
+    "C:\\Users\\lakshman.narale\\.nuget\\packages\\swashbuckle.aspnetcore.swaggergen\\6.5.0\\swashbuckle.aspnetcore.swaggergen.6.5.0.nupkg.sha512",
+    "C:\\Users\\lakshman.narale\\.nuget\\packages\\swashbuckle.aspnetcore.swaggerui\\6.5.0\\swashbuckle.aspnetcore.swaggerui.6.5.0.nupkg.sha512"
+  ],
+  "logs": []
+}

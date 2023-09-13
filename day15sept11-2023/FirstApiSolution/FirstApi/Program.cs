@@ -25,6 +25,8 @@ namespace FirstApi
                 opts.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"));
             });
             builder.Services.AddScoped<IRepository<int, Employee>, EmployeeRepository>();
+            builder.Services.AddScoped<IRepository<string, User>, UserRepository>();
+            builder.Services.AddScoped<IUserService , UserService>();
             builder.Services.AddScoped<IEmployeeService, EmployeeService>();
 
             var app = builder.Build();

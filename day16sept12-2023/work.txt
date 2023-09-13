@@ -1,0 +1,68 @@
+database first approach
+
+Scaffold-DbContext "" Npgsql.EntityFrameworkCore.PostgreSQL -OutputDir Models
+
+Scaffold-DbContext "Host=localhost;Port=5432;Database=dbCEmoloyee;UserId=postgres;Password=root;" Npgsql.EntityFrameworkCore.PostgreSQL -OutputDir Models
+
+==============
+
+login Service
+
+---------
+    public User Login(UserDTO userDTO)
+    {
+        var user = _userRepository.Get(userDTO.Username);
+        if (user != null)
+        {
+            var dbPass = user.Password;
+            HMACSHA512 hMACSHA512 = new HMACSHA512(user.Key);
+            var userPass = hMACSHA512.ComputeHash(Encoding.UTF8.GetBytes(userDTO.Password));
+            if (userPass.Length == dbPass.Length)
+            {
+                for (int i = 0; i < dbPass.Length; i++)
+                {
+                    if (userPass[i] != dbPass[i])
+                        return null;
+                }
+                user.Password = null;
+                user.Key = null;
+                return user;
+            }
+        }
+        return null;
+    }
+
+    public User Register(UserDTO userDTO)
+    {
+        HMACSHA512 hMACSHA512 = new HMACSHA512();
+        User user = new User();
+        user.Username = userDTO.Username;
+        user.Password = hMACSHA512.ComputeHash(Encoding.UTF8.GetBytes(userDTO.Password));
+        user.Key = hMACSHA512.Key;
+        _userRepository.Add(user);
+        return user;
+    }
+}
+-------------------------------
+
+User Cintroller
+  [HttpPost("Login")]
+  public ActionResult Login(UserDTO userDTO)
+  {
+      var result = _service.Login(userDTO);
+      if (result == null)
+      {
+          return Unauthorized();
+      }
+      return Ok(result);
+  }
+  [HttpPost("Register")]
+  public ActionResult Register(UserDTO userDTO)
+  {
+      var result = _service.Register(userDTO);
+      if (result == null)
+      {
+          return BadRequest();
+      }
+      return Ok(result);
+  }

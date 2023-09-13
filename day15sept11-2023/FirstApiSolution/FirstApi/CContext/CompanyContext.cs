@@ -10,6 +10,7 @@ namespace FirstApi.CContext
 
         }
         public DbSet<Employee> employees { get; set; }
+        public DbSet<User> users { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Employee>().HasData(

@@ -25,10 +25,11 @@ namespace SupplierAndProductManagement
                 opts.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"));
             });
 
-            builder.Services.AddScoped<IRepository<int , Supplier> , SupplierRepository > ();
+            builder.Services.AddScoped<IRepository<int , Supplier> , SupplierRepository>();
             builder.Services.AddScoped<IRepository<int, Product>, ProductRepository>();
             builder.Services.AddScoped<ISupplierServices, SupplierServices>();
             builder.Services.AddScoped<IProductService , ProductService>();
+            builder.Services.AddScoped<SupplierRepository, SupplierRepository>();
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.

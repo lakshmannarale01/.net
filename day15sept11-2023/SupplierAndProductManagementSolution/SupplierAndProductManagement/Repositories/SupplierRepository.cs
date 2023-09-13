@@ -48,6 +48,14 @@ namespace SupplierAndProductManagement.Repositories
         }
         #endregion
 
+        #region
+        public Supplier GetByPhone(string phone)
+        {
+            var supplier = _context.suppliers.FirstOrDefault(g=>g.Phone == phone);
+            return supplier;
+        }
+        #endregion
+
         #region GetAll
         public List<Supplier> GetAll()
         {

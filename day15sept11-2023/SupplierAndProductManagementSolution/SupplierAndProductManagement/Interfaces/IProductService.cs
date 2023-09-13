@@ -14,7 +14,7 @@ namespace SupplierAndProductManagement.Interfaces
 
         Product UpdateProductPrice(UpdateProductPriceDTO product);
 
-
+        List<Product> GetProductWithPriceRange(float min, float max);
 
     }
 }

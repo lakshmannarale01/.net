@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using SupplierAndProductManagement.Interfaces;
 using SupplierAndProductManagement.Model;
 using SupplierAndProductManagement.Model.DTOs;
+using SupplierAndProductManagement.Repositories;
 
 namespace SupplierAndProductManagement.Controllers
 {
@@ -12,16 +13,18 @@ namespace SupplierAndProductManagement.Controllers
     {
         private readonly ISupplierServices _service;
         private readonly IRepository<int, Supplier> _repo;
+        private readonly SupplierRepository _repo1;
 
-        public SupplierController(ISupplierServices supplierServices , IRepository<int , Supplier> repository)
+        public SupplierController(ISupplierServices supplierServices , IRepository<int , Supplier> repository , SupplierRepository repository1)
         {
             _service = supplierServices;
             _repo=  repository;
+            _repo1 = repository1;
 
         }
         #region Get All Supplier
-        [HttpGet("GetAllSuppliers")]
-        public IActionResult Get()
+        [HttpGet]
+        public ActionResult Get()
         {
             var result = _service.GetAllSupplier();
             if(result == null)
@@ -47,7 +50,20 @@ namespace SupplierAndProductManagement.Controllers
             }
 
         }
+        #region Serach by phone
+        [HttpGet("GetBYPhone")]
+        public ActionResult GetByPhone(String phone) 
+        {
+        var result = _repo1.GetByPhone(phone);
+            if(result == null)
+            {
+                return NotFound();
 
+            }
+            return Ok(result);
+        }
+
+        #endregion
 
         #endregion
         #endregion

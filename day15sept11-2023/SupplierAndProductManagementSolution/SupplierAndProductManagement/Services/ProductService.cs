@@ -23,6 +23,16 @@ namespace SupplierAndProductManagement.Services
             return _repo.GetAll();
         }
 
+        public List<Product> GetProductWithPriceRange(float min, float max)
+        {
+            var Prod = _repo.GetAll().Where(p=>p.Price>=min &&  p.Price<=max);
+            if (Prod.Count() >0) 
+            {
+            return Prod.ToList();
+            }
+            return null;
+        }
+
         public Product UpdateProductDescription(UpdateProductDescriptionDTO product)
         {
            var pro = _repo.Get(product.Id);

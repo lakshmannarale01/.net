@@ -1,0 +1,14 @@
+C:\deva_Lakshman\.net training\.net\day17sept13-2023\shortestAndLongestStringSolution\shortestAndLongestString\bin\Debug\net6.0\shortestAndLongestString.exe
+C:\deva_Lakshman\.net training\.net\day17sept13-2023\shortestAndLongestStringSolution\shortestAndLongestString\bin\Debug\net6.0\shortestAndLongestString.deps.json
+C:\deva_Lakshman\.net training\.net\day17sept13-2023\shortestAndLongestStringSolution\shortestAndLongestString\bin\Debug\net6.0\shortestAndLongestString.runtimeconfig.json
+C:\deva_Lakshman\.net training\.net\day17sept13-2023\shortestAndLongestStringSolution\shortestAndLongestString\bin\Debug\net6.0\shortestAndLongestString.dll
+C:\deva_Lakshman\.net training\.net\day17sept13-2023\shortestAndLongestStringSolution\shortestAndLongestString\bin\Debug\net6.0\shortestAndLongestString.pdb
+C:\deva_Lakshman\.net training\.net\day17sept13-2023\shortestAndLongestStringSolution\shortestAndLongestString\obj\Debug\net6.0\shortestAndLongestString.GeneratedMSBuildEditorConfig.editorconfig
+C:\deva_Lakshman\.net training\.net\day17sept13-2023\shortestAndLongestStringSolution\shortestAndLongestString\obj\Debug\net6.0\shortestAndLongestString.AssemblyInfoInputs.cache
+C:\deva_Lakshman\.net training\.net\day17sept13-2023\shortestAndLongestStringSolution\shortestAndLongestString\obj\Debug\net6.0\shortestAndLongestString.AssemblyInfo.cs
+C:\deva_Lakshman\.net training\.net\day17sept13-2023\shortestAndLongestStringSolution\shortestAndLongestString\obj\Debug\net6.0\shortestAndLongestString.csproj.CoreCompileInputs.cache
+C:\deva_Lakshman\.net training\.net\day17sept13-2023\shortestAndLongestStringSolution\shortestAndLongestString\obj\Debug\net6.0\shortestAndLongestString.dll
+C:\deva_Lakshman\.net training\.net\day17sept13-2023\shortestAndLongestStringSolution\shortestAndLongestString\obj\Debug\net6.0\refint\shortestAndLongestString.dll
+C:\deva_Lakshman\.net training\.net\day17sept13-2023\shortestAndLongestStringSolution\shortestAndLongestString\obj\Debug\net6.0\shortestAndLongestString.pdb
+C:\deva_Lakshman\.net training\.net\day17sept13-2023\shortestAndLongestStringSolution\shortestAndLongestString\obj\Debug\net6.0\shortestAndLongestString.genruntimeconfig.cache
+C:\deva_Lakshman\.net training\.net\day17sept13-2023\shortestAndLongestStringSolution\shortestAndLongestString\obj\Debug\net6.0\ref\shortestAndLongestString.dll

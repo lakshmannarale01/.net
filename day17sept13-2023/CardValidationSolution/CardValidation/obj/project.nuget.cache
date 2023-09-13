@@ -1,0 +1,15 @@
+{
+  "version": 2,
+  "dgSpecHash": "qxR9lUy6T4fXISe8uw9YCpcLheZdiMHPCL3WCzz9qhepLyi21VpnVxKeiKelxzIbtVtHlJTfptEG6vWYf0hkuA==",
+  "success": true,
+  "projectFilePath": "C:\\deva_Lakshman\\.net training\\.net\\day17sept13-2023\\CardValidationSolution\\CardValidation\\CardValidation.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\lakshman.narale\\.nuget\\packages\\microsoft.extensions.apidescription.server\\6.0.5\\microsoft.extensions.apidescription.server.6.0.5.nupkg.sha512",
+    "C:\\Users\\lakshman.narale\\.nuget\\packages\\microsoft.openapi\\1.2.3\\microsoft.openapi.1.2.3.nupkg.sha512",
+    "C:\\Users\\lakshman.narale\\.nuget\\packages\\swashbuckle.aspnetcore\\6.5.0\\swashbuckle.aspnetcore.6.5.0.nupkg.sha512",
+    "C:\\Users\\lakshman.narale\\.nuget\\packages\\swashbuckle.aspnetcore.swagger\\6.5.0\\swashbuckle.aspnetcore.swagger.6.5.0.nupkg.sha512",
+    "C:\\Users\\lakshman.narale\\.nuget\\packages\\swashbuckle.aspnetcore.swaggergen\\6.5.0\\swashbuckle.aspnetcore.swaggergen.6.5.0.nupkg.sha512",
+    "C:\\Users\\lakshman.narale\\.nuget\\packages\\swashbuckle.aspnetcore.swaggerui\\6.5.0\\swashbuckle.aspnetcore.swaggerui.6.5.0.nupkg.sha512"
+  ],
+  "logs": []
+}

@@ -146,7 +146,16 @@ namespace SupplierAndProductManagement.Controllers
 
                 }
             }
-            #endregion
+        #endregion
+
+        [HttpGet("GetByPrice")]
+        public ActionResult GetByPrice(float min , float max) 
+        {
+            var result = _service.GetProductWithPriceRange(min, max);
+            if(result == null)
+                return NotFound(" no product in this range");
+            return Ok(result);
+        }
         
     }
 }

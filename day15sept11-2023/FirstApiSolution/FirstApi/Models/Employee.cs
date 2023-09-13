@@ -1,4 +1,6 @@
-﻿namespace FirstApi.Models
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace FirstApi.Models
 {
     public class Employee
     {
@@ -11,5 +13,9 @@
         public float Salary { get; set; }
 
         public bool? IsActive { get; set; }
+
+        public string? Username { get; set; }
+        [ForeignKey("Username")]
+        public User? User { get; set; }
     }
 }
