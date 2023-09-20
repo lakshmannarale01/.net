@@ -1,9 +1,11 @@
 ﻿using FirstApi.Interfaces;
 using FirstApi.Models.DTOs;
+using FirstAPI.Interfaces;
+using FirstAPI.Models.DTOs;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-namespace FirstApi.Controllers
+namespace FirstAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]

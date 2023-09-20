@@ -1,8 +1,7 @@
-﻿using FirstApi.CContext;
-using FirstApi.Interfaces;
-using FirstApi.Models;
+﻿using FirstAPI.Interfaces;
+using FirstAPI.Models;
 
-namespace FirstApi.Repositories
+namespace FirstAPI.Repositories
 {
     public class UserRepository : IRepository<string, User>
     {
@@ -10,7 +9,7 @@ namespace FirstApi.Repositories
 
         public UserRepository(CompanyContext context)
         {
-            _context=   context;
+            _context = context;
         }
         public User Add(User item)
         {

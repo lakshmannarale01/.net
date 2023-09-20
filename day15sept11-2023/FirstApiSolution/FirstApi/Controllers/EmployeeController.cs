@@ -1,11 +1,16 @@
 ﻿using FirstApi.Interfaces;
 using FirstApi.Models;
-using FirstApi.Models.DTOs;
+using FirstAPI.Interfaces;
+using FirstAPI.Models;
+
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-namespace FirstApi.Controllers
+namespace FirstAPI.Controllers
 {
+    [EnableCors("MyCors")]
     [Route("api/[controller]")]
     [ApiController]
     public class EmployeeController : ControllerBase
@@ -16,6 +21,7 @@ namespace FirstApi.Controllers
         {
             _employeeService = employeeService;
         }
+
         [HttpGet]
         public ActionResult Get()
         {
@@ -26,6 +32,7 @@ namespace FirstApi.Controllers
             }
             return Ok(result);
         }
+        [Authorize(Roles = "Manager")]
         [HttpPost]
         public ActionResult Post(Employee employee)
         {
@@ -43,8 +50,9 @@ namespace FirstApi.Controllers
             }
             return BadRequest(ModelState.Keys);
         }
+
         [HttpPut("UpdateStatus")]
-        public ActionResult PutChangeStatus(int id) 
+        public ActionResult PutChangeStatus(int id)
         {
             try
             {
@@ -55,50 +63,8 @@ namespace FirstApi.Controllers
             }
             catch (Exception e)
             {
-
                 return BadRequest(e.Message);
             }
-          
-        }
-        [HttpPut("UpdateSalary")]
-        public ActionResult PutchangeSalary(EmployeeSalaryDTO employeeSalaryDTO)
-        {
-            try
-            {
-                var result = _employeeService.UpdateEmployeeSalary(employeeSalaryDTO);
-                if(result == null)
-                    return NotFound();
-                return Ok(result);
-            }
-            catch (Exception e)
-            {
-
-                return BadRequest(e.Message);
-            }
-        }
-        [HttpPut("UpdatePhone")]
-        public ActionResult PutchangePhone(EmployeePhoneDTO employeePhoneDTO)
-        {
-            try
-            {
-                var result = _employeeService.UpdateEmployeePhone(employeePhoneDTO);
-                if (result == null)
-                    return NotFound();
-                return Ok(result);
-            }
-            catch (Exception e)
-            {
-
-                return BadRequest(e.Message);
-            }
-        }
-        [HttpGet("GetBySalary")]
-        public ActionResult GetBySalary(float min , float max)
-        {
-        var result = _employeeService.GemEmployeesInASalaryRange(min, max);
-            if( result == null )
-                    return NotFound("In no salary in this range");
-            return Ok(result);
         }
 
     }

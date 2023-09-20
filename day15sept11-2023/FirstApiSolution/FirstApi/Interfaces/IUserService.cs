@@ -1,11 +1,13 @@
 ﻿using FirstApi.Models.DTOs;
 using FirstApi.Models;
+using FirstAPI.Models;
+using FirstAPI.Models.DTOs;
 
 namespace FirstApi.Interfaces
 {
     public interface IUserService
     {
-        public User Login(UserDTO userDTO);
-        public User Register(UserDTO userDTO);
+        public UserDTO Login(UserDTO userDTO);
+        public UserDTO Register(UserDTO userDTO);
     }
 }

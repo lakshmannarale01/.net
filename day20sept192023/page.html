@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+   <link href="page.css" rel="stylesheet">
+    <title>Document</title>
+</head>
+<body >
+    <div class="content">
+    <form class="form">
+        <table>
+            <div class="input-container">
+     <tr>
+    <td>
+                <label id="firstname">First Name :</label>
+    </td>
+    <td>                         <i class="glyphicon glyphicon-user"></i>    
+                        <input type="text" name="firstname" placeholder="First Name" required>
+    </td>
+                 
+                </tr>
+            </div>
+            <div class="input-container">
+  <tr>
+    <td>
+        <label id="lastname">Last Name : </label>
+    </td>
+    <td>
+        <i class="glyphicon glyphicon-user"></i>
+  
+        <input type="text" name="lastname" placeholder="Last Name" required>
+    </td>
+  </tr>
+
+</div>
+  
+            <div class="form-group">
+                <tr>
+                    <td>
+                        <label for="department"> Department: <i class="glyphicon glyphicon-th-list"></i>
+                         </label>
+                    </td>
+                    <td>
+                        <select id="department" name="department" class="department-select">
+                            <option [value]="" selected="selected">Select One </option>
+  
+                            <option value="production">ABC</option>
+            
+                            <option value="quality">DEF</option>
+            
+                        </select>
+                    </td>
+                </tr>
+ </div>
+  
+          <br>
+  
+            <div class="input-container">
+                <tr>
+                    <td>
+                        <label id="username">User Name :  </label>
+                    </td>
+                    <td>
+                        <i class="glyphicon glyphicon-user"></i>
+                        <input type="text" name="username" placeholder="Username" required>
+                    </td>
+                </tr>
+            </div>
+            <div class="input-container">
+                <tr>
+                    <td>
+                        <label id="password"> Password :</label>
+                    </td>
+                    <td>
+                        <i class="glyphicon glyphicon-user"></i>
+  
+                        <input type="password" name="password" placeholder="Password" required>
+                    </td>
+                </tr>
+</div>
+  
+            <div class="input-container">
+  <tr>
+    <td>
+        <label id="confirm_password">Confirm Password :   </label>
+    </td>
+    <td>
+        <i class="glyphicon glyphicon-user"></i>
+
+        <input type="password" name="confirm_password" placeholder="Confirm Password" required>
+    </td>
+  </tr>
+ </div>
+  
+            <div class="input-container">
+  <tr>
+    <td>
+        <label id="email">Email :  </label>
+    </td>
+    <td>
+
+        <i class="glyphicon glyphicon-envelope"></i>
+
+        <input type="email" name="email" placeholder="Email" required>
+    </td>
+  </tr>
+ </div>
+  
+            <div class="input-container">
+                <tr>
+                    <td>
+                        <label id="contact_number">Contact Number :  </label>
+                    </td>
+                    <td>
+                        <i class="glyphicon glyphicon-earphone"></i>
+                        <input type="number" name="contact_number" placeholder="Contact Number" required>
+                    </td>
+                </tr>
+  </div>
+  <div>
+  <tr>
+    <td>
+        <button type="submit" class="btn btn-primary" >Register</button>
+    </td>
+  
+  </tr>
+</div>
+ 
+        </table>
+    </form>
+</div>
+
+
+</body>
+</html>

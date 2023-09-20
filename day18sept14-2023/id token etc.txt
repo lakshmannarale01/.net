@@ -1,0 +1,19 @@
+{
+  "username": "abc",
+  "password": "abc123",
+  
+  "role": "Owner"
+}
+
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiYWJjIiwicm9sZSI6Ik93bmVyIiwibmJmIjoxNjk0NzAyNDA0LCJleHAiOjE2OTQ3ODg4MDQsImlhdCI6MTY5NDcwMjQwNH0.jJ3481-azy936_x0Rg4UxL-WOZ6JzOTLkOiMP_fjHvY
+
+---------------------------------------------------------------------------------------------
+
+{
+  "username": "xyz",
+  "password": "xyz123",
+  
+  "role": "Manager"
+}
+
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoieHl6Iiwicm9sZSI6Ik1hbmFnZXIiLCJuYmYiOjE2OTQ3MDQ2MTUsImV4cCI6MTY5NDc5MTAxNSwiaWF0IjoxNjk0NzA0NjE1fQ.trjnXtT8IC4emN73ssUBIE6Q5RozQbT7HixNr0m-bJ0

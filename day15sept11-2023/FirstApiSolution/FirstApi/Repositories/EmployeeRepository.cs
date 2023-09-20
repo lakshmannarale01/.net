@@ -1,8 +1,7 @@
-﻿using FirstApi.CContext;
-using FirstApi.Interfaces;
-using FirstApi.Models;
+﻿using FirstAPI.Interfaces;
+using FirstAPI.Models;
 
-namespace FirstApi.Repositories
+namespace FirstAPI.Repositories
 {
     public class EmployeeRepository : IRepository<int, Employee>
     {

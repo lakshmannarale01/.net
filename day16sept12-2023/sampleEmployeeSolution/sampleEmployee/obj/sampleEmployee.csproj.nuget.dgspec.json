@@ -1,15 +1,15 @@
 {
   "format": 1,
   "restore": {
-    "C:\\deva_Lakshman\\.net training\\.net\\day16sept12-2023\\SampleEmployeeSolution\\sampleEmployee\\sampleEmployee.csproj": {}
+    "C:\\deva_Lakshman\\.net training\\.net\\day16sept12-2023\\sampleEmployeeSolution\\sampleEmployee\\sampleEmployee.csproj": {}
   },
   "projects": {
-    "C:\\deva_Lakshman\\.net training\\.net\\day16sept12-2023\\SampleEmployeeSolution\\sampleEmployee\\sampleEmployee.csproj": {
+    "C:\\deva_Lakshman\\.net training\\.net\\day16sept12-2023\\sampleEmployeeSolution\\sampleEmployee\\sampleEmployee.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\deva_Lakshman\\.net training\\.net\\day16sept12-2023\\SampleEmployeeSolution\\sampleEmployee\\sampleEmployee.csproj",
+        "projectUniqueName": "C:\\deva_Lakshman\\.net training\\.net\\day16sept12-2023\\sampleEmployeeSolution\\sampleEmployee\\sampleEmployee.csproj",
         "projectName": "sampleEmployee",
-        "projectPath": "C:\\deva_Lakshman\\.net training\\.net\\day16sept12-2023\\SampleEmployeeSolution\\sampleEmployee\\sampleEmployee.csproj",
+        "projectPath": "C:\\deva_Lakshman\\.net training\\.net\\day16sept12-2023\\sampleEmployeeSolution\\sampleEmployee\\sampleEmployee.csproj",
         "packagesPath": "C:\\Users\\lakshman.narale\\.nuget\\packages\\",
         "outputPath": "C:\\deva_Lakshman\\.net training\\.net\\day16sept12-2023\\sampleEmployeeSolution\\sampleEmployee\\obj\\",
         "projectStyle": "PackageReference",

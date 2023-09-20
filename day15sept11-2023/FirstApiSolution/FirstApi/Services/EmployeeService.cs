@@ -1,8 +1,9 @@
-﻿using FirstApi.Interfaces;
-using FirstApi.Models.DTOs;
-using FirstApi.Models;
+﻿using FirstApi.Models.DTOs;
+using FirstAPI.Interfaces;
+using FirstAPI.Models;
 
-namespace FirstApi.Services
+
+namespace FirstAPI.Services
 {
     public class EmployeeService : IEmployeeService
     {

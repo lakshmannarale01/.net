@@ -1,7 +1,7 @@
 ﻿using FirstApi.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace FirstApi.CContext
+namespace FirstAPI.Models
 {
     public class CompanyContext : DbContext
     {

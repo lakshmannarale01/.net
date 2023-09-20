@@ -1,0 +1,16 @@
+<div class="alert alert-dark">
+    <!-- Employee Id: <input class="form-control" type="number" [value]="employee.id" #eid 
+    (change)="changeId(eid.value)">
+    <br/> -->
+    Product Name : <input class="form-control" type="text" [(ngModel)]="product.name">
+    <br/>
+    Product Price : <input class="form-control" type="number" [(ngModel)]="product.price">
+    <br/>
+    Product Qty : <input class="form-control" type="number" [(ngModel)]="product.qty">
+    <br/>
+    <button (click)="addProduct()" class="btn btn-dark"> Add Product
+        <span [class]="className">
+
+        </span>
+    </button>
+</div>

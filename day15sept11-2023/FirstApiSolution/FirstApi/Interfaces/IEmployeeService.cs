@@ -1,7 +1,9 @@
 ﻿using FirstApi.Models.DTOs;
 using FirstApi.Models;
+using FirstAPI.Models;
 
-namespace FirstApi.Interfaces
+
+namespace FirstAPI.Interfaces
 {
     public interface IEmployeeService
     {
@@ -11,5 +13,6 @@ namespace FirstApi.Interfaces
         Employee UpdateEmployeePhone(EmployeePhoneDTO employee);
         Employee UpdateEmployeeSalary(EmployeeSalaryDTO employee);
         Employee ToggleEmployeeStatus(int id);
+
     }
 }

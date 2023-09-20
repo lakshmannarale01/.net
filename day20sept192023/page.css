@@ -1,0 +1,30 @@
+
+form{
+    font-size:larger;
+    text-align: center;
+    align-items: center;
+}
+
+label {
+  
+    font-weight: bold;
+    text-align: right;
+    display: block;
+ }
+ .content {
+    background-color:bisque;
+    max-width: 500px;
+    margin: auto;
+  }
+
+
+  body {
+  
+      font-family: Arial, sans-serif;
+  background-image:url(https://techcrunch.com/wp-content/uploads/2021/07/GettyImages-1207206237.jpg?resize=1200,800) ;
+      /* background-color: rgb(197, 228, 118); */
+  
+      text-align: center;
+     
+  
+  }

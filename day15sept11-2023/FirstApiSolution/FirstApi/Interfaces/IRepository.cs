@@ -1,6 +1,6 @@
-﻿namespace FirstApi.Interfaces
+﻿namespace FirstAPI.Interfaces
 {
-    public interface IRepository<K,T>
+    public interface IRepository<K, T>
     {
         public List<T> GetAll();
         public T Get(K key);
