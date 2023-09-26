@@ -22,7 +22,7 @@ import { RegisterUserComponent } from './register-user/register-user.component';
 
 const routes: Routes = [
 
-  { path: 'menu', component: MenuComponent },
+  { path: 'menu', component: MenuComponent , canActivate: [AuthGuard] },
   { path: 'hotels', component: HotelsComponent, canActivate: [AuthGuard] },
   { path: 'addHotel', component: HotelComponent, canActivate: [AuthGuard] },
   { path: 'updatelocation', component: UpdateLocationComponent, canActivate: [AuthGuard] },
@@ -31,13 +31,13 @@ const routes: Routes = [
   { path: 'deleteHotel', component: DeleteHotelComponent },
 
   { path: 'addroom', component: RoomComponent, canActivate: [AuthGuard] },
-  { path: 'rooms', component: RoomsComponent },
+  { path: 'rooms', component: RoomsComponent ,  canActivate: [AuthGuard] },
   { path: 'getbyrange', component: RoomByRangeComponent },
   { path: 'updateroom', component: UpdateRoomPricenComponent, canActivate: [AuthGuard] },
   { path: 'deleteroom', component: DeleteRoomComponent },
 
   { path: 'bookroom', component: BookroomComponent },
-  { path: 'bookings', component: BookingsComponent },
+  { path: 'bookings', component: BookingsComponent ,  canActivate: [AuthGuard] },
   { path: 'cancelbooking', component: CancelBookingComponent },
 
 
