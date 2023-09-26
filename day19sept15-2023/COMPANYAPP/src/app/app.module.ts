@@ -17,6 +17,8 @@ import { LoginComponent } from './login/login.component';
 import { UserService } from './services/user.service';
 import { AuthGuard } from './services/auth.service';
 import { JwtModule } from '@auth0/angular-jwt';
+import { EmployeedetailComponent } from './employeedetail/employeedetail.component';
+import { EmployeesdetailComponent } from './employeesdetail/employeesdetail.component';
 
 export function tokenGetter(){
   return sessionStorage.getItem("token");
@@ -31,7 +33,9 @@ export function tokenGetter(){
     EmployeeComponent,
     EmployeesComponent,
     DeleteEmpComponent,
-    LoginComponent
+    LoginComponent,
+    EmployeedetailComponent,
+    EmployeesdetailComponent
   ],
   imports: [
     BrowserModule,
