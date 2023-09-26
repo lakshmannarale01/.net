@@ -26,7 +26,7 @@ const header =new HttpHeaders({
     'Authorization':'Bearer '+this.getToken() // bearer nantr space required ahe
 
 });
-
+hotel.pic = "/assets/images/"+hotel.pic;
 const requestOptions = {headers:header};
 return this.httpClient.post("http://localhost:5245/api/Hotel",hotel,requestOptions)
 }

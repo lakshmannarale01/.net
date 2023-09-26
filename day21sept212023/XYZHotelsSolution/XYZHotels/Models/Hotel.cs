@@ -12,6 +12,7 @@ namespace XYZHotels.Models
         [Required(ErrorMessage = "Hotel phone number is manditory")]
         public string Phone { get; set; }
 
+        public string? Pic { get; set; }
         
 
         public ICollection<Room>? Rooms { get; set; }

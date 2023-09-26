@@ -43,15 +43,8 @@
 
   <div *ngIf="hotels.length>0 else nohotels">
     <div class="alert alert-success" *ngFor="let hotel of hotels ">
-      Hotel Id : {{hotel.id}}
-      <br />
-      Hotel name : {{hotel.name}}
-      <br />
-      Hotel Location : {{hotel.location}}
-
-      <br />
-      Hotel Phone : {{hotel.phone}}
-
+   
+      <app-hotel-detail (checkCom)="showData($event)" [hotel]="hotel"></app-hotel-detail>
     </div>
   </div>
 

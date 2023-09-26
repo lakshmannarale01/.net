@@ -33,16 +33,17 @@
 <div *ngIf="hotels.length>0 else nohotel">
     <div *ngFor="let myhotel of hotels">
         <div *ngIf="rooms.length > 0 else noroom">
-            <div *ngFor="let myroom of rooms">
-                <div *ngIf="myhotel.id==myroom.id" class="alert alert-primary">
+            <div *ngFor="let room of rooms">
+                <div *ngIf="myhotel.id==room.id" class="alert alert-primary">
                     
-                    Hotel : {{myhotel.id}} -- {{myhotel.name}}
+                   <app-room-detail (checkCom)="showData($event)" [room]="room"></app-room-detail>
+                    <!-- Hotel : {{myhotel.id}} -- {{myhotel.name}}
                     <br/>
                     Room Id: {{myroom.roomNo}}
                     <br />
                     Rooms Details : {{myroom.details}}
                     <br />
-                    Room Price : {{myroom.price}}
+                    Room Price : {{myroom.price}} -->
                    
                 </div>
             </div>

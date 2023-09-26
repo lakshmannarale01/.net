@@ -66,6 +66,9 @@ namespace XYZHotels.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<string>("Pic")
+                        .HasColumnType("text");
+
                     b.HasKey("Id");
 
                     b.ToTable("hotel");
@@ -101,6 +104,9 @@ namespace XYZHotels.Migrations
 
                     b.Property<int>("Id")
                         .HasColumnType("integer");
+
+                    b.Property<string>("Pic")
+                        .HasColumnType("text");
 
                     b.Property<double>("price")
                         .HasColumnType("double precision");

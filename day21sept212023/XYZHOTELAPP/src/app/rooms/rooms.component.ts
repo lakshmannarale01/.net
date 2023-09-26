@@ -42,4 +42,11 @@ Update(){
 Delete(){
   this.router.navigateByUrl("deleteroom");
 }
+
+showData(data:any)
+{
+console.log(data);
+this.router.navigate(["updateroom" , data])
+}
+
 }

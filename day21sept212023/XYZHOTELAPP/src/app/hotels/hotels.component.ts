@@ -9,6 +9,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./hotels.component.css']
 })
 export class HotelsComponent {
+  hotelName:string="";
   hotels:Hotel[]=[];
 
   constructor(private hotelService:HotelapiService , private router:Router){
@@ -17,6 +18,12 @@ this.hotelService.getHotels().subscribe(data=>{
   this.hotels = data as Hotel[];
 })
 
+  }
+
+  showData(data:any)
+  {
+  console.log(data);
+  this.router.navigate(["updatelocation" , data])
   }
 
   logout(){

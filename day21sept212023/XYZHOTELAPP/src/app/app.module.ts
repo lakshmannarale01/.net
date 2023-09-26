@@ -29,6 +29,8 @@ import { BookingApiService } from './services/bookingapi.service';
 import { DeleteRoomComponent } from './delete-room/delete-room.component';
 import { CancelBookingComponent } from './cancel-booking/cancel-booking.component';
 import { RegisterUserComponent } from './register-user/register-user.component';
+import { HotelDetailComponent } from './hotel-detail/hotel-detail.component';
+import { RoomDetailComponent } from './room-detail/room-detail.component';
 
 export function tokenGetter(){
   return sessionStorage.getItem("token");
@@ -54,6 +56,8 @@ export function tokenGetter(){
     DeleteRoomComponent,
     CancelBookingComponent,
     RegisterUserComponent,
+    HotelDetailComponent,
+    RoomDetailComponent,
 
   ],
   imports: [

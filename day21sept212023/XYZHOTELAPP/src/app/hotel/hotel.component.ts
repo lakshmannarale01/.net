@@ -15,6 +15,7 @@ constructor(private hotelService:HotelapiService,private router:Router){}
 
 addHotels(){
   this.className= "spinner-border";
+  //this.hotel.pic = this.hotel.pic.filename;
   this.hotelService.addHotels(this.hotel).subscribe(data=>{
     this.hotel = data as Hotel;
     if(this.hotel.id>0){
@@ -32,4 +33,9 @@ addHotels(){
  
   this.hotel =new Hotel();
 }
+
+// fileEvent(fileInput: Event){
+//   let file = fileInput.target.files[0];
+//   let fileName = file.name;
+// }
 }

@@ -43,6 +43,9 @@ namespace FirstApi.Migrations
                     b.Property<string>("Phone")
                         .HasColumnType("text");
 
+                    b.Property<string>("Pic")
+                        .HasColumnType("text");
+
                     b.Property<float?>("Salary")
                         .HasColumnType("real");
 

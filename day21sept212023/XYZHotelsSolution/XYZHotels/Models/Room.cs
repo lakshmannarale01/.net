@@ -10,9 +10,12 @@ namespace XYZHotels.Models
         public string Details { get; set; }
         [Required(ErrorMessage = "price is mandatory")]
         public double price { get; set; }
+
+        public string? Pic { get; set; }
         public int Id { get; set; }
         [ForeignKey("Id")]
         public Hotel? Hotel { get; set; }
+
 
     }
 }

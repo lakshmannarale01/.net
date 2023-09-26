@@ -7,6 +7,9 @@ import { DeleteEmpComponent } from './delete-emp/delete-emp.component';
 import { LoginComponent } from './login/login.component';
 import { FirstComponent } from './first/first.component';
 import { AuthGuard } from './services/auth.service';
+import { OneComponent } from './one/one.component';
+import { TwoComponent } from './two/two.component';
+import { UpdateEmployeeComponent } from './update-employee/update-employee.component';
 
 const routes: Routes = [
 {path : 'home' , component:SecondComponent},
@@ -15,8 +18,10 @@ const routes: Routes = [
 {path : 'delete' , component:DeleteEmpComponent,children:[
   {path: 'first',component:FirstComponent}
 ]},
-{path : 'login', component:LoginComponent}
-
+{path : 'login', component:LoginComponent},
+{path : 'one' , component:OneComponent},
+{path : 'two/:g3' , component:TwoComponent},
+{path : 'update/:eid' , component:UpdateEmployeeComponent}
 ];
 
 @NgModule({

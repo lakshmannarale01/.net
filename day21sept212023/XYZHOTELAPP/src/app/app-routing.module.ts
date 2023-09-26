@@ -18,6 +18,7 @@ import { BookingsComponent } from './bookings/bookings.component';
 import { DeleteRoomComponent } from './delete-room/delete-room.component';
 import { CancelBookingComponent } from './cancel-booking/cancel-booking.component';
 import { RegisterUserComponent } from './register-user/register-user.component';
+import { HotelDetailComponent } from './hotel-detail/hotel-detail.component';
 
 
 const routes: Routes = [
@@ -25,7 +26,7 @@ const routes: Routes = [
   { path: 'menu', component: MenuComponent , canActivate: [AuthGuard] },
   { path: 'hotels', component: HotelsComponent, canActivate: [AuthGuard] },
   { path: 'addHotel', component: HotelComponent, canActivate: [AuthGuard] },
-  { path: 'updatelocation', component: UpdateLocationComponent, canActivate: [AuthGuard] },
+  { path: 'updatelocation/:hid', component: UpdateLocationComponent, canActivate: [AuthGuard] },
   { path: 'updatephone', component: UpdatePhoneComponent, canActivate: [AuthGuard] },
   { path: 'getHotelDetails', component: GetHotelDetailComponent },
   { path: 'deleteHotel', component: DeleteHotelComponent },
@@ -33,12 +34,13 @@ const routes: Routes = [
   { path: 'addroom', component: RoomComponent, canActivate: [AuthGuard] },
   { path: 'rooms', component: RoomsComponent ,  canActivate: [AuthGuard] },
   { path: 'getbyrange', component: RoomByRangeComponent },
-  { path: 'updateroom', component: UpdateRoomPricenComponent, canActivate: [AuthGuard] },
+  { path: 'updateroom/:rid', component: UpdateRoomPricenComponent, canActivate: [AuthGuard] },
   { path: 'deleteroom', component: DeleteRoomComponent },
 
   { path: 'bookroom', component: BookroomComponent },
   { path: 'bookings', component: BookingsComponent ,  canActivate: [AuthGuard] },
   { path: 'cancelbooking', component: CancelBookingComponent },
+  { path: 'hoteldetail', component: HotelDetailComponent },
 
 
   { path: 'signup', component: RegisterUserComponent },

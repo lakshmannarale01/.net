@@ -11,6 +11,8 @@ namespace FirstAPI.Models
         public string? Phone { get; set; }
         public float? Salary { get; set; }
         public bool? IsActive { get; set; }
+
+        public string? Pic { get; set; }
         public string? Username { get; set; }
         [ForeignKey("Username")]
         public User? User { get; set; }
