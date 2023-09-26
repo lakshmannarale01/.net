@@ -1,6 +1,6 @@
 <div *ngIf = "products.length > 0 else noproduct" >
     <div class="alert alert-primary" *ngFor = "let product of products">
-        <div *ngIf="product.qty > 0">
+       
 
                     Product Id : {{product.id}}
                     <br/>
@@ -8,6 +8,7 @@
                     <br/>
                     Product Price : {{product.price}}
                     <br/>
+        <div *ngIf="product.qty > 0 else noproduct">
                     Product Qty : {{product.qty}}
         </div>
     </div>
@@ -15,7 +16,7 @@
 </div>
 
 <ng-template #noproduct >
-    <div class="alert alert-warning">
+   <span><div class="alert alert-warning" >
        no product avaialable
-    </div>
+    </div></span>
 </ng-template>

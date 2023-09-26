@@ -9,12 +9,14 @@ import { ProductComponent } from './product/product.component';
 import { ProductsComponent } from './products/products.component';
 import { productService } from './services/product.service';
 import { ProductWebApiService } from './services/ProductWebApi.Service';
+import { DeleteProductComponent } from './delete-product/delete-product.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     ProductComponent,
-    ProductsComponent
+    ProductsComponent,
+    DeleteProductComponent
   ],
   imports: [
     BrowserModule,

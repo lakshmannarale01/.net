@@ -1,0 +1,20 @@
+<div class="alert alert-danger">
+    <select (change)="selectChange(eid.value)" 
+            #eid 
+            class="form-control">
+        <option>--select--</option>
+        <option *ngFor="let emp of products" [value]="emp.id">
+            {{emp.id}}--{{emp.name}}
+        </option>
+    </select>
+    <div *ngIf="product.id != 0">
+        Employee Id : {{product.id}}
+        <br/>
+        Employee Name : {{product.name}}
+        <br/>
+        Employee Price: {{product.price}}
+        <br/>
+        <button (click)="deleteProduct()" class="btn btn-danger">Delete Employee</button>
+    </div>
+    
+</div>

@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { Employee } from './employee';
 import { EmployeeService } from '../services/employee.service';
 import { EmployeeWebService } from '../services/employeeweb.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-employee',
@@ -9,10 +10,11 @@ import { EmployeeWebService } from '../services/employeeweb.service';
   styleUrls: ['./employee.component.css']
 })
 export class EmployeeComponent {
-employee:Employee = new Employee()
+employee:Employee = new Employee();
 className:string="";
 
-constructor(private employeeService:EmployeeWebService){
+constructor(private employeeService:EmployeeWebService,
+  private router:Router){
   
 }
 
@@ -21,13 +23,18 @@ addEmployee(){
   // this.employeeService.addEmployee(this.employee);
   this.employeeService.addEmployee(this.employee).subscribe(data=>{
   this.employee = data as Employee;
-  if(this.employee.id > 0)
+  if(this.employee.id > 0){
     alert("The Employee has been added");
-  this.className="";
+    this.router.navigateByUrl("employees")
+  }else{
+    alert("Sorry , Unable to add at this Moment")
+    this.className="";
+  }
   },
   (err)=>{
     console.log(err);
   })
+  alert("Check after the async")
   this.employee = new Employee();
 }
 changeId(eid:any){

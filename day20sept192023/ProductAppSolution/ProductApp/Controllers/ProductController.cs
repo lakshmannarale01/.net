@@ -45,5 +45,21 @@ namespace ProductApp.Controllers
             }
             return BadRequest(ModelState.Keys);
         }
+        [HttpDelete]
+        public ActionResult Delete(int id)
+        {
+            try
+            {
+                var result = _proservice.Delete(id);
+                if (result == null)
+                    return NotFound();
+                return Ok(result);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+
+            }
+        }
     }
 }

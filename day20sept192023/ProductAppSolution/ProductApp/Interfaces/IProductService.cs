@@ -8,6 +8,8 @@ namespace ProductApp.Interfaces
 
         Product AddANewProduct(Product product);
 
+        Product Delete(int id);
+
         
     }
 }
