@@ -4,6 +4,9 @@
     {
         public int RoomNo { get; set; }
 
-        public DateTime BookingDateTime { get; set; }
+        public DateTime CheckIn { get; set; }
+
+        public int Id { get; set; }
+       
     }
 }

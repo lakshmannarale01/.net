@@ -6,7 +6,7 @@
 
         Hotel Phone : <input class="form-control" type="text" [(ngModel)]="hotel.phone">
 
-        <!-- pic : <input type="file" (change)="fileEvent($event)" /> -->
+       Hotel Image : <input  class="form-control" (change)="assignFile(pic)" #pic  type="file">
 
         <button (click)="addHotels()" class="btn btn-dark">
             Add Hotel

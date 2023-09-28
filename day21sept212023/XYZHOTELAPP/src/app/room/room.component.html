@@ -16,6 +16,8 @@
       Room price : <input class="form-info" type="number" [(ngModel)]="room.price">
       <br />
 
+      <input  class="form-control" (change)="assignFile(pic)" #pic  type="file">
+
       <button (click)="addRoom()" class="btn btn-dark"> Add Room<span [class]="className"></span></button>
     </div>
 

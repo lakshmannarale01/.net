@@ -97,6 +97,22 @@ namespace XYZHotels.Controllers
 
             }
         }
+            [HttpPut("UpdateStatus")]
+        public ActionResult PutChangeStatus(int id)
+        {
+            try
+            {
+                var result = _service.ToogleRoomStatus(id);
+                if (result == null)
+                    return NotFound();
+                return Ok(result);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
+
 
 
 

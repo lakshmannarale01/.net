@@ -96,3 +96,7 @@ C:\deva_Lakshman\.net training\.net\day21sept212023\XYZHotelsSolution\XYZHotels\
 C:\deva_Lakshman\.net training\.net\day21sept212023\XYZHotelsSolution\XYZHotels\obj\Debug\net6.0\XYZHotels.pdb
 C:\deva_Lakshman\.net training\.net\day21sept212023\XYZHotelsSolution\XYZHotels\obj\Debug\net6.0\XYZHotels.genruntimeconfig.cache
 C:\deva_Lakshman\.net training\.net\day21sept212023\XYZHotelsSolution\XYZHotels\obj\Debug\net6.0\ref\XYZHotels.dll
+C:\deva_Lakshman\.net training\.net\day21sept212023\XYZHotelsSolution\XYZHotels\bin\Debug\net6.0\Microsoft.AspNetCore.JsonPatch.dll
+C:\deva_Lakshman\.net training\.net\day21sept212023\XYZHotelsSolution\XYZHotels\bin\Debug\net6.0\Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll
+C:\deva_Lakshman\.net training\.net\day21sept212023\XYZHotelsSolution\XYZHotels\bin\Debug\net6.0\Newtonsoft.Json.dll
+C:\deva_Lakshman\.net training\.net\day21sept212023\XYZHotelsSolution\XYZHotels\bin\Debug\net6.0\Newtonsoft.Json.Bson.dll

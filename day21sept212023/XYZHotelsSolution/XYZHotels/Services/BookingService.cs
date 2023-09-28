@@ -17,8 +17,10 @@ namespace XYZHotels.Services
         {
             BookingCheckAvalibilityDTO bca= new BookingCheckAvalibilityDTO
             {
-                BookingDateTime = booking.BookingDateTime,
+                CheckIn = booking.CheckIn,
+                  Id = booking.Id,
                     RoomNo = booking.RoomNo
+
             };
             if(CheckAvailability(bca) == true) 
             {
@@ -44,7 +46,7 @@ namespace XYZHotels.Services
             try
             {
                 var book = _repo.GetAll();
-                var checkBooking = book.FirstOrDefault(x=>x.RoomNo== booking.RoomNo && x.BookingDateTime==booking.BookingDateTime);
+                var checkBooking = book.FirstOrDefault(x=>x.RoomNo== booking.RoomNo && x.CheckIn==booking.CheckIn /*&& x.CheckOut=booking.CheckOut*/);
                 return checkBooking == null;
             }
             catch (RoomNotAvailableExceptions e )

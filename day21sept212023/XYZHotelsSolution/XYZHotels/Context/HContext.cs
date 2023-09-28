@@ -40,19 +40,21 @@ namespace XYZHotels.Context
             modelBuilder.Entity<Room>().HasData(
                 new Room
                 {
-                     RoomNo = 101,
-                      Details="AC Room",
-                       price=2000,
-                       Id=1,
+                    RoomNo = 101,
+                    Details = "AC Room",
+                    price = 2000,
+                    Id = 1,
+                    IsActive = true,
                 },
                 new Room
                 {
                     RoomNo = 102,
                     Details = "Non AC Room",
-                     price=1500,
+                    price = 1500,
                     Id = 2,
+                    IsActive = false,
                 }
-                );
+                ); ;
         }
     }
 }

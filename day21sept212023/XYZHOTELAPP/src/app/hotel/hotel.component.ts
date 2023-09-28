@@ -34,6 +34,11 @@ addHotels(){
   this.hotel =new Hotel();
 }
 
+assignFile(pic:any){
+   
+  this.hotel.pic = "/assets/images/"+pic.files[0].name;
+}
+
 // fileEvent(fileInput: Event){
 //   let file = fileInput.target.files[0];
 //   let fileName = file.name;

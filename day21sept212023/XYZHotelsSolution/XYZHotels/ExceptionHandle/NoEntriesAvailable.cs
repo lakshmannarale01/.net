@@ -6,7 +6,7 @@
         public NoEntriesAvailable(string name) 
         {
 
-            message = $"No Entries {name} is available";
+            message = $"No  {name} is available";
 
         }
         public override string Message => message;

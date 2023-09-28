@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using XYZHotels.ExceptionHandle;
 using XYZHotels.Interfaces;
 using XYZHotels.Models;
+using XYZHotels.Models.DTOs;
 
 namespace XYZHotels.Controllers
 {
@@ -12,11 +14,12 @@ namespace XYZHotels.Controllers
     public class BookingController : ControllerBase
     {
         private readonly IBookingService _service;
+        private readonly IRoomService _roomService;
 
-        public BookingController(IBookingService service)
+        public BookingController(IBookingService service , IRoomService service1)
         {
             _service= service;
-            
+            _roomService=   service1;
         }
 
         [HttpGet("Get")]
@@ -37,13 +40,16 @@ namespace XYZHotels.Controllers
             {
                 try
                 {
+                   
                     var result = _service.AddBooking(book);
+                    _roomService.ToogleRoomStatus(book.RoomNo);
+
                     return Ok(result);
                 }
-                catch (Exception e)
+                catch (Exception e )
                 {
 
-                    return BadRequest(e.Message);
+                    return BadRequest(e);
                 }
             }
             return BadRequest(ModelState.Keys);
@@ -52,9 +58,13 @@ namespace XYZHotels.Controllers
         [HttpDelete("CanclBooking")]
         public ActionResult CanclBooking(int id)
         {
+            Booking book = new Booking();
+            book.Id = id;
             try
             {
-                var result = _service.CancelBooking(id);
+              
+                var result = _service.CancelBooking(book.Id);
+                
                 if (result == null)
                     return NotFound();
                 return Ok(result);
@@ -64,6 +74,14 @@ namespace XYZHotels.Controllers
                 return BadRequest(e.Message);
 
             }
+        }
+
+        [HttpGet("check")]
+        public IActionResult CheckAvailability(BookingCheckAvalibilityDTO check)
+        {
+           var result = _service.CheckAvailability(check);
+
+            return Ok(result);
         }
 
     }

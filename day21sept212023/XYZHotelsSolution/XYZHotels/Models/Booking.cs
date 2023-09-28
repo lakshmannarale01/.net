@@ -9,12 +9,24 @@ namespace XYZHotels.Models
 
         public string? CustomerName { get; set; }
 
+     
+
+        public int Id { get; set; }
+        [ForeignKey("Id")]
+        public Hotel? Hotel { get; set; }
         public int RoomNo { get; set; }
         [ForeignKey("RoomNo")]
         public Room? Room { get; set; }
         //public int Id { get; set; }
         //[ForeignKey("Id")]
         //public Hotel? Hotel { get; set; }
-        public DateTime BookingDateTime { get; set; }
+
+        public DateTime CheckIn { get; set; }
+
+     
+
+        
+
+
     }
 }

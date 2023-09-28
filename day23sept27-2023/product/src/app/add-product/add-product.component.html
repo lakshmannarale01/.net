@@ -1,0 +1,113 @@
+<body>
+<div>
+    <form #productForm="ngForm" >
+       <table>
+           <tr>
+               <td>
+                   <label class="form-control">Product Name</label>
+               </td>
+               <td>
+                   <input required name="pname"  #pname="ngModel" class="form-control" [(ngModel)]="product.name" type="text">
+                   
+               </td>
+               <td>
+                   <span *ngIf="pname.errors && pname.touched" class="alert alert-danger">
+                       Name cannot be empty
+                   </span>
+               </td>
+           </tr>
+           <tr>
+               <td>
+                   <label class="form-control">Product Price</label>
+               </td>
+               <td>
+                   <input #pprice="ngModel" name="pprice" required min="1" class="form-control" [(ngModel)]="product.price" type="number">
+               </td>
+               <td>
+                   <span *ngIf="pprice.errors && pprice.touched" class="alert alert-danger">
+                     <span *ngIf="pprice.errors['required']">
+                       Price cannot be 0
+                     </span>
+                     <span *ngIf="pprice.errors['min']">
+                       Price has to be greater than 0
+                     </span>
+                   </span>
+               </td>
+           </tr>
+           <tr>
+               <td>
+                   <label class="form-control">Product Qantity</label>
+               </td>
+               <td>
+                   <input #pquantity="ngModel" required min="1" name="pquantity" class="form-control" [(ngModel)]="product.quantity" type="number">
+               </td>
+               <td>
+                <span *ngIf="pquantity.errors && pquantity.touched" class="alert alert-danger">
+                    <span *ngIf="pquantity.errors['required']">
+                        quntity can not be zero while adding dada
+
+                    </span>
+                    <span *ngIf="pquantity.errors['min']">
+                        price has to be greter than 0
+
+                    </span>
+                    
+                </span>
+               </td>
+           </tr>
+           <tr>
+               <td>
+                   <label class="form-control">Product Type</label>
+               </td>
+               <td>
+                  <input name="type" type="radio" checked (change)="changeVeg()" class="radio" >Veg
+                  <input name="type" type="radio" (change)="changeNonVeg()" class="radio">Non-Veg
+               </td>
+           </tr>
+           <tr>
+               <td>
+                   <label class="form-control">Product Pic</label>
+               </td>
+               <td>
+                   <input  class="form-control" (change)="assignFile(pic)" #pic  type="file">
+               </td>
+           </tr>
+   
+           <tr>
+               <td>
+                   <button class="btn btn-success" (click)="addProduct()">Add</button>
+               </td>
+               <td>
+                   <button class="btn btn-danger">Cancel</button>
+               </td>
+           </tr>
+       </table>
+    </form>
+    <div *ngIf="productForm.form.invalid && showErrors">
+        {{product | json}}
+        <br/>
+       {{(productForm.form.controls['pname'].errors ?"Check the name":"") | uppercase}}   <!--uppercase  -->
+       <br>
+       {{(productForm.form.controls['pprice'].errors?"Check the price":"" ) | lowercase }}    <!-- lowercase -->
+       <br>
+      
+       {{productForm.form.controls['pquantity'].errors?"Check the quantity" + (pquantity|json):""}}   <!-- zero peksha kami zala nahi pahije mhnun  -->
+  |<br/>
+  
+    </div>
+   </div>
+   <hr>
+order Number : {{order.id}}
+<br>
+order Amount : {{order.amount | currency:'INR'}}
+<br>
+order Date : {{order.orderedDate | date:'dd-M-yy'}}
+<br>
+order Date : {{order.orderedDate | date:'dd-MM-yy'}}
+<br>
+order Date : {{order.orderedDate | date:'dd-MMM-yy'}}
+<br>
+order Date : {{order.orderedDate | date:'dd-MMMM-yy'}}
+<br>
+order Remarks : {{order.remarks | remarks:'5'}}
+ </body>

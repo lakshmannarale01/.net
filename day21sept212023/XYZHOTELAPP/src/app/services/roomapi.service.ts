@@ -60,5 +60,15 @@ deleteRoom(rid:number){
 
 }
 
+updateRoomStatus(rid:number){
+    const header = new HttpHeaders({
+        'Content-Type':'application/json',
+        'Authorization':'Bearer '+this.getToken() 
+    });
+  
+    const requestOptions = {headers:header};
+    return this.httpClient.delete("http://localhost:5245/api/Room/UpdateStatus?id="+rid , requestOptions)
+}
+
 
 }

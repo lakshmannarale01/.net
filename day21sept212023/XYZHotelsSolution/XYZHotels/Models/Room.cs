@@ -11,11 +11,13 @@ namespace XYZHotels.Models
         [Required(ErrorMessage = "price is mandatory")]
         public double price { get; set; }
 
+        public bool? IsActive { get; set; }
         public string? Pic { get; set; }
         public int Id { get; set; }
         [ForeignKey("Id")]
         public Hotel? Hotel { get; set; }
 
+        public ICollection<Booking>? Bookings { get; set; }
 
     }
 }

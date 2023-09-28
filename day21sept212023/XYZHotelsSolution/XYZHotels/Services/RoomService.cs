@@ -56,5 +56,40 @@ namespace XYZHotels.Services
                 return _repo.Delete(room.RoomNo);
             }
         }
+        //Booking book = new Booking();
+
+        //public Room ToogleRoomStatus(int id)
+        //{
+        //    var room = _repo.Get(id);
+
+        //        if (room != null)
+        //        {
+        //            if (book.RoomNo == room.RoomNo)
+        //            {
+        //                room.IsActive = false;
+        //            }
+        //            else
+        //            {
+        //                room.IsActive = true;
+        //            }
+        //        }
+        //    return null;
+        //}
+
+        public Room ToogleRoomStatus(int id)
+        {
+            var room = _repo.Get(id);
+      
+                if (room != null)
+                {
+                    if (room.IsActive == null)
+                    {
+                        room.IsActive = false;
+                    }
+                    room.IsActive = !room.IsActive;
+                    return _repo.Update(room);
+                }
+            return null;
+        }
     }
 }

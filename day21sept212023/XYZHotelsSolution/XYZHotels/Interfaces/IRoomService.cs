@@ -13,5 +13,7 @@ namespace XYZHotels.Interfaces
         Room Delete(int id);
 
         Room UpdatePrice(RoomPriceDTO room);
+
+        Room ToogleRoomStatus(int id);
     }
 }

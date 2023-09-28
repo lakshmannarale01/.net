@@ -14,7 +14,16 @@ namespace PizzaStoreApp
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
-
+            builder.Services.AddControllers();
+            #region AddPolicy
+            builder.Services.AddCors(opts =>
+            {
+                opts.AddPolicy("MyCors", options =>
+                {
+                    options.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin();
+                });
+            });
+            #endregion
             #region InjectUserdefinedServices
             builder.Services.AddScoped<IRepository<int, PizzaWithPic>, PizzaRepository>();
             builder.Services.AddScoped<IPizzaService, PizzaServicecs>();
@@ -33,6 +42,8 @@ namespace PizzaStoreApp
 
             app.UseRouting();
 
+            app.UseCors("MyCors");
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.MapControllerRoute(

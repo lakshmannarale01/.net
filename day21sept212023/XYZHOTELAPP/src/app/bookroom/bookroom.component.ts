@@ -60,15 +60,12 @@ bookRoom(){
       this.router.navigateByUrl("bookings")
       this.className="";
     }
-    else{
-      alert("Sorry Unable to Book Now")
-      this.className="";
-    
-    }
+  
    
   },
   (err)=>{
-    console.log(err);
+    alert("Sorry Unable to Book Now")
+    this.router.navigateByUrl("bookings")
   });
   this.book=new BookRoom();
 }

@@ -1,0 +1,26 @@
+
+<div *ngIf="products.length>0 else noproduct">
+    <div *ngFor="let product of products">
+    <div class="card" style="width: 18rem;">
+    <img class="card-img-top" [src]="product.pic" alt="Card image cap">
+    <div class="card-body">
+      <h5 class="card-title">{{product.name}}</h5>
+      Product Id : {{product.id}}
+      <br />
+      Product name : {{product.name}}
+      <br />
+     Product Price  : {{product.price}}
+
+      <br />
+     Product quantity : {{product.quantity}}
+     <br/>
+     Product Type :{{product.type}}
+    </div>
+  </div>
+</div>
+</div>
+<ng-template #noproduct>
+    <div class="alert alert-warning">
+      No hotels Yet
+    </div>
+  </ng-template>

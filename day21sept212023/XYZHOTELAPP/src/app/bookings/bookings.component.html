@@ -36,11 +36,13 @@
         <div class="alert alert-primary" *ngFor="let book of bookings ">
             customer name : {{book.customerName}}
             <br/>
+            Hotel Id : {{book.id}}
+            <br/>
             Booking Id : {{book.bookingId}}
             <br />
             Booking Room Number : {{book.roomNo}}
             <br />
-            booking Time : {{book.bookingDateTime}}
+            booking Time : {{book.checkIn}}
             <br>
           
             <!-- Hotel Id : {{hotel.id}} -->

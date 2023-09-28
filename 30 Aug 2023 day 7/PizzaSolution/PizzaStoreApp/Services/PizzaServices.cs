@@ -15,10 +15,15 @@ namespace PizzaStoreApp.Services
         }
         public PizzaWithPic AddPizza(PizzaWithPic pizza)
         {
-            pizza.Pic = "/images/" + pizza.Pic;
+            //pizza.Pic =  pizza.Pic;
             var result = _repository.Add(pizza);
             return result;
 
+        }
+
+        public ICollection<PizzaWithPic> GetAllPizzas()
+        {
+            return _repository.GetAll();
         }
         #region GetPizzaByType
         /// <summary>

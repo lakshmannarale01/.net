@@ -51,4 +51,9 @@ addRoom(){
  
   this.room = new Room();
 }
+
+assignFile(pic:any){
+   
+  this.room.pic = "/assets/images/"+pic.files[0].name;
+}
 }

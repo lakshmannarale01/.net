@@ -11,11 +11,13 @@
     <div *ngIf="book.bookingId != 0">
         Booking  Id : {{book.bookingId}}
         <br/>
+        Hotel Id : {{book.id}}
+        <br/>
         Customer Name : {{book.customerName}}
         <br/>
        Room No : {{book.roomNo}}
         <br/>
-       Booking Time: {{book.bookingDateTime}}
+       Booking Time: {{book.checkIn}}
         <br/>
        
         <button (click)="cancelBooking()" class="btn btn-danger">cancel booking</button>

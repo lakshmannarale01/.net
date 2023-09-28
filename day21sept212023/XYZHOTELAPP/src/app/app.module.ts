@@ -31,6 +31,7 @@ import { CancelBookingComponent } from './cancel-booking/cancel-booking.componen
 import { RegisterUserComponent } from './register-user/register-user.component';
 import { HotelDetailComponent } from './hotel-detail/hotel-detail.component';
 import { RoomDetailComponent } from './room-detail/room-detail.component';
+import { IsActiveRoomComponent } from './is-active-room/is-active-room.component';
 
 export function tokenGetter(){
   return sessionStorage.getItem("token");
@@ -58,6 +59,7 @@ export function tokenGetter(){
     RegisterUserComponent,
     HotelDetailComponent,
     RoomDetailComponent,
+    IsActiveRoomComponent,
 
   ],
   imports: [

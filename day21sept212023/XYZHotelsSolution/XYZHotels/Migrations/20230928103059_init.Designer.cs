@@ -12,7 +12,7 @@ using XYZHotels.Context;
 namespace XYZHotels.Migrations
 {
     [DbContext(typeof(HContext))]
-    [Migration("20230925064945_init")]
+    [Migration("20230928103059_init")]
     partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -32,16 +32,21 @@ namespace XYZHotels.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("BookingId"));
 
-                    b.Property<DateTime>("BookingDateTime")
+                    b.Property<DateTime>("CheckIn")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("CustomerName")
                         .HasColumnType("text");
 
+                    b.Property<int>("Id")
+                        .HasColumnType("integer");
+
                     b.Property<int>("RoomNo")
                         .HasColumnType("integer");
 
                     b.HasKey("BookingId");
+
+                    b.HasIndex("Id");
 
                     b.HasIndex("RoomNo");
 
@@ -66,6 +71,9 @@ namespace XYZHotels.Migrations
 
                     b.Property<string>("Phone")
                         .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Pic")
                         .HasColumnType("text");
 
                     b.HasKey("Id");
@@ -104,6 +112,12 @@ namespace XYZHotels.Migrations
                     b.Property<int>("Id")
                         .HasColumnType("integer");
 
+                    b.Property<bool?>("IsActive")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("Pic")
+                        .HasColumnType("text");
+
                     b.Property<double>("price")
                         .HasColumnType("double precision");
 
@@ -119,6 +133,7 @@ namespace XYZHotels.Migrations
                             RoomNo = 101,
                             Details = "AC Room",
                             Id = 1,
+                            IsActive = true,
                             price = 2000.0
                         },
                         new
@@ -126,6 +141,7 @@ namespace XYZHotels.Migrations
                             RoomNo = 102,
                             Details = "Non AC Room",
                             Id = 2,
+                            IsActive = false,
                             price = 1500.0
                         });
                 });
@@ -153,11 +169,19 @@ namespace XYZHotels.Migrations
 
             modelBuilder.Entity("XYZHotels.Models.Booking", b =>
                 {
+                    b.HasOne("XYZHotels.Models.Hotel", "Hotel")
+                        .WithMany("Bookings")
+                        .HasForeignKey("Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("XYZHotels.Models.Room", "Room")
-                        .WithMany()
+                        .WithMany("Bookings")
                         .HasForeignKey("RoomNo")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Hotel");
 
                     b.Navigation("Room");
                 });
@@ -175,7 +199,14 @@ namespace XYZHotels.Migrations
 
             modelBuilder.Entity("XYZHotels.Models.Hotel", b =>
                 {
+                    b.Navigation("Bookings");
+
                     b.Navigation("Rooms");
+                });
+
+            modelBuilder.Entity("XYZHotels.Models.Room", b =>
+                {
+                    b.Navigation("Bookings");
                 });
 #pragma warning restore 612, 618
         }

@@ -18,7 +18,8 @@ namespace XYZHotels.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Name = table.Column<string>(type: "text", nullable: false),
                     Location = table.Column<string>(type: "text", nullable: false),
-                    Phone = table.Column<string>(type: "text", nullable: false)
+                    Phone = table.Column<string>(type: "text", nullable: false),
+                    Pic = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -47,6 +48,8 @@ namespace XYZHotels.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Details = table.Column<string>(type: "text", nullable: false),
                     price = table.Column<double>(type: "double precision", nullable: false),
+                    IsActive = table.Column<bool>(type: "boolean", nullable: true),
+                    Pic = table.Column<string>(type: "text", nullable: true),
                     Id = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
@@ -67,12 +70,19 @@ namespace XYZHotels.Migrations
                     BookingId = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     CustomerName = table.Column<string>(type: "text", nullable: true),
+                    Id = table.Column<int>(type: "integer", nullable: false),
                     RoomNo = table.Column<int>(type: "integer", nullable: false),
-                    BookingDateTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                    CheckIn = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_bookings", x => x.BookingId);
+                    table.ForeignKey(
+                        name: "FK_bookings_hotel_Id",
+                        column: x => x.Id,
+                        principalTable: "hotel",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_bookings_rooms_RoomNo",
                         column: x => x.RoomNo,
@@ -83,21 +93,26 @@ namespace XYZHotels.Migrations
 
             migrationBuilder.InsertData(
                 table: "hotel",
-                columns: new[] { "Id", "Location", "Name", "Phone" },
+                columns: new[] { "Id", "Location", "Name", "Phone", "Pic" },
                 values: new object[,]
                 {
-                    { 1, "Mumbai", "TAJ", "9955668855" },
-                    { 2, "Mumbai", "IBIS", "256854658" }
+                    { 1, "Mumbai", "TAJ", "9955668855", null },
+                    { 2, "Mumbai", "IBIS", "256854658", null }
                 });
 
             migrationBuilder.InsertData(
                 table: "rooms",
-                columns: new[] { "RoomNo", "Details", "Id", "price" },
+                columns: new[] { "RoomNo", "Details", "Id", "IsActive", "Pic", "price" },
                 values: new object[,]
                 {
-                    { 101, "AC Room", 1, 2000.0 },
-                    { 102, "Non AC Room", 2, 1500.0 }
+                    { 101, "AC Room", 1, true, null, 2000.0 },
+                    { 102, "Non AC Room", 2, false, null, 1500.0 }
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_bookings_Id",
+                table: "bookings",
+                column: "Id");
 
             migrationBuilder.CreateIndex(
                 name: "IX_bookings_RoomNo",
