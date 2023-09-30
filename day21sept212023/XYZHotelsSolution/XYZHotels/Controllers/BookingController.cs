@@ -76,13 +76,7 @@ namespace XYZHotels.Controllers
             }
         }
 
-        [HttpGet("check")]
-        public IActionResult CheckAvailability(BookingCheckAvalibilityDTO check)
-        {
-           var result = _service.CheckAvailability(check);
-
-            return Ok(result);
-        }
+     
 
     }
 }

@@ -4,6 +4,7 @@ export class BookRoom{
         public id:number=0,
         public customerName:string="",
         public checkIn:Date=new Date(),
+        public checkOut:Date = new Date,
         
        ){
 

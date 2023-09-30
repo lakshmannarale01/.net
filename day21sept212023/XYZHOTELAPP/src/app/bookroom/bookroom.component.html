@@ -30,7 +30,10 @@
             Room Details : {{room.price}}
             <!-- Room price : <input class="form-info" type="number" [(ngModel)]="room.price"> -->
             <br />
-            Booking DateTime :<input class="form-info" type="datetime" [(ngModel)]="book.checkIn">
+            Booking checkIn :<input class="form-info" type="datetime-local" [(ngModel)]="book.checkIn">
+            <br />
+            
+            Booking checkOut :<input class="form-info" type="datetime-local" [(ngModel)]="book.checkOut">
 
             <button (click)="bookRoom()" class="btn btn-dark"> book Room<span [class]="className"></span></button>
         </div>

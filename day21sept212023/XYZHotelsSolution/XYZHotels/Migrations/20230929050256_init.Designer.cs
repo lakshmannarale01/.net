@@ -12,7 +12,7 @@ using XYZHotels.Context;
 namespace XYZHotels.Migrations
 {
     [DbContext(typeof(HContext))]
-    [Migration("20230928103059_init")]
+    [Migration("20230929050256_init")]
     partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -33,6 +33,9 @@ namespace XYZHotels.Migrations
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("BookingId"));
 
                     b.Property<DateTime>("CheckIn")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime>("CheckOut")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("CustomerName")

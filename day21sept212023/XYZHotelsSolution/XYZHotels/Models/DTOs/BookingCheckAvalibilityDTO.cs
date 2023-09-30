@@ -6,6 +6,8 @@
 
         public DateTime CheckIn { get; set; }
 
+        public DateTime CheckOut { get; set; }
+
         public int Id { get; set; }
        
     }

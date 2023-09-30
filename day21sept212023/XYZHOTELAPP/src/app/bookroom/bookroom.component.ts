@@ -44,15 +44,22 @@ selectRoom(rid:any){
       this.room = this.rooms[index];
       break;
     }
-    
   }
 }
 
 bookRoom(){
-  this.room.id=this.hotel.id;
-  this.book.roomNo= this.room.roomNo;
+ var  myBook:BookRoom =new BookRoom()
+     myBook.id=this.hotel.id;
+  myBook.roomNo= this.room.roomNo;
+  myBook.checkIn= this.book.checkIn;
+  myBook.checkOut = this.book.checkOut;
+<<<<<<< Updated upstream
+  myBook.customerName=this.book.customerName
+=======
+  myBook.customerName=this.book.customerName;
+>>>>>>> Stashed changes
   this.className= "spinner-border";
-  this.bookservice.addBookings(this.book).subscribe(data=>{
+  this.bookservice.addBookings(myBook).subscribe(data=>{
     this.book = data as BookRoom;
     if(this.book.bookingId > 0)
     {

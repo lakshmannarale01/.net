@@ -33,6 +33,9 @@ namespace XYZHotels.Migrations
                     b.Property<DateTime>("CheckIn")
                         .HasColumnType("timestamp with time zone");
 
+                    b.Property<DateTime>("CheckOut")
+                        .HasColumnType("timestamp with time zone");
+
                     b.Property<string>("CustomerName")
                         .HasColumnType("text");
 

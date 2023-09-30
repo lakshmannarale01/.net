@@ -72,7 +72,8 @@ namespace XYZHotels.Migrations
                     CustomerName = table.Column<string>(type: "text", nullable: true),
                     Id = table.Column<int>(type: "integer", nullable: false),
                     RoomNo = table.Column<int>(type: "integer", nullable: false),
-                    CheckIn = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                    CheckIn = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    CheckOut = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
                 constraints: table =>
                 {
